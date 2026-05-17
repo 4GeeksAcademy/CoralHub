@@ -6,6 +6,11 @@ from api.models import db, User, Product
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 
+from flask_jwt_extended import create_access_token
+from flask_jwt_extended import get_jwt_identity
+from flask_jwt_extended import jwt_required
+
+
 from werkzeug.security import generate_password_hash, check_password_hash
 
 api = Blueprint('api', __name__)
@@ -72,3 +77,29 @@ def signup():
     return jsonify({
         "message": "User created successfully"
     }), 201
+
+@api.route("/login", methods=["POST"])
+def login():
+
+    data= request.get_json()
+
+    user= User.query.filter_by(email=data["email"]).first()
+    if not user or not check_password_hash(user.password, data["password"]):
+        return jsonify({"msg": "Invalid email or password"}), 401
+
+
+    access_token = create_access_token(identity=str(user.id))
+    return jsonify({
+        "token": access_token,
+        "user": user.serialize()}), 200
+
+@api.route("/private", methods=["GET"])
+@jwt_required()
+def private():
+
+    current_user_id = get_jwt_identity()
+
+    return jsonify({
+        "msg": "Access granted",
+        "user_id": current_user_id
+    }), 200

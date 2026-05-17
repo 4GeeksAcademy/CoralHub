@@ -67,49 +67,132 @@ export const Login = () => {
 
     return (
 
-        <div className="container mt-5">
+        <div className="container min-vh-100 d-flex justify-content-center align-items-center bg-light">
 
-            <h1>Log In</h1>
+            <div
+                className="card shadow-sm p-4 border-0"
+                style={{
+                    maxWidth: "450px",
+                    width: "100%",
+                    borderRadius: "20px"
+                }}
+            >
 
-            <form onSubmit={handleSubmit}>
+                {/* TITLE */}
+                <h1 className="fw-bold mb-2">
+                    Sign In
+                </h1>
 
-                {/* EMAIL */}
-                <div className="mb-3">
+                <p className="text-secondary mb-4">
+                    Enter your credentials to access your account
+                </p>
 
-                    <label className="form-label">
-                        Email
-                    </label>
+                <form onSubmit={handleSubmit}>
 
-                    <input
-                        type="email"
-                        className="form-control"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                    />
+                    {/* EMAIL */}
+                    <div className="mb-4">
 
-                </div>
+                        <label
+                            htmlFor="email"
+                            className="form-label fw-semibold"
+                        >
+                            Email
+                        </label>
 
-                {/* PASSWORD */}
-                <div className="mb-3">
+                        <input
+                            id="email"
+                            type="email"
+                            className="form-control py-3 border-0 bg-light"
+                            placeholder="you@example.com"
+                            autoComplete="email"
+                            required
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                        />
 
-                    <label className="form-label">
-                        Password
-                    </label>
+                    </div>
 
-                    <input
-                        type="password"
-                        className="form-control"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                    />
+                    {/* PASSWORD HEADER */}
+                    <div className="d-flex justify-content-between align-items-center mb-2">
 
-                </div>
+                        <label
+                            htmlFor="password"
+                            className="form-label fw-semibold mb-0"
+                        >
+                            Password
+                        </label>
 
-                <button className="btn btn-primary">
-                    Login
-                </button>
+                        <a
+                            href="#"
+                            className="text-dark text-decoration-none small fw-medium"
+                        >
+                            Forgot your password?
+                        </a>
 
-            </form>
+                    </div>
+
+                    {/* PASSWORD INPUT */}
+                    <div className="mb-4">
+
+                        <input
+                            id="password"
+                            type="password"
+                            className="form-control py-3 border-0 bg-light"
+                            placeholder="••••••••"
+                            autoComplete="current-password"
+                            required
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                        />
+
+                    </div>
+
+                    {/* REMEMBER ME */}
+                    <div className="form-check mb-4">
+
+                        <input
+                            className="form-check-input"
+                            type="checkbox"
+                            id="rememberMe"
+                        />
+
+                        <label
+                            className="form-check-label"
+                            htmlFor="rememberMe"
+                        >
+                            Remember me
+                        </label>
+
+                    </div>
+
+                    {/* BUTTON */}
+                    <button
+                        type="submit"
+                        className="btn btn-dark w-100 py-3 fw-semibold"
+                        style={{
+                            borderRadius: "12px"
+                        }}
+                    >
+                        Sign In
+                    </button>
+
+                </form>
+
+                {/* SIGN UP */}
+                <p className="text-center text-secondary mt-4 mb-0">
+
+                    Don’t have an account?{" "}
+
+                    <a
+                        href="/signup"
+                        className="text-dark fw-semibold text-decoration-none"
+                    >
+                        Sign Up
+                    </a>
+
+                </p>
+
+            </div>
 
         </div>
     );

@@ -92,3 +92,14 @@ def login():
     return jsonify({
         "token": access_token,
         "user": user.serialize()}), 200
+
+@api.route("/private", methods=["GET"])
+@jwt_required()
+def private():
+
+    current_user_id = get_jwt_identity()
+
+    return jsonify({
+        "msg": "Access granted",
+        "user_id": current_user_id
+    }), 200

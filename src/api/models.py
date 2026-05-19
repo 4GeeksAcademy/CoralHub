@@ -57,6 +57,15 @@ class Product(db.Model):
         db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
     def serialize(self):
+        # Lista de reviews del producto
+        review_list = [r.serialize() for r in self.reviews]
+
+        # Promedio de rating (0 si no hay reviews)
+        avg_rating = (
+            sum(r["rating"] for r in review_list) / len(review_list)
+            if review_list else 0
+        )
+
         return {
             "id": self.id,
             "seller_id": self.seller_id,
@@ -66,6 +75,9 @@ class Product(db.Model):
             "stock": self.stock,
             "image_url": self.image_url,
             "status": self.status,
+            "reviews": review_list,
+            "rating_average": round(avg_rating, 1),
+            "reviews_count": len(review_list),
             "created_at": self.created_at.isoformat() if self.created_at else None
         }
 

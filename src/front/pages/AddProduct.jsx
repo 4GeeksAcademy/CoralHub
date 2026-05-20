@@ -309,15 +309,23 @@ export const AddProduct = () => {
                                         </option>
 
                                         <option value="Fish">
-                                            Fish
+                                            Coral
                                         </option>
 
                                         <option value="Corals">
-                                            Corals
+                                            Light
                                         </option>
 
                                         <option value="Hardware">
                                             Hardware
+                                        </option>
+
+                                         <option value="Hardware">
+                                            Tanks
+                                        </option>
+
+                                         <option value="Hardware">
+                                            Used Equipment
                                         </option>
 
                                     </select>

@@ -6,6 +6,13 @@ from api.models import db, User, Product, Review
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 
+from flask_jwt_extended import create_access_token
+from flask_jwt_extended import get_jwt_identity
+from flask_jwt_extended import jwt_required
+
+
+from werkzeug.security import generate_password_hash, check_password_hash
+
 api = Blueprint('api', __name__)
 
 # Allow CORS requests to this API
@@ -40,6 +47,29 @@ def get_product(product_id):
         return jsonify({"error": "Product not found"}), 404
 
     return jsonify(product.serialize()), 200
+
+@api.route('/products', methods=['POST'])
+@jwt_required()
+def create_product():
+
+    body = request.get_json()
+
+    current_user_id = get_jwt_identity()
+
+    new_product = Product(
+        seller_id=current_user_id,
+        name=body["name"],
+        description=body.get("description"),
+        price=body["price"],
+        stock=body.get("stock", 0),
+        image_url=body.get("image_url"),
+        category=body["category"]
+    )
+
+    db.session.add(new_product)
+    db.session.commit()
+
+    return jsonify(new_product.serialize()), 201
 
 @api.route('/signup', methods=['POST'])
 def signup():

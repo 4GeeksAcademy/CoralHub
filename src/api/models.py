@@ -55,6 +55,7 @@ class Product(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(
         db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    category = db.Column(db.String(50), nullable=False)
 
     def serialize(self):
         # Lista de reviews del producto
@@ -78,7 +79,8 @@ class Product(db.Model):
             "reviews": review_list,
             "rating_average": round(avg_rating, 1),
             "reviews_count": len(review_list),
-            "created_at": self.created_at.isoformat() if self.created_at else None
+            "created_at": self.created_at.isoformat() if self.created_at else None,
+            "category": self.category
         }
 
 

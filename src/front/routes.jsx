@@ -13,11 +13,8 @@ import { Signup } from "./pages/Signup";
 import { Login } from "./pages/Login";
 import { Private } from "./pages/Private";
 import { AddProduct } from "./pages/AddProduct";
-<<<<<<< HEAD
 import { Catalog } from "./pages/Catalog";
-=======
 import { AdminUsers } from "./pages/AdminUsers";
->>>>>>> 24d82113d56a0be3a962f8046e7dfb922499b80f
 
 export const router = createBrowserRouter(
   createRoutesFromElements(

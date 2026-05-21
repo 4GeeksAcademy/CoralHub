@@ -65,19 +65,22 @@ export const Navbar = () => {
                                 <>
 
                                     <li className="nav-item">
-                                        <Link
-                                            to="/private"
-                                            className="nav-link"
-                                        >
+                                        <Link to="/private" className="nav-link">
                                             Dashboard
                                         </Link>
                                     </li>
 
+                                    {/* NUEVO: LINK CONDICIONAL SOLO PARA ADMINS */}
+                                    {JSON.parse(localStorage.getItem("user"))?.role === "admin" && (
+                                        <li className="nav-item">
+                                            <Link to="/admin/users" className="nav-link text-warning fw-bold">
+                                                <i className="fa-solid fa-users-gear me-1"></i> Admin Usuarios
+                                            </Link>
+                                        </li>
+                                    )}
+
                                     <li className="nav-item">
-                                        <Link
-                                            to="#"
-                                            className="nav-link"
-                                        >
+                                        <Link to="#" className="nav-link">
                                             My Products
                                         </Link>
                                     </li>

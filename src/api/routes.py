@@ -132,3 +132,29 @@ def private():
         "msg": "Access granted",
         "user_id": current_user_id
     }), 200
+
+    # ============================================
+# ADMINISTRACIÓN DE USUARIOS 
+# ============================================
+
+@api.route('/users', methods=['GET'])
+@jwt_required()
+def get_all_users():
+    # 1. Obtener el ID del usuario desde el token JWT
+    current_user_id = get_jwt_identity()
+    
+    # 2. Buscar al usuario en la base de datos para verificar su rol
+    admin_user = User.query.get(current_user_id)
+    
+    if not admin_user:
+        return jsonify({"msg": "User not found"}), 404
+        
+    # 3. Validar si realmente es un administrador
+    if admin_user.role != "admin":
+        return jsonify({"msg": "Access denied. Admins only."}), 403
+
+    # 4. Si es admin, traer todos los usuarios de la base de datos
+    users = User.query.all()
+    
+    # 5. Serializar y retornar la lista de usuarios
+    return jsonify([user.serialize() for user in users],), 200

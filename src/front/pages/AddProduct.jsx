@@ -13,6 +13,9 @@ export const AddProduct = () => {
 
     const [error, setError] = useState("");
     const [success, setSuccess] = useState("");
+    const [image, setImage] = useState(null);
+    const [loadingImage, setLoadingImage] = useState(false);
+    const [preview, setPreview] = useState(null);
 
     const handleChange = (e) => {
 
@@ -20,6 +23,46 @@ export const AddProduct = () => {
             ...formData,
             [e.target.name]: e.target.value
         });
+    };
+
+    const uploadImage = async () => {
+
+        if (!image) return "";
+
+        setLoadingImage(true);
+
+        try {
+
+            const formDataImage = new FormData();
+
+            formDataImage.append("image", image);
+
+            const backendUrl = import.meta.env.VITE_BACKEND_URL;
+
+            const response = await fetch(
+
+                `${backendUrl}/api/upload`,
+
+                {
+                    method: "POST",
+                    body: formDataImage
+                }
+            );
+
+            const data = await response.json();
+
+            return data.image_url;
+
+        } catch (error) {
+
+            setError("Image upload failed.");
+
+            return "";
+
+        } finally {
+
+            setLoadingImage(false);
+        }
     };
 
     const handleSubmit = async (e) => {
@@ -30,6 +73,8 @@ export const AddProduct = () => {
         setSuccess("");
 
         try {
+
+            const imageUrl = await uploadImage();
 
             const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
@@ -46,6 +91,7 @@ export const AddProduct = () => {
 
                 body: JSON.stringify({
                     ...formData,
+                    image_url: imageUrl,
                     price: parseFloat(formData.price),
                     stock: parseInt(formData.stock)
                 })
@@ -254,32 +300,65 @@ export const AddProduct = () => {
 
                                 </div>
 
-                                {/* IMAGE URL */}
+                                {/* PRODUCT IMAGE */}
                                 <div className="mb-4">
 
                                     <label
-                                        htmlFor="image_url"
+                                        htmlFor="product-image"
                                         className="form-label fw-semibold"
                                     >
-                                        Product Image URL
+                                        Product Image
                                     </label>
 
                                     <input
-                                        type="url"
+                                        type="file"
                                         className="form-control"
-                                        id="image_url"
-                                        name="image_url"
-                                        value={formData.image_url}
-                                        onChange={handleChange}
+                                        id="product-image"
+                                        accept="image/*"
                                         aria-describedby="image-help"
+                                        onChange={(e) => {
+
+                                            const file = e.target.files[0];
+
+                                            setImage(file);
+
+                                            if (file) {
+                                                setPreview(URL.createObjectURL(file));
+                                            }
+                                        }}
                                     />
 
                                     <div
                                         id="image-help"
                                         className="form-text"
                                     >
-                                        Paste a valid image URL to display the product photo.
+                                        Upload a clear image of your product.
                                     </div>
+
+                                    {
+                                        loadingImage && (
+                                            <p
+                                                className="mt-2"
+                                                aria-live="polite"
+                                            >
+                                                Uploading image...
+                                            </p>
+                                        )
+                                    }
+
+                                    {
+                                        preview && (
+                                            <img
+                                                src={preview}
+                                                alt="Product preview"
+                                                className="img-fluid rounded mt-3"
+                                                style={{
+                                                    maxHeight: "250px",
+                                                    objectFit: "cover"
+                                                }}
+                                            />
+                                        )
+                                    }
 
                                 </div>
 
@@ -308,11 +387,11 @@ export const AddProduct = () => {
                                             Select a category
                                         </option>
 
-                                        <option value="Fish">
+                                        <option value="Coral">
                                             Coral
                                         </option>
 
-                                        <option value="Corals">
+                                        <option value="Light">
                                             Light
                                         </option>
 
@@ -320,11 +399,11 @@ export const AddProduct = () => {
                                             Hardware
                                         </option>
 
-                                         <option value="Hardware">
+                                        <option value="Tanks">
                                             Tanks
                                         </option>
 
-                                         <option value="Hardware">
+                                        <option value="Used Equipment">
                                             Used Equipment
                                         </option>
 

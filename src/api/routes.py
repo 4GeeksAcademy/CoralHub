@@ -6,6 +6,10 @@ from api.models import db, User, Product, Review
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 
+import os
+import cloudinary
+import cloudinary.uploader
+
 from flask_jwt_extended import create_access_token
 from flask_jwt_extended import get_jwt_identity
 from flask_jwt_extended import jwt_required
@@ -17,6 +21,31 @@ api = Blueprint('api', __name__)
 
 # Allow CORS requests to this API
 CORS(api)
+
+
+cloudinary.config(
+    cloud_name=os.environ.get("CLOUDINARY_CLOUD_NAME"),
+    api_key=os.environ.get("CLOUDINARY_API_KEY"),
+    api_secret=os.environ.get("CLOUDINARY_API_SECRET"),
+)
+
+
+@api.route('/upload', methods=['POST'])
+def upload_image():
+
+    file = request.files.get("image")
+
+    if not file:
+        return jsonify({"error": "the file is required"}), 400
+
+    result = cloudinary.uploader.upload(file)
+
+    if 'secure_url' not in result:
+        return jsonify({"error": "the image can not be uploaded"}), 400
+
+    return jsonify({
+        "image_url": result["secure_url"]
+    }), 200
 
 
 @api.route('/hello', methods=['POST', 'GET'])
@@ -48,6 +77,7 @@ def get_product(product_id):
 
     return jsonify(product.serialize()), 200
 
+
 @api.route('/products', methods=['POST'])
 @jwt_required()
 def create_product():
@@ -70,6 +100,7 @@ def create_product():
     db.session.commit()
 
     return jsonify(new_product.serialize()), 201
+
 
 @api.route('/signup', methods=['POST'])
 def signup():
@@ -107,20 +138,21 @@ def signup():
         "message": "User created successfully"
     }), 201
 
+
 @api.route("/login", methods=["POST"])
 def login():
 
-    data= request.get_json()
+    data = request.get_json()
 
-    user= User.query.filter_by(email=data["email"]).first()
+    user = User.query.filter_by(email=data["email"]).first()
     if not user or not check_password_hash(user.password, data["password"]):
         return jsonify({"msg": "Invalid email or password"}), 401
-
 
     access_token = create_access_token(identity=str(user.id))
     return jsonify({
         "token": access_token,
         "user": user.serialize()}), 200
+
 
 @api.route("/private", methods=["GET"])
 @jwt_required()
@@ -134,27 +166,28 @@ def private():
     }), 200
 
     # ============================================
-# ADMINISTRACIÓN DE USUARIOS 
+# ADMINISTRACIÓN DE USUARIOS
 # ============================================
+
 
 @api.route('/users', methods=['GET'])
 @jwt_required()
 def get_all_users():
     # 1. Obtener el ID del usuario desde el token JWT
     current_user_id = get_jwt_identity()
-    
+
     # 2. Buscar al usuario en la base de datos para verificar su rol
     admin_user = User.query.get(current_user_id)
-    
+
     if not admin_user:
         return jsonify({"msg": "User not found"}), 404
-        
+
     # 3. Validar si realmente es un administrador
     if admin_user.role != "admin":
         return jsonify({"msg": "Access denied. Admins only."}), 403
 
     # 4. Si es admin, traer todos los usuarios de la base de datos
     users = User.query.all()
-    
+
     # 5. Serializar y retornar la lista de usuarios
     return jsonify([user.serialize() for user in users],), 200

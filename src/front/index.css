@@ -1,0 +1,372 @@
+/* =========================================
+   GLOBAL
+========================================= */
+
+body {
+
+    background: #012C4B;
+
+    font-family: Inter, sans-serif;
+}
+
+/* =========================================
+   CATEGORIES SECTION
+========================================= */
+
+.categories-section {
+
+    background: #012C4B;
+
+    position: relative;
+
+    overflow: hidden;
+}
+
+/* =========================================
+   TITLE AREA
+========================================= */
+
+.categories-title {
+
+    color: white;
+
+    font-size: clamp(2.5rem, 5vw, 4.5rem);
+
+    font-weight: 700;
+
+    line-height: 1.1;
+}
+
+.categories-title span {
+
+    color: #4EC7C1;
+}
+
+.categories-subtitle {
+
+    color: rgba(255, 255, 255, 0.72);
+
+    font-size: 1.25rem;
+
+    max-width: 650px;
+
+    margin-inline: auto;
+
+    line-height: 1.7;
+}
+
+/* =========================================
+   TOP CORAL ICON
+========================================= */
+
+.section-coral-icon {
+
+    width: 60px;
+
+    height: 60px;
+
+    object-fit: contain;
+
+    filter:
+        drop-shadow(0 0 14px rgba(255,122,89,0.45));
+}
+
+/* =========================================
+   CATEGORY CARD
+========================================= */
+
+.category-card {
+
+    width: 100%;
+
+    min-height: 260px;
+
+    border-radius: 28px;
+
+    background:
+        rgba(255, 255, 255, 0.03);
+
+    border:
+        1px solid rgba(255, 255, 255, 0.12);
+
+    color: white;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 1.25rem;
+
+    transition: all 0.3s ease;
+
+    backdrop-filter: blur(10px);
+
+    cursor: pointer;
+
+    position: relative;
+
+    overflow: hidden;
+}
+
+/* =========================================
+   CARD HOVER
+========================================= */
+
+.category-card:hover,
+.category-card:focus-visible {
+
+    transform: translateY(-6px);
+
+    background:
+        rgba(255, 255, 255, 0.05);
+
+    outline: none;
+}
+
+/* =========================================
+   ICON CONTAINER
+========================================= */
+
+.category-icon {
+
+    width: 115px;
+
+    height: 115px;
+
+    border-radius: 50%;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    transition: all 0.3s ease;
+}
+
+/* =========================================
+   CUSTOM SVG
+========================================= */
+
+.custom-category-icon {
+
+    width: 74px;
+
+    height: 74px;
+
+    object-fit: contain;
+
+    transition: all 0.3s ease;
+
+    filter:
+        drop-shadow(0 0 12px rgba(255,122,89,0.45));
+}
+
+.category-card:hover .custom-category-icon {
+
+    transform: scale(1.08);
+}
+
+/* =========================================
+   CARD TITLES
+========================================= */
+
+.category-card h3 {
+
+    font-size: 1.8rem;
+
+    font-weight: 700;
+
+    margin: 0;
+}
+
+/* =========================================
+   GLOW LINE
+========================================= */
+
+.category-line {
+
+    width: 70px;
+
+    height: 4px;
+
+    border-radius: 999px;
+}
+
+/* =========================================
+   CORALS
+========================================= */
+
+.coral-category {
+
+    border-color:
+        rgba(255, 122, 89, 0.5);
+}
+
+.coral-category .category-icon {
+
+    border: 1.5px solid #FF7A59;
+
+    box-shadow:
+        0 0 28px rgba(255, 122, 89, 0.25);
+}
+
+.coral-category .category-line {
+
+    background: #FF7A59;
+
+    box-shadow:
+        0 0 15px rgba(255, 122, 89, 0.6);
+}
+
+/* =========================================
+   EQUIPMENT
+========================================= */
+
+.equipment-category {
+
+    border-color:
+        rgba(78, 199, 193, 0.5);
+}
+
+.equipment-category .category-icon {
+
+    color: #4EC7C1;
+
+    border: 1.5px solid #4EC7C1;
+
+    box-shadow:
+        0 0 28px rgba(78, 199, 193, 0.25);
+}
+
+.equipment-category .category-line {
+
+    background: #4EC7C1;
+
+    box-shadow:
+        0 0 15px rgba(78, 199, 193, 0.6);
+}
+
+/* =========================================
+   AQUARIUMS
+========================================= */
+
+.aquarium-category {
+
+    border-color:
+        rgba(76, 143, 255, 0.5);
+}
+
+.aquarium-category .category-icon {
+
+    color: #4C8FFF;
+
+    border: 1.5px solid #4C8FFF;
+
+    box-shadow:
+        0 0 28px rgba(76, 143, 255, 0.25);
+}
+
+.aquarium-category .category-line {
+
+    background: #4C8FFF;
+
+    box-shadow:
+        0 0 15px rgba(76, 143, 255, 0.6);
+}
+
+/* =========================================
+   LIGHTING
+========================================= */
+
+.lighting-category {
+
+    border-color:
+        rgba(161, 108, 255, 0.5);
+}
+
+.lighting-category .category-icon {
+
+    color: #A16CFF;
+
+    border: 1.5px solid #A16CFF;
+
+    box-shadow:
+        0 0 28px rgba(161, 108, 255, 0.25);
+}
+
+.lighting-category .category-line {
+
+    background: #A16CFF;
+
+    box-shadow:
+        0 0 15px rgba(161, 108, 255, 0.6);
+}
+
+/* =========================================
+   USED
+========================================= */
+
+.used-category {
+
+    border-color:
+        rgba(180, 190, 200, 0.45);
+}
+
+.used-category .category-icon {
+
+    color: #B4BEC8;
+
+    border: 1.5px solid #B4BEC8;
+
+    box-shadow:
+        0 0 28px rgba(180, 190, 200, 0.18);
+}
+
+.used-category .category-line {
+
+    background: #B4BEC8;
+
+    box-shadow:
+        0 0 15px rgba(180, 190, 200, 0.4);
+}
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 768px) {
+
+    .category-card {
+
+        min-height: 220px;
+    }
+
+    .category-icon {
+
+        width: 90px;
+
+        height: 90px;
+    }
+
+    .category-card h3 {
+
+        font-size: 1.35rem;
+    }
+
+    .custom-category-icon {
+
+        width: 60px;
+
+        height: 60px;
+    }
+
+    .categories-subtitle {
+
+        font-size: 1.05rem;
+    }
+}

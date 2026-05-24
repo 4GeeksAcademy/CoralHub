@@ -522,6 +522,343 @@ export const Home = () => {
 
 			</section>
 
+			<section className="favorites-section py-5 position-relative overflow-hidden">
+
+				<div className="container py-5">
+
+					{/* HEADER */}
+
+					<div className="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-5">
+
+						<div>
+
+							<h2 className="favorites-title mb-2">
+								<span className="favorites-heart">♡</span>
+								Most <span>favorited</span>
+							</h2>
+
+							<p className="favorites-subtitle mb-0">
+								The products reef keepers are loving the most.
+							</p>
+
+						</div>
+
+						<button className="favorites-view-btn">
+							View all →
+						</button>
+
+					</div>
+
+
+
+					{/* CARDS */}
+
+					<div className="row g-4">
+
+						{/* CARD 1 */}
+
+						<div className="col-12 col-md-6 col-xl-3">
+
+							<div className="favorite-card">
+
+								<div className="favorite-image-wrapper">
+
+									<img
+										src="https://images.unsplash.com/photo-1546026423-cc4642628d2b?q=80&w=1200&auto=format&fit=crop"
+										alt="Purple Acropora Coral"
+										className="favorite-image"
+									/>
+
+									<button className="favorite-like-btn">
+										♡
+									</button>
+
+								</div>
+
+								<div className="favorite-content">
+
+									<div className="favorite-tag coral-tag">
+										🪸 Corals
+									</div>
+
+									<h3 className="favorite-name">
+										Purple Acropora
+									</h3>
+
+									<p className="favorite-author">
+										by ReefMaster
+									</p>
+
+									<div className="favorite-stats">
+
+										<span>⭐ 4.9 (128)</span>
+
+										<span>❤ 2.4k favorites</span>
+
+									</div>
+
+									<button className="favorite-btn">
+										View Listing
+									</button>
+
+								</div>
+
+							</div>
+
+						</div>
+
+
+
+						{/* CARD 2 */}
+
+						<div className="col-12 col-md-6 col-xl-3">
+
+							<div className="favorite-card">
+
+								<div className="favorite-image-wrapper">
+
+									<img
+										src="https://images.unsplash.com/photo-1520301255226-bf5f144451c1?q=80&w=1200&auto=format&fit=crop"
+										alt="Yellow Tang"
+										className="favorite-image"
+									/>
+
+									<button className="favorite-like-btn">
+										♡
+									</button>
+
+								</div>
+
+								<div className="favorite-content">
+
+									<div className="favorite-tag fish-tag">
+										🐠 Fish
+									</div>
+
+									<h3 className="favorite-name">
+										Yellow Tang
+									</h3>
+
+									<p className="favorite-author">
+										by AquaWorld
+									</p>
+
+									<div className="favorite-stats">
+
+										<span>⭐ 4.8 (97)</span>
+
+										<span>❤ 1.8k favorites</span>
+
+									</div>
+
+									<button className="favorite-btn">
+										View Listing
+									</button>
+
+								</div>
+
+							</div>
+
+						</div>
+
+
+
+						{/* CARD 3 */}
+
+						<div className="col-12 col-md-6 col-xl-3">
+
+							<div className="favorite-card">
+
+								<div className="favorite-image-wrapper">
+
+									<img
+										src="https://images.unsplash.com/photo-1583212292454-1fe6229603b7?q=80&w=1200&auto=format&fit=crop"
+										alt="Red Sea Reefer"
+										className="favorite-image"
+									/>
+
+									<button className="favorite-like-btn">
+										♡
+									</button>
+
+								</div>
+
+								<div className="favorite-content">
+
+									<div className="favorite-tag equipment-tag">
+										⚙ Equipment
+									</div>
+
+									<h3 className="favorite-name">
+										Red Sea Reefer 250
+									</h3>
+
+									<p className="favorite-author">
+										by CoralTech
+									</p>
+
+									<div className="favorite-stats">
+
+										<span>⭐ 4.7 (62)</span>
+
+										<span>❤ 1.2k favorites</span>
+
+									</div>
+
+									<button className="favorite-btn">
+										View Listing
+									</button>
+
+								</div>
+
+							</div>
+
+						</div>
+
+
+
+						{/* CARD 4 */}
+
+						<div className="col-12 col-md-6 col-xl-3">
+
+							<div className="favorite-card">
+
+								<div className="favorite-image-wrapper">
+
+									<img
+										src="https://images.unsplash.com/photo-1520637836862-4d197d17c55a?q=80&w=1200&auto=format&fit=crop"
+										alt="AI Prime 16HD"
+										className="favorite-image"
+									/>
+
+									<button className="favorite-like-btn">
+										♡
+									</button>
+
+								</div>
+
+								<div className="favorite-content">
+
+									<div className="favorite-tag lighting-tag">
+										💡 Lighting
+									</div>
+
+									<h3 className="favorite-name">
+										AI Prime 16HD
+									</h3>
+
+									<p className="favorite-author">
+										by SaltLife
+									</p>
+
+									<div className="favorite-stats">
+
+										<span>⭐ 4.9 (156)</span>
+
+										<span>❤ 980 favorites</span>
+
+									</div>
+
+									<button className="favorite-btn">
+										View Listing
+									</button>
+
+								</div>
+
+							</div>
+
+						</div>
+
+					</div>
+
+				</div>
+
+			</section>
+
+			<section className="community-section py-5 position-relative overflow-hidden">
+
+				<div className="container py-5">
+
+					<div className="community-card">
+
+						<div className="row align-items-center g-5">
+
+							{/* LEFT SIDE */}
+
+							<div className="col-lg-8">
+
+								<div className="d-flex flex-column flex-md-row align-items-center align-items-md-start gap-4">
+
+									{/* ICON */}
+
+									<div className="community-icon">
+
+										<span>👥</span>
+
+									</div>
+
+
+
+									{/* TEXT */}
+
+									<div className="text-center text-md-start">
+
+										<h2 className="community-title mb-3">
+											Join the <span>Reef</span> Community
+										</h2>
+
+										<p className="community-text mb-0">
+											Connect with hobbyists, share knowledge,
+											and grow the reef together.
+										</p>
+
+									</div>
+
+								</div>
+
+							</div>
+
+
+
+							{/* RIGHT SIDE */}
+
+							<div className="col-lg-4 text-center text-lg-end">
+
+								<button className="community-btn">
+									Join CoralHub →
+								</button>
+
+							</div>
+
+						</div>
+
+					</div>
+
+				</div>
+
+
+
+				{/* WAVE */}
+
+				<svg
+					className="community-wave"
+					viewBox="0 0 1440 120"
+					preserveAspectRatio="none"
+				>
+
+					<path
+						d="M0 62C170 95 330 35 500 42C680 50 760 105 940 76C1090 52 1235 28 1440 66"
+						stroke="#4EC7C1"
+						strokeWidth="1.5"
+						strokeLinecap="round"
+						fill="none"
+						opacity="0.8"
+					/>
+
+				</svg>
+
+			</section>
+
 		</div>
 
 	);

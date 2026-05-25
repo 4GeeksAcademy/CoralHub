@@ -2,11 +2,358 @@
    GLOBAL
 ========================================= */
 
+html,
+body,
+#app {
+
+	background: #012C4B;
+
+	min-height: 100%;
+}
+
 body {
 
-    background: #012C4B;
+	background-color: #012C4B !important;
 
-    font-family: Inter, sans-serif;
+	font-family: Inter, sans-serif;
+
+	color: white;
+
+	margin: 0;
+
+	padding: 0;
+}
+
+section {
+
+	background: transparent;
+}
+
+/* ========================================
+   HERO SECTION
+======================================== */
+
+.hero-section {
+
+	background: #012C4B;
+
+	min-height: 100vh;
+
+	display: flex;
+
+	align-items: center;
+
+	position: relative;
+}
+
+/* BADGE */
+
+.hero-badge {
+
+	display: inline-flex;
+
+	align-items: center;
+
+	padding: 0.6rem 1.2rem;
+
+	border-radius: 999px;
+
+	background: rgba(4, 25, 55, 0.10);
+
+	border: 1px solid rgba(78,199,193,0.18);
+
+	color: #FFFFFF;
+
+	font-size: 0.95rem;
+
+	font-weight: 600;
+
+	backdrop-filter: blur(10px);
+}
+
+.hero-badge span {
+
+	color: #FE6949;
+
+	margin-left: 0.35rem;
+}
+
+/* TITLE */
+
+.hero-title {
+
+	color: #FFFFFF;
+
+	font-size: clamp(2.4rem, 5vw, 46px);
+
+	font-weight: 700;
+
+	line-height: 1.1;
+
+	max-width: 700px;
+}
+
+.hero-title span {
+
+	color: #4EC7C1;
+}
+
+/* DESCRIPTION */
+
+.hero-description {
+
+	color: rgba(255,255,255,0.82);
+
+	font-size: 1.15rem;
+
+	line-height: 1.8;
+
+	max-width: 620px;
+}
+
+/* BUTTONS */
+
+.hero-btn-outline {
+
+	height: 60px;
+
+	padding-inline: 2rem;
+
+	border-radius: 18px;
+
+	border: 2px solid #FE6949;
+
+	background: transparent;
+
+	color: #FE6949;
+
+	font-weight: 700;
+
+	font-size: 1rem;
+
+	transition: all 0.3s ease;
+}
+
+.hero-btn-outline:hover {
+
+	background: #FE6949;
+
+	color: #FFFFFF;
+
+	box-shadow:
+		0 0 22px rgba(255,122,89,0.28);
+}
+
+.hero-btn-solid {
+
+	height: 60px;
+
+	padding-inline: 2rem;
+
+	border-radius: 18px;
+
+	border: none;
+
+	background: #FE6949;
+
+	color: #FFFFFF;
+
+	font-weight: 700;
+
+	font-size: 1rem;
+
+	box-shadow:
+		0 0 24px rgba(255,122,89,0.28);
+
+	transition: all 0.3s ease;
+}
+
+.hero-btn-solid:hover {
+
+	transform: translateY(-3px);
+
+	background: #ff896b;
+
+	box-shadow:
+		0 0 35px rgba(255,122,89,0.42);
+}
+
+/* FEATURES */
+
+.hero-feature {
+
+	color: white;
+}
+
+.feature-border {
+
+	border-left:
+		1px solid rgba(255,255,255,0.14);
+
+	padding-left: 1.5rem;
+}
+
+.hero-feature-title {
+
+	font-size: 1rem;
+
+	font-weight: 700;
+
+	color: #FFFFFF;
+
+	margin-bottom: 0.8rem;
+}
+
+.hero-feature-line {
+
+	width: 42px;
+
+	height: 3px;
+
+	border-radius: 999px;
+
+	background: #4EC7C1;
+
+	margin-bottom: 1rem;
+
+	box-shadow:
+		0 0 12px rgba(78,199,193,0.45);
+}
+
+.hero-feature-text {
+
+	color: rgba(255,255,255,0.72);
+
+	font-size: 0.92rem;
+
+	line-height: 1.7;
+}
+
+/* IMAGE */
+
+.hero-image-wrapper {
+
+	max-width: 500px;
+}
+
+.hero-image {
+
+	width: 100%;
+
+	height: 620px;
+
+	object-fit: cover;
+
+	border-radius: 36px;
+
+	border:
+		1px solid rgba(78,199,193,0.16);
+
+	box-shadow:
+		0 0 40px rgba(78,199,193,0.16);
+}
+
+/* WAVE */
+
+.hero-wave {
+
+	position: absolute;
+
+	bottom: 0;
+
+	left: 0;
+
+	width: 100%;
+
+	height: 90px;
+
+	pointer-events: none;
+}
+
+/* MOBILE */
+
+@media (max-width: 992px) {
+
+	.hero-section {
+
+		padding-top: 4rem;
+	}
+
+	.hero-image {
+
+		height: 420px;
+	}
+
+	.feature-border {
+
+		border-left: none;
+
+		padding-left: 0;
+	}
+}
+
+@media (max-width: 768px) {
+
+	.hero-title {
+
+		font-size: 2.8rem;
+	}
+
+	.hero-description {
+
+		font-size: 1rem;
+	}
+
+	.hero-image {
+
+		height: 340px;
+	}
+}
+
+/* =========================================
+   CATEGORIES SECTION
+========================================= */
+
+.categories-section {
+
+	background: #012C4B;
+
+	position: relative;
+
+	overflow: hidden;
+}
+
+/* =========================================
+   TITLE AREA
+========================================= */
+
+.categories-title {
+
+	color: white;
+
+	font-size: clamp(2rem, 4vw, 38px);
+
+	font-weight: 700;
+
+	line-height: 1.1;
+}
+
+.categories-title span {
+
+	color: #4EC7C1;
+}
+
+.categories-subtitle {
+
+	color: rgba(255, 255, 255, 0.72);
+
+	font-size: 1.1rem;
+
+	max-width: 650px;
+
+	margin-inline: auto;
+
+	line-height: 1.7;
 }
 
 /* =========================================
@@ -55,21 +402,6 @@ body {
     line-height: 1.7;
 }
 
-/* =========================================
-   TOP CORAL ICON
-========================================= */
-
-.section-coral-icon {
-
-    width: 60px;
-
-    height: 60px;
-
-    object-fit: contain;
-
-    filter:
-        drop-shadow(0 0 14px rgba(255,122,89,0.45));
-}
 
 /* =========================================
    CATEGORY CARD
@@ -209,7 +541,7 @@ body {
 
 .coral-category .category-icon {
 
-    border: 1.5px solid #FF7A59;
+    border: 1.5px solid #FE6949;
 
     box-shadow:
         0 0 28px rgba(255, 122, 89, 0.25);
@@ -217,7 +549,7 @@ body {
 
 .coral-category .category-line {
 
-    background: #FF7A59;
+    background: #FE6949;
 
     box-shadow:
         0 0 15px rgba(255, 122, 89, 0.6);
@@ -526,7 +858,7 @@ body {
 
 .coral-tag {
 
-	color: #FF7A59;
+	color: #FE6949;
 
 	border: 1px solid rgba(255,122,89,0.4);
 
@@ -622,7 +954,7 @@ body {
 
 	font-weight: 700;
 
-	color: #FF7A59;
+	color: #FE6949;
 }
 
 /* WISHLIST */
@@ -656,7 +988,7 @@ body {
 	border-color:
 		rgba(255,122,89,0.4);
 
-	color: #FF7A59;
+	color: #FE6949;
 }
 
 /* MOBILE */
@@ -1123,7 +1455,7 @@ body {
 
 .coral-tag {
 
-	color: #FF7A59;
+	color: #FE6949;
 
 	border:
 		1px solid rgba(255,122,89,0.4);
@@ -1348,7 +1680,7 @@ body {
 
 	border-radius: 18px;
 
-	background: #FF7A59;
+	background: #FE6949;
 
 	color: white;
 

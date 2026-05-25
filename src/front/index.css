@@ -404,16 +404,6 @@ section {
    TITLE AREA
 ========================================= */
 
-.categories-title {
-
-    color: white;
-
-    font-size: clamp(2.5rem, 5vw, 4.5rem);
-
-    font-weight: 700;
-
-    line-height: 1.1;
-}
 
 .categories-title span {
 

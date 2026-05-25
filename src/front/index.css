@@ -37,7 +37,7 @@ section {
 
 	background: #012C4B;
 
-	min-height: 100vh;
+	padding-block: 6rem;
 
 	display: flex;
 

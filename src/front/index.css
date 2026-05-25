@@ -28,12 +28,28 @@ section {
 
 	background: transparent;
 }
+/* =========================================
+   GLOBAL CONTAINER
+========================================= */
 
-/* ========================================
+.coralhub-container {
+
+    max-width: 1320px;
+
+    padding-left: 24px;
+    padding-right: 24px;
+
+}
+
+/* =========================================
    HERO SECTION
-======================================== */
+========================================= */
 
 .hero-section {
+
+    padding-top: 3rem;
+
+    border-radius: 32px;
 
 	padding-block: 6rem;
 
@@ -234,13 +250,30 @@ section {
 	max-width: 500px;
 }
 
+/* IMAGE */
+
+.hero-image-wrapper {
+
+	width: 100%;
+
+	max-width: 100%;
+
+	display: flex;
+
+	justify-content: flex-end;
+}
+
 .hero-image {
 
 	width: 100%;
 
-	height: 620px;
+	max-width: 640px;
+
+	height: 520px;
 
 	object-fit: cover;
+
+	object-position: center;
 
 	border-radius: 36px;
 

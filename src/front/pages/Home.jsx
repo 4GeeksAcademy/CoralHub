@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
-
+import heroFish from "../assets/img/mandarin_goby.png";
 import CoralIcon from "../assets/img/Coral-icon.svg";
 
 import {
@@ -58,7 +58,7 @@ export const Home = () => {
 
 			<section className="hero-section position-relative overflow-hidden">
 
-				<div className="container py-5">
+				<div className="container coralhub-container py-5">
 
 					<div className="row align-items-center g-5">
 
@@ -196,11 +196,15 @@ export const Home = () => {
 
 							<div className="hero-image-wrapper mx-auto">
 
-								<img
-									src="https://images.unsplash.com/photo-1520301255226-bf5f144451c1?q=80&w=1200&auto=format&fit=crop"
-									alt="Mandarin fish"
-									className="img-fluid hero-image"
-								/>
+								<div className="hero-image-wrapper mx-auto">
+
+									<img
+										src={heroFish}
+										alt="Marine aquarium fish"
+										className="img-fluid hero-image"
+									/>
+
+								</div>
 
 							</div>
 

@@ -15,7 +15,7 @@ export const Navbar = () => {
         localStorage.removeItem("user");
 
         // redirect
-        navigate("/home");
+        navigate("/");
 
         // refresh navbar
         window.location.reload();
@@ -30,11 +30,9 @@ export const Navbar = () => {
                 <div className="coralhub-navbar-wrapper">
 
                     {/* LEFT */}
-
                     <div className="d-flex align-items-center gap-5">
 
                         {/* LOGO */}
-
                         <Link
                             to="/"
                             className="coralhub-logo"
@@ -48,22 +46,67 @@ export const Navbar = () => {
 
                         </Link>
 
-                        {/* CATEGORY */}
+                        {/* CATEGORIES DROPDOWN */}
+                        <div className="dropdown">
 
-                        <button className="category-dropdown-btn d-none d-lg-flex">
+                            <button
+                                className="coralhub-category-btn dropdown-toggle"
+                                type="button"
+                                id="categoriesDropdown"
+                                data-bs-toggle="dropdown"
+                                aria-expanded="false"
+                            >
+                                Categories
+                            </button>
 
-                            Categories
+                            <ul
+                                className="dropdown-menu"
+                                aria-labelledby="categoriesDropdown"
+                            >
 
-                            <i className="fa-solid fa-chevron-down ms-2"></i>
+                                <li>
+                                    <Link
+                                        to="/categories/corals"
+                                        className="dropdown-item"
+                                    >
+                                        Corals
+                                    </Link>
+                                </li>
 
-                        </button>
+                                <li>
+                                    <Link
+                                        to="/categories/equipments"
+                                        className="dropdown-item"
+                                    >
+                                        Equipments
+                                    </Link>
+                                </li>
+
+                                <li>
+                                    <Link
+                                        to="/categories/used"
+                                        className="dropdown-item"
+                                    >
+                                        Used
+                                    </Link>
+                                </li>
+
+                                <li>
+                                    <Link
+                                        to="/categories/lights"
+                                        className="dropdown-item"
+                                    >
+                                        Lights
+                                    </Link>
+                                </li>
+
+                            </ul>
+
+                        </div>
 
                     </div>
 
-
-
                     {/* SEARCH */}
-
                     <div className="coralhub-search-wrapper d-none d-lg-block">
 
                         <input
@@ -80,36 +123,43 @@ export const Navbar = () => {
 
                     </div>
 
-
-
                     {/* DESKTOP BUTTONS */}
-
                     <div className="d-none d-lg-flex align-items-center gap-3">
 
-                        <Link
-                            to="/login"
-                            className="signin-btn"
-                        >
+                        {
+                            token ? (
 
-                            Sign in
+                                <button
+                                    onClick={handleLogout}
+                                    className="signin-btn"
+                                >
+                                    Log out
+                                </button>
 
-                        </Link>
+                            ) : (
 
-                        <Link
-                            to="/signup"
-                            className="signup-btn"
-                        >
+                                <>
+                                    <Link
+                                        to="/login"
+                                        className="signin-btn"
+                                    >
+                                        Sign in
+                                    </Link>
 
-                            Sign up
+                                    <Link
+                                        to="/signup"
+                                        className="signup-btn"
+                                    >
+                                        Sign up
+                                    </Link>
+                                </>
 
-                        </Link>
+                            )
+                        }
 
                     </div>
 
-
-
                     {/* HAMBURGER */}
-
                     <button
                         className="navbar-hamburger d-lg-none"
                         type="button"
@@ -126,10 +176,7 @@ export const Navbar = () => {
 
                 </div>
 
-
-
                 {/* MOBILE MENU */}
-
                 <div
                     className="collapse mobile-navbar-menu"
                     id="mobileNavbar"
@@ -145,32 +192,63 @@ export const Navbar = () => {
                         </Link>
 
                         <Link
-                            to="/"
+                            to="/categories/corals"
                             className="mobile-nav-link"
                         >
-                            Categories
+                            Corals
                         </Link>
 
                         <Link
-                            to="/"
+                            to="/categories/equipments"
                             className="mobile-nav-link"
                         >
-                            Favorites
+                            Equipments
                         </Link>
 
                         <Link
-                            to="/login"
+                            to="/categories/used"
                             className="mobile-nav-link"
                         >
-                            Sign in
+                            Used
                         </Link>
 
                         <Link
-                            to="/signup"
-                            className="mobile-signup-btn"
+                            to="/categories/lights"
+                            className="mobile-nav-link"
                         >
-                            Sign up
+                            Lights
                         </Link>
+
+                        {
+                            token ? (
+
+                                <button
+                                    onClick={handleLogout}
+                                    className="mobile-signup-btn"
+                                >
+                                    Log out
+                                </button>
+
+                            ) : (
+
+                                <>
+                                    <Link
+                                        to="/login"
+                                        className="mobile-nav-link"
+                                    >
+                                        Sign in
+                                    </Link>
+
+                                    <Link
+                                        to="/signup"
+                                        className="mobile-signup-btn"
+                                    >
+                                        Sign up
+                                    </Link>
+                                </>
+
+                            )
+                        }
 
                     </div>
 
@@ -179,6 +257,5 @@ export const Navbar = () => {
             </div>
 
         </nav>
-    
     );
 };

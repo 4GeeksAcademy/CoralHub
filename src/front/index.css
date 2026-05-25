@@ -2069,3 +2069,35 @@ section {
         height: 52px;
     }
 }
+
+/* CATEGORY BUTTON */
+
+.coralhub-category-btn {
+
+    color: white !important;
+    background: transparent !important;
+    border: none !important;
+
+    font-weight: 500;
+
+    padding: 0;
+
+}
+
+/* HOVER */
+
+.coralhub-category-btn:hover {
+
+    color: #FE6949 !important;
+
+}
+
+/* REMOVE BLUE OUTLINE */
+
+.coralhub-category-btn:focus,
+.coralhub-category-btn:active {
+
+    box-shadow: none !important;
+    border: none !important;
+
+}

@@ -41,7 +41,7 @@ export const Navbar = () => {
                         >
 
                             <img
-                                src="/src/front/assets/img/logo-white.png"
+                                src="/src/front/assets/img/CoralHub_logo.png"
                                 alt="CoralHub"
                                 className="coralhub-logo-img"
                             />

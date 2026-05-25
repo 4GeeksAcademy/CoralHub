@@ -23,160 +23,162 @@ export const Navbar = () => {
 
     return (
 
-        <nav
-            className="navbar navbar-expand-lg navbar-dark bg-black"
-            aria-label="Main navigation"
-        >
+        <nav className="coralhub-navbar">
 
             <div className="container">
 
-                {/* LOGO */}
-                <Link
-                    to="/"
-                    className="navbar-brand fw-bold"
-                    aria-label="CoralHub homepage"
-                >
-                    CoralHub
-                </Link>
+                <div className="coralhub-navbar-wrapper">
 
-                {/* MOBILE MENU BUTTON */}
-                <button
-                    className="navbar-toggler"
-                    type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#mainNavbar"
-                    aria-controls="mainNavbar"
-                    aria-expanded="false"
-                    aria-label="Toggle navigation menu"
-                >
-                    <span className="navbar-toggler-icon"></span>
-                </button>
+                    {/* LEFT */}
 
-                {/* NAVIGATION LINKS */}
+                    <div className="d-flex align-items-center gap-5">
+
+                        {/* LOGO */}
+
+                        <Link
+                            to="/"
+                            className="coralhub-logo"
+                        >
+
+                            <img
+                                src="/src/front/assets/img/logo-white.png"
+                                alt="CoralHub"
+                                className="coralhub-logo-img"
+                            />
+
+                        </Link>
+
+                        {/* CATEGORY */}
+
+                        <button className="category-dropdown-btn d-none d-lg-flex">
+
+                            Categories
+
+                            <i className="fa-solid fa-chevron-down ms-2"></i>
+
+                        </button>
+
+                    </div>
+
+
+
+                    {/* SEARCH */}
+
+                    <div className="coralhub-search-wrapper d-none d-lg-block">
+
+                        <input
+                            type="text"
+                            placeholder="Search corals, lights, equipments..."
+                            className="coralhub-search-input"
+                        />
+
+                        <button className="coralhub-search-btn">
+
+                            <i className="fa-solid fa-magnifying-glass"></i>
+
+                        </button>
+
+                    </div>
+
+
+
+                    {/* DESKTOP BUTTONS */}
+
+                    <div className="d-none d-lg-flex align-items-center gap-3">
+
+                        <Link
+                            to="/login"
+                            className="signin-btn"
+                        >
+
+                            Sign in
+
+                        </Link>
+
+                        <Link
+                            to="/signup"
+                            className="signup-btn"
+                        >
+
+                            Sign up
+
+                        </Link>
+
+                    </div>
+
+
+
+                    {/* HAMBURGER */}
+
+                    <button
+                        className="navbar-hamburger d-lg-none"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#mobileNavbar"
+                        aria-controls="mobileNavbar"
+                        aria-expanded="false"
+                        aria-label="Toggle navigation"
+                    >
+
+                        <i className="fa-solid fa-bars"></i>
+
+                    </button>
+
+                </div>
+
+
+
+                {/* MOBILE MENU */}
+
                 <div
-                    className="collapse navbar-collapse"
-                    id="mainNavbar"
+                    className="collapse mobile-navbar-menu"
+                    id="mobileNavbar"
                 >
 
-                    <ul className="navbar-nav ms-auto align-items-lg-center gap-lg-3">
+                    <div className="mobile-navbar-content">
 
-                        {
-                            token ? (
-                                <>
+                        <Link
+                            to="/"
+                            className="mobile-nav-link"
+                        >
+                            Explore
+                        </Link>
 
-                                    <li className="nav-item">
-                                        <Link to="/private" className="nav-link">
-                                            Dashboard
-                                        </Link>
-                                    </li>
+                        <Link
+                            to="/"
+                            className="mobile-nav-link"
+                        >
+                            Categories
+                        </Link>
 
-                                    {/* NUEVO: LINK CONDICIONAL SOLO PARA ADMINS */}
-                                    {JSON.parse(localStorage.getItem("user"))?.role === "admin" && (
-                                        <li className="nav-item">
-                                            <Link to="/admin/users" className="nav-link text-warning fw-bold">
-                                                <i className="fa-solid fa-users-gear me-1"></i> Admin Usuarios
-                                            </Link>
-                                        </li>
-                                    )}
+                        <Link
+                            to="/"
+                            className="mobile-nav-link"
+                        >
+                            Favorites
+                        </Link>
 
-                                    <li className="nav-item">
-                                        <Link to="#" className="nav-link">
-                                            My Products
-                                        </Link>
-                                    </li>
+                        <Link
+                            to="/login"
+                            className="mobile-nav-link"
+                        >
+                            Sign in
+                        </Link>
 
-                                    <li className="nav-item">
-                                        <Link
-                                            to="#"
-                                            className="nav-link"
-                                        >
-                                            My Orders
-                                        </Link>
-                                    </li>
+                        <Link
+                            to="/signup"
+                            className="mobile-signup-btn"
+                        >
+                            Sign up
+                        </Link>
 
-                                    <li className="nav-item">
-                                        <Link
-                                            to="#"
-                                            className="nav-link"
-                                        >
-                                            My Profile
-                                        </Link>
-                                    </li>
-
-                                    {/* CART ICON */}
-                                    <li className="nav-item">
-                                        <Link
-                                            to="/cart"
-                                            className="nav-link"
-                                            aria-label="Shopping cart"
-                                        >
-
-                                            <i
-                                                className="fa-solid fa-cart-shopping text-white fs-5"
-                                                aria-hidden="true"
-                                            ></i>
-
-                                            <span className="visually-hidden">
-                                                Shopping cart
-                                            </span>
-
-                                        </Link>
-                                    </li>
-
-                                    {/* LOGOUT BUTTON */}
-                                    <li className="nav-item">
-                                        <button
-                                            className="btn btn-danger"
-                                            onClick={handleLogout}
-                                            aria-label="Log out"
-                                        >
-                                            Logout
-                                        </button>
-                                    </li>
-
-                                </>
-
-                            ) : (
-
-                                <>
-                                    <li className="nav-item">
-                                        <Link
-                                            to="/signup"
-                                            className="nav-link"
-                                        >
-                                            <button
-                                                className="btn btn-primary"
-                                                aria-label="Create account"
-                                            >
-                                                Sign Up
-                                            </button>
-                                        </Link>
-                                    </li>
-
-                                    <li className="nav-item">
-                                        <Link
-                                            to="/login"
-                                            className="nav-link"
-                                        >
-                                            <button
-                                                className="btn btn-outline-light"
-                                                aria-label="Sign in"
-                                            >
-                                                Sign In
-                                            </button>
-                                        </Link>
-                                    </li>
-
-                                </>
-                            )
-                        }
-
-                    </ul>
+                    </div>
 
                 </div>
 
             </div>
 
         </nav>
+    
     );
 };

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 export const Catalog = () => {
     const [products, setProducts] = useState([]);
@@ -182,6 +183,13 @@ export const Catalog = () => {
                                                     Stock: {product.stock}
                                                 </small>
                                             </div>
+
+                                            <Link
+                                                to={`/product/${product.id}`}
+                                                className="btn btn-dark w-100 mt-3"
+                                            >
+                                                View Product
+                                            </Link>
                                         </div>
                                     </div>
                                 </div>

@@ -53,6 +53,8 @@ export const ProductDetail = () => {
             </div>
         );
     }
+    console.log(product);
+    console.log(product.image_url);
 
     return (
         <div className="product-page">
@@ -68,11 +70,16 @@ export const ProductDetail = () => {
                     <div className="col-lg-6">
                         <div className="product-image-card">
                             <img
-                                src={product.image_url || "https://via.placeholder.com/500x500?text=No+Image"}
+                                src={
+                                    product.image_url ||
+                                    "https://placehold.co/500x500/png?text=No+Image"
+                                }
                                 alt={product.name}
                                 className="product-main-image"
                                 onError={(e) => {
-                                    e.target.src = "https://via.placeholder.com/500x500?text=Image+Not+Found";
+                                    e.target.onerror = null;
+                                    e.target.src =
+                                        "https://placehold.co/500x500/png?text=Image+Not+Found";
                                 }}
                             />
                         </div>

@@ -72,6 +72,18 @@ def get_products():
     products = Product.query.filter_by(status="active").all()
     return jsonify([p.serialize() for p in products]), 200
 
+# Buscar productos por nombre o categoría (query params)
+@api.route('/products/search', methods=['GET'])
+def search_products():
+
+    query = request.args.get("q", "")
+
+    products = Product.query.filter(
+        Product.name.ilike(f"%{query}%")
+    ).all()
+
+    return jsonify([product.serialize() for product in products]), 200
+
 
 # Obtener UN producto por su ID
 @api.route('/products/<int:product_id>', methods=['GET'])

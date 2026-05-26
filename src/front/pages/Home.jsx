@@ -446,7 +446,7 @@ export const Home = () => {
 								<div className="listing-content">
 
 									<div className="listing-tag coral-tag">
-										🪸 Corals
+										Corals
 									</div>
 
 									<h3 className="listing-name">
@@ -502,7 +502,7 @@ export const Home = () => {
 								<div className="listing-content">
 
 									<div className="listing-tag fish-tag">
-										🐠 Fish
+										Fish
 									</div>
 
 									<h3 className="listing-name">
@@ -714,7 +714,6 @@ export const Home = () => {
 						<div>
 
 							<h2 className="favorites-title mb-2">
-								<span className="favorites-heart">♡</span>
 								Most <span>favorited</span>
 							</h2>
 
@@ -759,7 +758,7 @@ export const Home = () => {
 								<div className="favorite-content">
 
 									<div className="favorite-tag coral-tag">
-										🪸 Corals
+										Corals
 									</div>
 
 									<h3 className="favorite-name">
@@ -813,7 +812,7 @@ export const Home = () => {
 								<div className="favorite-content">
 
 									<div className="favorite-tag fish-tag">
-										🐠 Fish
+										Fish
 									</div>
 
 									<h3 className="favorite-name">
@@ -867,7 +866,7 @@ export const Home = () => {
 								<div className="favorite-content">
 
 									<div className="favorite-tag equipment-tag">
-										⚙ Equipment
+										Equipment
 									</div>
 
 									<h3 className="favorite-name">

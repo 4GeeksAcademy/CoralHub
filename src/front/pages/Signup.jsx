@@ -39,7 +39,7 @@ export const Signup = () => {
             if (response.ok) {
 
                 alert("User created successfully");
-                navigate("/signin");
+                navigate("/login");
 
             } else {
 

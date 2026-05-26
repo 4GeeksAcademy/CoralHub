@@ -741,9 +741,10 @@ section {
 
 	color: white;
 
-	font-size: clamp(2.2rem, 4vw, 4rem);
+	font-size: clamp(2rem, 4vw, 38px);
 
 	font-weight: 700;
+	
 }
 
 .recent-title span {
@@ -1072,7 +1073,7 @@ section {
 
 	color: white;
 
-	font-size: clamp(2.2rem, 4vw, 4rem);
+	font-size: clamp(2rem, 4vw, 38px);
 
 	font-weight: 700;
 
@@ -1291,7 +1292,7 @@ section {
 
 	color: white;
 
-	font-size: clamp(2.2rem, 4vw, 4rem);
+	font-size: clamp(2rem, 4vw, 38px);
 
 	font-weight: 700;
 

@@ -2093,3 +2093,93 @@ user dashboard
 
     transform: translateY(-2px);
 }
+
+
+/* ========================================
+   FOOTER
+======================================== */
+
+.footer-section {
+    padding: 5rem 0 2rem;
+    background: #071426;
+    border-top: 1px solid rgba(255,255,255,0.08);
+}
+
+/* BRAND COLUMN */
+
+.footer-brand {
+    padding-top: 0.3rem;
+}
+
+/* LOGO */
+
+.footer-logo {
+    width: 100%;
+    max-width: 200px;
+    height: auto;
+    object-fit: contain;
+}
+
+/* TITLES */
+
+.footer-title {
+    color: #FFFFFF;
+    margin-bottom: 1rem;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+/* TEXT */
+
+.footer-text,
+.footer-bottom p {
+    color: rgba(255,255,255,0.7);
+    line-height: 1.7;
+}
+
+/* LINKS */
+
+.footer-link {
+    color: rgba(255,255,255,0.7);
+    text-decoration: none;
+    display: inline-block;
+    margin-bottom: 0.7rem;
+    transition: 0.3s ease;
+}
+
+.footer-link:hover {
+    color: #FE6949;
+}
+
+/* INPUT */
+
+.footer-input {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.08);
+    color: white;
+}
+
+.footer-input::placeholder {
+    color: rgba(255,255,255,0.5);
+}
+
+/* BUTTON */
+
+.footer-btn {
+    background: #FE6949;
+    color: white;
+    border: none;
+    padding-inline: 1.2rem;
+    font-weight: 600;
+}
+
+.footer-btn:hover {
+    background: #ff7f63;
+    color: white;
+}
+
+/* BOTTOM */
+
+.footer-bottom {
+    border-top: 1px solid rgba(255,255,255,0.08);
+}

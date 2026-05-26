@@ -368,8 +368,6 @@ section {
 
 .product-page {
     min-height: 100vh;
-    background:
-        radial-gradient(circle at top left, #042850, #02152b 60%);
     color: white;
 }
 
@@ -505,15 +503,31 @@ section {
 }
 
 .wishlist-btn {
-    width: 60px;
-    height: 60px;
-    border-radius: 14px;
-    border: 1px solid rgba(255,255,255,0.2);
-    background: transparent;
-    color: white;
-    font-size: 1.5rem;
-}
 
+    width: 60px;
+
+    height: 60px;
+
+    border-radius: 14px;
+
+    border: 1px solid rgba(255,255,255,0.2);
+
+    background: transparent;
+
+    color: white;
+
+    font-size: 1.5rem;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 0;
+
+    line-height: 1;
+}
 .wishlist-btn:hover {
     background: rgba(255,255,255,0.08);
 }
@@ -1052,6 +1066,24 @@ section {
 		0 0 24px rgba(255,122,89,0.28);
 
 	transition: all 0.3s ease;
+
+	white-space: nowrap;
+
+	display: flex;
+
+	align-items: center;
+
+	justify-content: center;
+
+    min-width: 180px;
+
+    white-space: nowrap;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
 }
 
 .hero-btn-solid:hover {
@@ -1536,8 +1568,14 @@ user dashboard
 }
 
 .product-actions {
-  display: flex;
-  gap: 0.5rem;
+
+    display: flex;
+
+    gap: 16px;
+
+    flex-wrap: nowrap;
+
+    align-items: center;
 }
 
 .product-actions button {
@@ -1751,4 +1789,21 @@ user dashboard
   .product-meta {
     justify-content: space-between;
   }
+}
+
+
+.hero-btn-solid {
+
+    background: #FE6949 !important;
+
+    color: white !important;
+
+    border: none !important;
+}
+
+.hero-btn-solid:hover {
+
+    background: #ff896b !important;
+
+    color: white !important;
 }

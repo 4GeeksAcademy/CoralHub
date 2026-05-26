@@ -72,7 +72,7 @@ export const SearchResults = () => {
                                         <p>${product.price}</p>
 
                                         <Link
-                                            to={`/products/${product.id}`}
+                                            to={`/product/${product.id}`}
                                             className="btn btn-primary"
                                         >
                                             View Product

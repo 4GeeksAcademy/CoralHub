@@ -165,10 +165,10 @@ def private():
         "user_id": current_user_id
     }), 200
 
-    # ============================================
+
+# ============================================
 # ADMINISTRACIÓN DE USUARIOS
 # ============================================
-
 
 @api.route('/users', methods=['GET'])
 @jwt_required()
@@ -190,4 +190,32 @@ def get_all_users():
     users = User.query.all()
 
     # 5. Serializar y retornar la lista de usuarios
-    return jsonify([user.serialize() for user in users],), 200
+    return jsonify([user.serialize() for user in users]), 200
+
+
+# ============================================
+# CARRITO Y PROCESAMIENTO DE COMPRA (Checkout)
+# ============================================
+
+@api.route('/checkout', methods=['POST'])
+@jwt_required()
+def handle_checkout():
+    # Identificar de forma segura qué usuario registrado está comprando
+    current_user_id = get_jwt_identity()
+    body = request.get_json()
+
+    if not body or 'items' not in body:
+        return jsonify({"msg": "Missing cart items or total summary"}), 400
+
+    items_comprados = body.get("items")
+    total_pagado = body.get("total")
+
+    # Aquí la lógica de tu servidor procesa los datos.
+    # Por ahora, confirmamos la recepción exitosa del pedido.
+    print(f"Usuario ID {current_user_id} ha realizado una compra de ${total_pagado}")
+
+    return jsonify({
+        "msg": "Purchase processed successfully!",
+        "buyer_id": current_user_id,
+        "total": total_pagado
+    }), 200

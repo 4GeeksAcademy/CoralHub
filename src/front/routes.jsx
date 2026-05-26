@@ -16,6 +16,7 @@ import { AddProduct } from "./pages/AddProduct";
 import { Catalog } from "./pages/Catalog";
 import { AdminUsers } from "./pages/AdminUsers";
 import { ProductDetail } from "./pages/ProductDetail";
+import { Cart } from "./pages/Cart.jsx"
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
@@ -40,6 +41,7 @@ export const router = createBrowserRouter(
       <Route path="/catalog" element={<Catalog />} />
       <Route path="/admin/users" element={<AdminUsers />} />
       <Route path="/product/:id" element={<ProductDetail />} />
+      <Route path="/cart" element={<Cart />} />
     </Route>
   )
 );

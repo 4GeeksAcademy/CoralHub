@@ -38,14 +38,20 @@ def upload_image():
     if not file:
         return jsonify({"error": "the file is required"}), 400
 
-    result = cloudinary.uploader.upload(file)
+    if file.filename == '':
+        return jsonify({"error": "No file selected"}), 400
 
-    if 'secure_url' not in result:
-        return jsonify({"error": "the image can not be uploaded"}), 400
+    try:
+        result = cloudinary.uploader.upload(file)
 
-    return jsonify({
-        "image_url": result["secure_url"]
-    }), 200
+        if 'secure_url' not in result:
+            return jsonify({"error": "the image can not be uploaded"}), 400
+
+        return jsonify({
+            "image_url": result["secure_url"]
+        }), 200
+    except Exception as e:
+        return jsonify({"error": f"Upload error: {str(e)}"}), 500
 
 
 @api.route('/hello', methods=['POST', 'GET'])
@@ -84,22 +90,40 @@ def create_product():
 
     body = request.get_json()
 
+    if not body:
+        return jsonify({"error": "Request body is required"}), 400
+
+    # Validar campos requeridos
+    required_fields = ["name", "price", "category"]
+    for field in required_fields:
+        if field not in body or not body[field]:
+            return jsonify({"error": f"'{field}' is required"}), 400
+
+    if not body.get("image_url"):
+        return jsonify({"error": "image_url is required"}), 400
+
     current_user_id = get_jwt_identity()
 
-    new_product = Product(
-        seller_id=current_user_id,
-        name=body["name"],
-        description=body.get("description"),
-        price=body["price"],
-        stock=body.get("stock", 0),
-        image_url=body.get("image_url"),
-        category=body["category"]
-    )
+    try:
+        new_product = Product(
+            seller_id=current_user_id,
+            name=body["name"],
+            description=body.get("description"),
+            price=float(body["price"]),
+            stock=int(body.get("stock", 0)),
+            image_url=body.get("image_url"),
+            category=body["category"]
+        )
 
-    db.session.add(new_product)
-    db.session.commit()
+        db.session.add(new_product)
+        db.session.commit()
 
-    return jsonify(new_product.serialize()), 201
+        return jsonify(new_product.serialize()), 201
+    except ValueError as e:
+        return jsonify({"error": f"Invalid data type: {str(e)}"}), 400
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": f"Error creating product: {str(e)}"}), 500
 
 
 @api.route('/signup', methods=['POST'])
@@ -212,7 +236,8 @@ def handle_checkout():
 
     # Aquí la lógica de tu servidor procesa los datos.
     # Por ahora, confirmamos la recepción exitosa del pedido.
-    print(f"Usuario ID {current_user_id} ha realizado una compra de ${total_pagado}")
+    print(
+        f"Usuario ID {current_user_id} ha realizado una compra de ${total_pagado}")
 
     return jsonify({
         "msg": "Purchase processed successfully!",

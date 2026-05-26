@@ -67,7 +67,14 @@ export const ProductDetail = () => {
                 <div className="row g-4">
                     <div className="col-lg-6">
                         <div className="product-image-card">
-                            <img src={product.image_url} alt={product.name} className="product-main-image" />
+                            <img
+                                src={product.image_url || "https://via.placeholder.com/500x500?text=No+Image"}
+                                alt={product.name}
+                                className="product-main-image"
+                                onError={(e) => {
+                                    e.target.src = "https://via.placeholder.com/500x500?text=Image+Not+Found";
+                                }}
+                            />
                         </div>
                     </div>
 
@@ -83,8 +90,8 @@ export const ProductDetail = () => {
                             <p className="product-description">{product.description}</p>
 
                             <div className="product-actions">
-                                <button 
-                                    className="btn add-cart-btn" 
+                                <button
+                                    className="btn add-cart-btn"
                                     onClick={handleAddToCart}
                                     aria-label={`Add ${product.name} to cart`}
                                 >

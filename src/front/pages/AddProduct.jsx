@@ -49,13 +49,22 @@ export const AddProduct = () => {
                 }
             );
 
+            if (!response.ok) {
+                throw new Error(`Upload failed with status ${response.status}`);
+            }
+
             const data = await response.json();
+
+            if (!data.image_url) {
+                throw new Error("No image URL returned from server");
+            }
 
             return data.image_url;
 
         } catch (error) {
 
-            setError("Image upload failed.");
+            console.error("Image upload error:", error);
+            setError(`Image upload failed: ${error.message}`);
 
             return "";
 
@@ -72,9 +81,19 @@ export const AddProduct = () => {
         setError("");
         setSuccess("");
 
+        if (!image) {
+            setError("Please select an image before submitting.");
+            return;
+        }
+
         try {
 
             const imageUrl = await uploadImage();
+
+            if (!imageUrl) {
+                setError("Failed to upload image. Please try again.");
+                return;
+            }
 
             const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
@@ -115,8 +134,12 @@ export const AddProduct = () => {
                 category: ""
             });
 
+            setImage(null);
+            setPreview(null);
+
         } catch (error) {
 
+            console.error("Submit error:", error);
             setError("Something went wrong. Please try again.");
         }
     };

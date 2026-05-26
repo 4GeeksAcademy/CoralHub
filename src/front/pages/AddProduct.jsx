@@ -39,6 +39,9 @@ export const AddProduct = () => {
 
             const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
+            console.log("🚀 Uploading image to:", `${backendUrl}/api/upload`);
+            console.log("📁 File:", image.name, image.type, image.size);
+
             const response = await fetch(
 
                 `${backendUrl}/api/upload`,
@@ -49,13 +52,30 @@ export const AddProduct = () => {
                 }
             );
 
+            console.log("📡 Upload response status:", response.status);
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                console.error("❌ Upload error response:", errorData);
+                throw new Error(`Upload failed: ${errorData.error || response.statusText}`);
+            }
+
             const data = await response.json();
+
+            console.log("✅ Upload response data:", data);
+
+            if (!data.image_url) {
+                throw new Error("No image URL returned from server");
+            }
+
+            console.log("🖼️ Image URL obtained:", data.image_url);
 
             return data.image_url;
 
         } catch (error) {
 
-            setError("Image upload failed.");
+            console.error("❌ Image upload error:", error);
+            setError(`Image upload failed: ${error.message}`);
 
             return "";
 
@@ -72,13 +92,35 @@ export const AddProduct = () => {
         setError("");
         setSuccess("");
 
+        if (!image) {
+            setError("Please select an image before submitting.");
+            return;
+        }
+
         try {
 
             const imageUrl = await uploadImage();
 
+            console.log("📦 After upload, imageUrl:", imageUrl);
+
+            if (!imageUrl) {
+                setError("Failed to upload image. Please try again.");
+                console.error("❌ imageUrl is empty after upload");
+                return;
+            }
+
             const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
             const token = localStorage.getItem("token");
+
+            const productData = {
+                ...formData,
+                image_url: imageUrl,
+                price: parseFloat(formData.price),
+                stock: parseInt(formData.stock)
+            };
+
+            console.log("📤 Sending product data:", productData);
 
             const response = await fetch(`${backendUrl}/api/products`, {
 
@@ -89,18 +131,17 @@ export const AddProduct = () => {
                     "Authorization": `Bearer ${token}`
                 },
 
-                body: JSON.stringify({
-                    ...formData,
-                    image_url: imageUrl,
-                    price: parseFloat(formData.price),
-                    stock: parseInt(formData.stock)
-                })
+                body: JSON.stringify(productData)
             });
+
+            console.log("📡 Product creation response status:", response.status);
 
             const data = await response.json();
 
+            console.log("📊 Product creation response:", data);
+
             if (!response.ok) {
-                setError(data.msg || "Unable to create product.");
+                setError(data.msg || data.error || "Unable to create product.");
                 return;
             }
 
@@ -115,8 +156,12 @@ export const AddProduct = () => {
                 category: ""
             });
 
+            setImage(null);
+            setPreview(null);
+
         } catch (error) {
 
+            console.error("❌ Submit error:", error);
             setError("Something went wrong. Please try again.");
         }
     };

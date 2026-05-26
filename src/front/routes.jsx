@@ -11,7 +11,7 @@ import { Single } from "./pages/Single";
 import { Demo } from "./pages/Demo";
 import { Signup } from "./pages/Signup";
 import { Login } from "./pages/Login";
-import { Private } from "./pages/Private";
+import { UserDashboard } from "./pages/UserDashboard.jsx";
 import { AddProduct } from "./pages/AddProduct";
 import { Catalog } from "./pages/Catalog";
 import { AdminUsers } from "./pages/AdminUsers";
@@ -37,7 +37,7 @@ export const router = createBrowserRouter(
       <Route path="/demo" element={<Demo />} />
       <Route path="/signup" element={<Signup />} />
       <Route path="/login" element={<Login />} />
-      <Route path="/private" element={<Private />} />
+      <Route path="/dashboard" element={<UserDashboard />} />
       <Route path="/home" element={<Home />} />
       <Route path="/addproduct" element={<AddProduct />} />
       <Route path="/catalog" element={<Catalog />} />

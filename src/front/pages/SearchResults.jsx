@@ -41,57 +41,223 @@ export const SearchResults = () => {
 
         <div className="container py-5 text-white">
 
-            <h2 className="mb-4">
-                Search results for: "{query}"
-            </h2>
+            {/* HEADER */}
 
-            <div className="row">
+            <div className="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-5">
 
-                {
-                    products.length > 0 ? (
+                <div>
 
-                        products.map((product) => (
+                    <h1 className="search-page-title">
 
-                            <div
-                                className="col-md-4 mb-4"
-                                key={product.id}
-                            >
+                        Search results for:
+                        <span> "{query}" </span>
 
-                                <div className="card bg-dark text-white h-100">
+                    </h1>
 
-                                    <img
-                                        src={product.image_url}
-                                        className="card-img-top"
-                                        alt={product.name}
-                                    />
+                    <p className="search-page-subtitle">
 
-                                    <div className="card-body">
+                        {products.length} result found
 
-                                        <h5>{product.name}</h5>
+                    </p>
 
-                                        <p>${product.price}</p>
+                </div>
 
-                                        <Link
-                                            to={`/product/${product.id}`}
-                                            className="btn btn-primary"
-                                        >
-                                            View Product
-                                        </Link>
+                <select className="search-sort-select">
 
-                                    </div>
+                    <option>Sort by: Relevance</option>
+                    <option>Newest</option>
+                    <option>Price: Low to High</option>
+                    <option>Price: High to Low</option>
 
-                                </div>
+                </select>
+
+            </div>
+
+
+
+            <div className="row g-4">
+
+                {/* FILTERS */}
+
+                <div className="col-lg-3">
+
+                    <div className="search-filters-card">
+
+                        <div className="d-flex justify-content-between align-items-center mb-4">
+
+                            <h2 className="filters-title mb-0">
+
+                                Filters
+
+                            </h2>
+
+                            <button className="clear-filters-btn">
+
+                                Clear all
+
+                            </button>
+
+                        </div>
+
+
+                        {/* CATEGORIES */}
+
+                        <div className="filter-group">
+
+                            <h3 className="filter-group-title">
+
+                                Categories
+
+                            </h3>
+
+                            <div className="filter-options">
+
+                                <label className="filter-option">
+
+                                    <input type="checkbox" />
+                                    <span>Corals</span>
+
+                                </label>
+
+                                <label className="filter-option">
+
+                                    <input type="checkbox" />
+                                    <span>Equipments</span>
+
+                                </label>
+
+                                <label className="filter-option">
+
+                                    <input type="checkbox" />
+                                    <span>Used</span>
+
+                                </label>
+
+                                <label className="filter-option">
+
+                                    <input type="checkbox" />
+                                    <span>Lights</span>
+
+                                </label>
 
                             </div>
 
-                        ))
+                        </div>
 
-                    ) : (
 
-                        <p>No products found.</p>
+                        {/* PRICE */}
 
-                    )
-                }
+                        <div className="filter-group">
+
+                            <h3 className="filter-group-title">
+
+                                Price Range
+
+                            </h3>
+
+                            <input
+                                type="range"
+                                className="form-range custom-price-range"
+                            />
+
+                            <div className="d-flex justify-content-between price-labels">
+
+                                <span>$0</span>
+                                <span>$500+</span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                {/* PRODUCTS */}
+
+                <div className="col-lg-9">
+
+                    <div className="row g-4">
+
+                        {
+
+                            products.length > 0 ? (
+
+                                products.map((product) => (
+
+                                    <div
+                                        className="col-md-6 col-xl-4"
+                                        key={product.id}
+                                    >
+
+                                        <div className="search-product-card">
+
+                                            <div className="search-product-image-wrapper">
+
+                                                <img
+                                                    src={product.image_url}
+                                                    className="search-product-image"
+                                                    alt={product.name}
+                                                />
+
+                                                <button className="wishlist-search-btn">
+
+                                                    ♡
+
+                                                </button>
+
+                                            </div>
+
+                                            <div className="search-product-body">
+
+                                                <div className="search-category-badge">
+
+                                                    {product.category}
+
+                                                </div>
+
+                                                <h3 className="search-product-title">
+
+                                                    {product.name}
+
+                                                </h3>
+
+                                                <div className="search-product-price">
+
+                                                    ${product.price}
+
+                                                </div>
+
+                                                <Link
+                                                    to={`/product/${product.id}`}
+                                                    className="search-product-btn"
+                                                >
+
+                                                    View Product
+
+                                                </Link>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                ))
+
+                            ) : (
+
+                                <p>No products found.</p>
+
+                            )
+
+                        }
+
+                    </div>
+
+                </div>
 
             </div>
 

@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import useGlobalReducer from "../hooks/useGlobalReducer.jsx"; // 👈 Importamos el estado global
 import "../index.css";
 
 export const ProductDetail = () => {
     const { id } = useParams();
+    const navigate = useNavigate();
+
     const { store, dispatch } = useGlobalReducer(); // 👈 Consumimos el dispatch
     const [product, setProduct] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -29,32 +31,76 @@ export const ProductDetail = () => {
 
     // Función para manejar el clic en Agregar al Carrito
     const handleAddToCart = () => {
+
+        const token = localStorage.getItem("token");
+
+        // Verificar si el usuario está logeado
+
+        if (!token) {
+
+            alert("You need to sign in first");
+            navigate("/login");
+
+            return;
+        }
+
+        // Agregar producto al carrito
+
         if (product) {
-            dispatch({ type: "add_to_cart", payload: product });
+
+            dispatch({
+                type: "add_to_cart",
+                payload: product
+            });
+
             alert(`${product.name} añadido al carrito con éxito 🛒`);
         }
     };
 
+
     if (loading) {
+
         return (
+
             <div className="product-page">
+
                 <div className="container py-5 text-center">
-                    <div className="spinner-border text-info" role="status"></div>
-                    <p className="mt-3 text-light">Loading product...</p>
+
+                    <div className="spinner-border text-info"></div>
+
+                    <p className="mt-3 text-light">
+
+                        Loading product...
+
+                    </p>
+
                 </div>
+
             </div>
         );
     }
 
     if (error) {
+
         return (
+
             <div className="product-page">
-                <div className="container py-5"><div className="alert alert-danger">{error}</div></div>
+
+                <div className="container py-5">
+
+                    <div className="alert alert-danger">
+
+                        {error}
+
+                    </div>
+
+                </div>
+
             </div>
         );
     }
-    console.log(product);
-    console.log(product.image_url);
+
+    if (!product) return null;
 
     return (
         <div className="product-page">

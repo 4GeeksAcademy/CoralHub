@@ -396,13 +396,7 @@ section {
     box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
 }
 
-/* IMAGE */
 
-/* .product-main-image {
-    width: 100%;
-    border-radius: 20px;
-    object-fit: cover;
-} */
 .product-main-image {
 
     width: 100%;
@@ -606,5 +600,314 @@ section {
 
     .wishlist-btn {
         width: 100%;
+    }
+}
+
+
+/* =========================================
+   SEARCH RESULTS PAGE
+========================================= */
+
+.search-page-title {
+
+    font-size: clamp(2.2rem, 4vw, 42px);
+
+    font-weight: 700;
+
+    color: white;
+}
+
+.search-page-title span {
+
+    color: #4EC7C1;
+}
+
+.search-page-subtitle {
+
+    color: rgba(255,255,255,0.68);
+
+    margin-top: 0.5rem;
+}
+
+/* SORT */
+
+.search-sort-select {
+
+    min-width: 240px;
+
+    height: 58px;
+
+    border-radius: 18px;
+
+    border: 1px solid rgba(78,199,193,0.14);
+
+    background: rgba(255,255,255,0.04);
+
+    color: white;
+
+    padding-inline: 1rem;
+
+    outline: none;
+}
+
+/* FILTERS */
+
+.search-filters-card {
+
+    background: rgba(255,255,255,0.03);
+
+    border: 1px solid rgba(78,199,193,0.12);
+
+    border-radius: 28px;
+
+    padding: 2rem;
+
+    backdrop-filter: blur(12px);
+}
+
+.filters-title {
+
+    color: white;
+
+    font-size: 1.5rem;
+
+    font-weight: 700;
+}
+
+.clear-filters-btn {
+
+    background: transparent;
+
+    border: none;
+
+    color: #4EC7C1;
+
+    font-weight: 600;
+}
+
+/* FILTER GROUP */
+
+.filter-group {
+
+    padding-top: 2rem;
+
+    margin-top: 2rem;
+
+    border-top: 1px solid rgba(255,255,255,0.08);
+}
+
+.filter-group-title {
+
+    color: white;
+
+    font-size: 1.1rem;
+
+    font-weight: 700;
+
+    margin-bottom: 1.2rem;
+}
+
+.filter-options {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 1rem;
+}
+
+.filter-option {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 0.8rem;
+
+    color: rgba(255,255,255,0.82);
+}
+
+.filter-option input {
+
+    width: 18px;
+
+    height: 18px;
+
+    accent-color: #4EC7C1;
+}
+
+/* RANGE */
+
+.custom-price-range {
+
+    accent-color: #4EC7C1;
+}
+
+.price-labels {
+
+    margin-top: 0.8rem;
+
+    color: rgba(255,255,255,0.62);
+}
+
+/* PRODUCT CARD */
+
+.search-product-card {
+
+    background: rgba(255,255,255,0.03);
+
+    border: 1px solid rgba(78,199,193,0.14);
+
+    border-radius: 28px;
+
+    overflow: hidden;
+
+    transition: all 0.3s ease;
+
+    height: 100%;
+}
+
+.search-product-card:hover {
+
+    transform: translateY(-6px);
+
+    box-shadow:
+        0 0 25px rgba(78,199,193,0.14);
+}
+
+/* IMAGE */
+
+.search-product-image-wrapper {
+
+    position: relative;
+}
+
+.search-product-image {
+
+    width: 100%;
+
+    height: 260px;
+
+    object-fit: cover;
+}
+
+.wishlist-search-btn {
+
+    position: absolute;
+
+    top: 1rem;
+
+    right: 1rem;
+
+    width: 48px;
+
+    height: 48px;
+
+    border-radius: 50%;
+
+    border: none;
+
+    background: rgba(1,44,75,0.7);
+
+    color: white;
+
+    font-size: 1.2rem;
+
+    backdrop-filter: blur(10px);
+}
+
+/* BODY */
+
+.search-product-body {
+
+    padding: 1.5rem;
+}
+
+.search-category-badge {
+
+    display: inline-flex;
+
+    padding: 0.45rem 1rem;
+
+    border-radius: 999px;
+
+    background: rgba(78,199,193,0.12);
+
+    border: 1px solid rgba(78,199,193,0.18);
+
+    color: #4EC7C1;
+
+    font-size: 0.85rem;
+
+    font-weight: 600;
+
+    margin-bottom: 1rem;
+}
+
+.search-product-title {
+
+    color: white;
+
+    font-size: 1.5rem;
+
+    font-weight: 700;
+
+    margin-bottom: 1rem;
+}
+
+.search-product-price {
+
+    color: #FE6949;
+
+    font-size: 2rem;
+
+    font-weight: 700;
+
+    margin-bottom: 1.5rem;
+}
+
+/* BUTTON */
+
+.search-product-btn {
+
+    width: 100%;
+
+    height: 56px;
+
+    border-radius: 18px;
+
+    background: #FE6949;
+
+    color: white;
+
+    text-decoration: none;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-weight: 700;
+
+    transition: all 0.3s ease;
+}
+
+.search-product-btn:hover {
+
+    background: #ff896b;
+
+    transform: translateY(-2px);
+
+    color: white;
+}
+
+/* MOBILE */
+
+@media (max-width: 992px) {
+
+    .search-filters-card {
+
+        margin-bottom: 2rem;
     }
 }

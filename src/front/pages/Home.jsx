@@ -1,13 +1,32 @@
 import React, { useEffect } from "react"
-import rigoImageUrl from "../assets/img/rigo-baby.jpg";
 import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
 import heroFish from "../assets/img/mandarin_goby.png";
-import CoralIcon from "../assets/img/Coral-icon.svg";
+// import CoralIcon from "../assets/img/Coral-icon.svg";
+import { Link, useNavigate } from "react-router-dom";
+
 
 
 export const Home = () => {
 
 	const { store, dispatch } = useGlobalReducer()
+	const navigate = useNavigate();
+	
+	const handleSellProduct = () => {
+
+		const token = localStorage.getItem("token");
+
+		if (token) {
+
+			navigate("/addproduct");
+
+		} else {
+
+			navigate("/login", {
+				state: { from: "/addproduct" }
+			});
+
+		}
+	};
 
 	const loadMessage = async () => {
 		try {
@@ -79,13 +98,20 @@ export const Home = () => {
 
 							<div className="d-flex flex-wrap gap-3 mb-5">
 
-								<button className="btn hero-btn-outline">
+								<Link to="/catalog">
 
-									Explore listings →
+									<button className="btn hero-btn-outline">
 
-								</button>
+										Explore listings →
 
-								<button className="btn hero-btn-solid">
+									</button>
+
+								</Link>
+
+								<button
+									className="btn hero-btn-solid"
+									onClick={handleSellProduct}
+								>
 
 									Sell your products →
 
@@ -103,7 +129,7 @@ export const Home = () => {
 
 										<h3 className="hero-feature-title">
 
-											<i class="fas fa-shield-alt"></i> Safe Transactions
+											<i className="fas fa-shield-alt"></i> Safe Transactions
 
 										</h3>
 
@@ -126,7 +152,7 @@ export const Home = () => {
 
 										<h3 className="hero-feature-title">
 
-											<i class="fas fa-user-friends"></i>Trusted Community
+											<i className="fas fa-user-friends"></i>Trusted Community
 										</h3>
 
 
@@ -175,15 +201,11 @@ export const Home = () => {
 
 							<div className="hero-image-wrapper mx-auto">
 
-								<div className="hero-image-wrapper mx-auto">
-
 									<img
 										src={heroFish}
 										alt="Marine aquarium fish"
 										className="img-fluid hero-image"
 									/>
-
-								</div>
 
 							</div>
 

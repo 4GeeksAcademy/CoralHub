@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export const Login = () => {
 
@@ -8,6 +8,11 @@ export const Login = () => {
     // STATES
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+
+    
+    const location = useLocation();
+
+    const from = location.state?.from || "/";
 
     // LOGIN
     const handleSubmit = async (e) => {
@@ -49,7 +54,7 @@ export const Login = () => {
                 alert("Login successful");
 
                 // redirect
-                navigate("/private");
+                navigate(from);
 
             } else {
 

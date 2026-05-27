@@ -3,56 +3,66 @@ import React from "react";
 import { DashboardSidebar } from "../components/dashboard/DashboardSidebar";
 import { DashboardHeader } from "../components/dashboard/DashboardHeader";
 import { DashboardStatsCard } from "../components/dashboard/DashboardStatsCard";
+import { DashboardProducts } from "../components/dashboard/DashboardProducts";
+import { DashboardOrders } from "../components/dashboard/DashboardOrders";
+import { DashboardProfile } from "../components/dashboard/DashboardProfile";
 
 export const UserDashboard = () => {
+  return (
+    <div className="dashboard-layout">
 
-    return (
+      <DashboardSidebar />
 
-        <div className="dashboard-layout">
+      <main className="dashboard-main">
 
-            <DashboardSidebar />
+        <DashboardHeader />
 
-            <main className="dashboard-main">
+        <div className="dashboard-content">
 
-                <DashboardHeader />
+          <section className="dashboard-stats-grid">
 
-                <section className="dashboard-stats-grid">
+            <DashboardStatsCard
+              title="Active Products"
+              value="12"
+              subtitle="2 new this week"
+            />
 
-                    <DashboardStatsCard
-                        title="Active Products"
-                        value="12"
-                        subtitle="2 new this week"
-                    />
+            <DashboardStatsCard
+              title="Orders"
+              value="4"
+              subtitle="2 pending"
+            />
 
-                    <DashboardStatsCard
-                        title="Orders"
-                        value="4"
-                        subtitle="2 pending"
-                    />
+            <DashboardStatsCard
+              title="Revenue"
+              value="$1,240"
+              subtitle="+18% this month"
+            />
 
-                    <DashboardStatsCard
-                        title="Revenue"
-                        value="$1,240"
-                        subtitle="+18% this month"
-                    />
+            <DashboardStatsCard
+              title="Favorites"
+              value="23"
+              subtitle="Saved products"
+            />
 
-                    <DashboardStatsCard
-                        title="Favorites"
-                        value="23"
-                        subtitle="Saved products"
-                    />
+          </section>
 
-                </section>
+          <div className="dashboard-dual-grid">
 
-            </main>
+            <DashboardProducts />
+
+            <DashboardOrders />
+
+          </div>
+
+          <DashboardProfile />
 
         </div>
+      </main>
 
-    );
+    </div>
+  );
 };
-
-
-
 
 
 

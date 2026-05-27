@@ -2185,6 +2185,8 @@ user dashboard
     min-height: 100vh;
 
     background: #031B34;
+    
+    padding-top: 5rem;
 }
 
 /* ========================================
@@ -2434,5 +2436,296 @@ user dashboard
         align-items: flex-start;
 
         gap: 1rem;
+    }
+}
+
+/* ========================================
+   DASHBOARD SECTIONS
+======================================== */
+
+.dashboard-section {
+
+    background: #082544;
+
+    border: 1px solid rgba(255,255,255,0.06);
+
+    border-radius: 24px;
+
+    padding: 2rem;
+
+    margin-top: 2rem;
+}
+
+/* HEADER */
+
+.section-header {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    margin-bottom: 1.5rem;
+}
+
+.section-header h2 {
+
+    color: white;
+
+    font-size: 1.5rem;
+}
+
+.section-btn {
+
+    background: transparent;
+
+    border: none;
+
+    color: #4EC7C1;
+
+    font-weight: 600;
+
+    cursor: pointer;
+}
+
+/* PRODUCTS */
+
+.products-table {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 1rem;
+}
+
+.product-row {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    padding: 1rem 0;
+
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.product-info {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 1rem;
+}
+
+.product-image {
+
+    width: 60px;
+
+    height: 60px;
+
+    border-radius: 14px;
+
+    background: linear-gradient(
+        135deg,
+        #0E7490,
+        #14B8A6
+    );
+}
+
+.product-info h3 {
+
+    color: white;
+
+    margin-bottom: 0.3rem;
+}
+
+.product-info p {
+
+    color: #4EC7C1;
+}
+
+/* STATUS */
+
+.product-status {
+
+    padding: 0.5rem 1rem;
+
+    border-radius: 999px;
+
+    font-size: 0.85rem;
+
+    font-weight: 600;
+}
+
+.product-status.active {
+
+    background: rgba(20,184,166,0.12);
+
+    color: #4EC7C1;
+}
+
+.product-status.pending {
+
+    background: rgba(251,191,36,0.12);
+
+    color: #FBBF24;
+}
+
+.product-status.paid {
+
+    background: rgba(59,130,246,0.12);
+
+    color: #60A5FA;
+}
+
+/* ORDERS */
+
+.orders-list {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 1rem;
+}
+
+.order-row {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    padding: 1rem 0;
+
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.order-row h3 {
+
+    color: white;
+
+    margin-bottom: 0.3rem;
+}
+
+.order-row p {
+
+    color: rgba(255,255,255,0.65);
+}
+
+/* PROFILE */
+
+.profile-card {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 2rem;
+}
+
+.profile-avatar {
+
+    width: 100px;
+
+    height: 100px;
+
+    border-radius: 50%;
+
+    background: linear-gradient(
+        135deg,
+        #0E7490,
+        #14B8A6
+    );
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    color: white;
+
+    font-size: 2rem;
+
+    font-weight: 700;
+}
+
+.profile-info {
+
+    flex: 1;
+}
+
+.profile-row {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    padding: 1rem 0;
+
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.profile-row span {
+
+    color: rgba(255,255,255,0.65);
+}
+
+.profile-row strong {
+
+    color: white;
+}
+
+
+/* ========================================
+   DASHBOARD CONTENT
+======================================== */
+
+.dashboard-content {
+
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 2rem;
+}
+
+/* ========================================
+   PRODUCTS + ORDERS
+======================================== */
+
+.dashboard-dual-grid {
+
+    display: grid;
+
+    grid-template-columns: 1.3fr 1fr;
+
+    gap: 2rem;
+
+    align-items: start;
+}
+
+/* PROFILE FULL WIDTH */
+
+.dashboard-profile-section {
+
+    width: 100%;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 1100px) {
+
+    .dashboard-dual-grid {
+
+        grid-template-columns: 1fr;
     }
 }

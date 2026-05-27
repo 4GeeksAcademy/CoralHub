@@ -21,6 +21,7 @@ import { SearchResults } from "./pages/SearchResults";
 import { Privacy } from "./pages/Privacy";
 import { Terms } from "./pages/Terms";
 import { Cookies } from "./pages/Cookies";
+import { About } from "./pages/About";
 
 
 export const router = createBrowserRouter(
@@ -51,6 +52,7 @@ export const router = createBrowserRouter(
       <Route path="/privacy" element={<Privacy />} />
       <Route path="/terms" element={<Terms />} />
       <Route path="/cookies" element={<Cookies />} />
+      <Route path="/about" element={<About />} />
     </Route>
   )
 );

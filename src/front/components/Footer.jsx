@@ -1,85 +1,89 @@
-import logoWhite from "../assets/img/logo CoralHub_White.png";
+import React from "react";
+import { Link } from "react-router-dom";
 
-export const Footer = () => (
-	<footer className="footer-section">
-		<div className="container">
-			<div className="row justify-content-between gy-5">
+export const Footer = () => {
+	const currentYear = new Date().getFullYear();
 
-				{/* LOGO + DESCRIPTION */}
-				<div className="col-lg-3">
-					<img
-						src={logoWhite}
-						alt="CoralHub Logo"
-						className="footer-logo mb-4"
-					/>
-
-					<p className="footer-description">
-						The trusted marketplace for
-						<br />
-						marine aquarium enthusiasts
-					</p>
-				</div>
-
-				{/* MARKETPLACE */}
-				<div className="col-6 col-md-3 col-lg-2">
-					<h5 className="footer-title">Marketplace</h5>
-
-					<ul className="list-unstyled footer-links">
-						<li><a href="#" className="footer-link">All Listing</a></li>
-						<li><a href="#" className="footer-link">Corals</a></li>
-						<li><a href="#" className="footer-link">Equipments</a></li>
-						<li><a href="#" className="footer-link">Aquariums</a></li>
-						<li><a href="#" className="footer-link">Used Equipment</a></li>
-					</ul>
-				</div>
-
-				{/* COMMUNITY */}
-				<div className="col-6 col-md-3 col-lg-2">
-					<h5 className="footer-title">Community</h5>
-
-					<ul className="list-unstyled footer-links">
-						<li><a href="#" className="footer-link">Top Sellers</a></li>
-						<li><a href="#" className="footer-link">Reviews</a></li>
-						<li><a href="#" className="footer-link">Contact us</a></li>
-					</ul>
-				</div>
-
-				{/* SUPPORT */}
-				<div className="col-6 col-md-3 col-lg-2">
-					<h5 className="footer-title">Support</h5>
-
-					<ul className="list-unstyled footer-links">
-						<li><a href="#" className="footer-link">Help Center</a></li>
-						<li><a href="#" className="footer-link">Return Policy</a></li>
-					</ul>
-				</div>
-
-				{/* PRIVACY + SOCIAL */}
-				<div className="col-6 col-md-3 col-lg-2">
-					<h5 className="footer-title">Privacy Policy</h5>
-
-					<div className="mt-5">
-						<p className="footer-follow">Follow Us:</p>
-
-						<div className="d-flex gap-3 mt-3">
-
-							<a href="#" className="social-link">
-								<i className="fab fa-facebook"></i>
-							</a>
-
-							<a href="#" className="social-link">
+	return (
+		<footer className="coral-footer">
+			<div className="container py-5">
+				<div className="row g-4">
+					{/* COLUMN 1: Logo + description */}
+					<div className="col-lg-4 col-md-12">
+						<Link to="/" className="footer-brand-link">
+							<img
+								src="/src/front/assets/img/CoralHub_logo.png"
+								alt="CoralHub"
+								className="footer-logo"
+							/>
+						</Link>
+						<p className="footer-description">
+							The #1 marketplace for aquarists. We connect ocean lovers with
+							the finest corals, fish, and accessories from the community.
+						</p>
+						<div className="footer-socials">
+							<a href="https://instagram.com" target="_blank" rel="noreferrer" aria-label="Instagram">
 								<i className="fab fa-instagram"></i>
 							</a>
-
-							<a href="#" className="social-link">
-								<i className="fab fa-tiktok"></i>
+							<a href="https://facebook.com" target="_blank" rel="noreferrer" aria-label="Facebook">
+								<i className="fab fa-facebook-f"></i>
 							</a>
-
+							<a href="https://twitter.com" target="_blank" rel="noreferrer" aria-label="Twitter">
+								<i className="fab fa-twitter"></i>
+							</a>
+							<a href="https://youtube.com" target="_blank" rel="noreferrer" aria-label="YouTube">
+								<i className="fab fa-youtube"></i>
+							</a>
 						</div>
+					</div>
+
+					{/* COLUMN 2: Marketplace */}
+					<div className="col-lg-2 col-md-4 col-6">
+						<h5 className="footer-title">Marketplace</h5>
+						<ul className="footer-links">
+							<li><Link to="/search?category=corals">Corals</Link></li>
+							<li><Link to="/search?category=fish">Fish</Link></li>
+							<li><Link to="/search?category=invertebrates">Invertebrates</Link></li>
+							<li><Link to="/search?category=equipment">Equipment</Link></li>
+							<li><Link to="/search?category=food">Food</Link></li>
+						</ul>
+					</div>
+
+					{/* COLUMN 3: Support */}
+					<div className="col-lg-3 col-md-4 col-6">
+						<h5 className="footer-title">Support</h5>
+						<ul className="footer-links">
+							<li><Link to="/faq">FAQ</Link></li>
+							<li><Link to="/contact">Contact Us</Link></li>
+							<li><Link to="/shipping">Shipping & Delivery</Link></li>
+							<li><Link to="/returns">Returns</Link></li>
+							<li><Link to="/help">Help Center</Link></li>
+						</ul>
+					</div>
+
+					{/* COLUMN 4: Legal */}
+					<div className="col-lg-3 col-md-4 col-12">
+						<h5 className="footer-title">Legal</h5>
+						<ul className="footer-links">
+							<li><Link to="/privacy">Privacy Policy</Link></li>
+							<li><Link to="/terms">Terms & Conditions</Link></li>
+							<li><Link to="/cookies">Cookie Policy</Link></li>
+							<li><Link to="/about">About Us</Link></li>
+						</ul>
 					</div>
 				</div>
 
+				{/* Bottom bar */}
+				<div className="footer-bottom">
+					<p className="footer-copy">
+						© {currentYear} CoralHub. All rights reserved.
+					</p>
+					<p>
+						Made with <i className="fa fa-heart text-danger" /> by{" "}
+						<a href="http://www.4geeksacademy.com">4Geeks Academy</a>
+					</p>
+				</div>
 			</div>
-		</div>
-	</footer>
-);
+		</footer>
+	);
+};

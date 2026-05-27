@@ -27,7 +27,7 @@ import { Contact } from "./pages/Contact";
 import { Shipping } from "./pages/Shipping";
 import { Returns } from "./pages/Returns";
 import { Help } from "./pages/Help";
-
+import { UserDashboard } from "./pages/UserDashboard";
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
@@ -63,6 +63,7 @@ export const router = createBrowserRouter(
       <Route path="/shipping" element={<Shipping />} />
       <Route path="/returns" element={<Returns />} />
       <Route path="/help" element={<Help />} />
+      <Route path="/dashboard" element={<UserDashboard />} />
     </Route>
   )
 );

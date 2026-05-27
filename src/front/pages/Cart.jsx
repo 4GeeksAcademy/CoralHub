@@ -51,7 +51,7 @@ export const Cart = () => {
             const data = await response.json();
             dispatch({ type: "set_cart", payload: data });
         } catch (err) {
-            console.error("Error completo:", err);
+            console.error("Full error:", err);
             setError(err.message);
         } finally {
             dispatch({ type: "set_cart_loading", payload: false });
@@ -74,14 +74,14 @@ export const Cart = () => {
 
             if (!response.ok) {
                 const data = await response.json();
-                alert(data.error || "Error al actualizar cantidad");
+                alert(data.error || "Error updating quantity");
                 return;
             }
 
             fetchCart();
         } catch (err) {
             console.error(err);
-            alert("Error de conexión");
+            alert("Connection error");
         }
     };
 
@@ -94,11 +94,11 @@ export const Cart = () => {
                 headers: { "Authorization": `Bearer ${token}` }
             });
 
-            if (!response.ok) throw new Error("No se pudo eliminar el producto");
+            if (!response.ok) throw new Error("Could not remove product");
             fetchCart();
         } catch (err) {
             console.error(err);
-            alert("Error al eliminar el producto");
+            alert("Error removing product");
         }
     };
 
@@ -125,13 +125,13 @@ export const Cart = () => {
         const token = localStorage.getItem("token");
 
         if (!token) {
-            alert("Debes iniciar sesión para procesar tu compra.");
+            alert("You must sign in to checkout.");
             navigate("/login");
             return;
         }
 
         if (store.cart.items.length === 0) {
-            alert("Tu carrito está vacío");
+            alert("Your cart is empty");
             return;
         }
 
@@ -155,7 +155,7 @@ export const Cart = () => {
             const data = await response.json();
 
             if (!response.ok) {
-                alert(data.error || "Hubo un problema al procesar el pago.");
+                alert(data.error || "There was a problem processing the payment.");
                 setProcessingCheckout(false);
                 return;
             }
@@ -163,12 +163,12 @@ export const Cart = () => {
             if (data.url) {
                 window.location.href = data.url;
             } else {
-                alert("Error: no se recibió la URL de pago");
+                alert("Error: payment URL not received");
                 setProcessingCheckout(false);
             }
         } catch (err) {
             console.error(err);
-            alert("Error de conexión con el servidor.");
+            alert("Connection error with server.");
             setProcessingCheckout(false);
         }
     };
@@ -182,9 +182,9 @@ export const Cart = () => {
         return (
             <div className="container mt-5 text-center min-vh-100">
                 <div className="spinner-border text-primary" role="status">
-                    <span className="visually-hidden">Cargando...</span>
+                    <span className="visually-hidden">Loading...</span>
                 </div>
-                <p className="mt-3">Cargando tu carrito...</p>
+                <p className="mt-3">Loading your cart...</p>
             </div>
         );
     }
@@ -202,11 +202,11 @@ export const Cart = () => {
     if (!store.cart.items || store.cart.items.length === 0) {
         return (
             <div className="container mt-5 min-vh-100">
-                <h1 className="mb-4 fw-bold">Tu Carrito de Compras 🛒</h1>
+                <h1 className="mb-4 fw-bold">Your Shopping Cart 🛒</h1>
                 <div className="alert alert-warning text-center p-5">
-                    <h3>Tu carrito está vacío.</h3>
-                    <p>Explora nuestra tienda para añadir productos increíbles.</p>
-                    <Link to="/" className="btn btn-dark mt-3">Ir a la Tienda</Link>
+                    <h3>Your cart is empty.</h3>
+                    <p>Explore our store to add amazing products.</p>
+                    <Link to="/" className="btn btn-dark mt-3">Go to Store</Link>
                 </div>
             </div>
         );
@@ -214,7 +214,7 @@ export const Cart = () => {
 
     return (
         <div className="container mt-5 min-vh-100">
-            <h1 className="mb-4 fw-bold">Tu Carrito de Compras 🛒</h1>
+            <h1 className="mb-4 fw-bold">Your Shopping Cart 🛒</h1>
 
             <div className="row">
                 {/* Lista de productos + Delivery Method */}
@@ -232,7 +232,7 @@ export const Cart = () => {
                                 <div className="flex-grow-1">
                                     <h5 className="fw-bold mb-1">{item.product?.name}</h5>
                                     <p className="text-secondary mb-2">
-                                        Precio unitario: ${item.product?.price?.toFixed(2)}
+                                        Unit price: ${item.product?.price?.toFixed(2)}
                                     </p>
                                     <div className="d-flex align-items-center gap-2">
                                         <button
@@ -248,7 +248,7 @@ export const Cart = () => {
                                         <button
                                             className="btn btn-outline-danger btn-sm ms-3"
                                             onClick={() => removeItem(item.id)}
-                                        >🗑️ Eliminar</button>
+                                        >🗑️ Remove</button>
                                     </div>
                                 </div>
                                 <div className="fw-bold fs-5 text-end" style={{ minWidth: "100px" }}>
@@ -276,7 +276,7 @@ export const Cart = () => {
                                 <div className="d-flex justify-content-between align-items-center">
                                     <div>
                                         <strong>📍 Local Pickup</strong>
-                                        <p className="text-secondary mb-0 small">Recoge tu pedido en nuestra ubicación en Miami, FL</p>
+                                        <p className="text-secondary mb-0 small">Pick up your order at our Miami, FL location</p>
                                     </div>
                                     <span className="badge bg-success">FREE</span>
                                 </div>
@@ -297,14 +297,14 @@ export const Cart = () => {
                                 <div className="d-flex justify-content-between align-items-center">
                                     <div>
                                         <strong>🚚 Shipping to your address</strong>
-                                        <p className="text-secondary mb-0 small">Recibe tu pedido en tu domicilio (3-5 días hábiles)</p>
+                                        <p className="text-secondary mb-0 small">Get your order delivered (3-5 business days)</p>
                                     </div>
                                     <span className="badge bg-primary">${SHIPPING_COST.toFixed(2)}</span>
                                 </div>
                             </label>
                         </div>
 
-                        {/* FORMULARIO DE DIRECCIÓN (solo si elige shipping) */}
+                        {/* SHIPPING ADDRESS FORM (only if shipping selected) */}
                         {deliveryMethod === "shipping" && (
                             <div className="mt-3 p-3 bg-light rounded-3">
                                 <h6 className="fw-bold mb-3">Shipping Address</h6>
@@ -379,13 +379,13 @@ export const Cart = () => {
                     </div>
                 </div>
 
-                {/* Resumen */}
+                {/* Order Summary */}
                 <div className="col-lg-4">
                     <div className="card p-4 border-0 shadow-sm rounded-4 bg-white sticky-top" style={{ top: "20px" }}>
-                        <h4 className="fw-bold mb-4">Resumen de Compra</h4>
+                        <h4 className="fw-bold mb-4">Order Summary</h4>
 
                         <div className="d-flex justify-content-between mb-2">
-                            <span className="text-secondary">Productos:</span>
+                            <span className="text-secondary">Items:</span>
                             <span>{store.cart.count}</span>
                         </div>
 
@@ -418,11 +418,11 @@ export const Cart = () => {
                             onClick={handleCheckout}
                             disabled={processingCheckout}
                         >
-                            {processingCheckout ? "Redirigiendo a Stripe..." : "💳 Pagar con Stripe"}
+                            {processingCheckout ? "Redirecting to Stripe..." : "💳 Pay with Stripe"}
                         </button>
 
                         <p className="text-center text-secondary mt-3 mb-0" style={{ fontSize: "0.8rem" }}>
-                            🔒 Pago seguro procesado por Stripe
+                            🔒 Secure payment processed by Stripe
                         </p>
                     </div>
                 </div>

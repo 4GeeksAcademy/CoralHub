@@ -19,6 +19,7 @@ import { ProductDetail } from "./pages/ProductDetail";
 import { Cart } from "./pages/Cart.jsx"
 import { SearchResults } from "./pages/SearchResults";
 import { Privacy } from "./pages/Privacy";
+import { Terms } from "./pages/Terms";
 
 
 export const router = createBrowserRouter(
@@ -47,6 +48,7 @@ export const router = createBrowserRouter(
       <Route path="/cart" element={<Cart />} />
       <Route path="/search" element={<SearchResults />} />
       <Route path="/privacy" element={<Privacy />} />
+      <Route path="/terms" element={<Terms />} />
     </Route>
   )
 );

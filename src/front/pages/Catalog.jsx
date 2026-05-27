@@ -90,10 +90,14 @@ export const Catalog = () => {
 
             {/* HERO */}
             <section className="catalog-hero">
+
                 <div className="container">
 
                     <div className="catalog-hero-content">
-                        <h1>Find the best of the reef</h1>
+
+                        <h1>
+                            Find the best of the reef
+                        </h1>
 
                         <p>
                             Premium corals and marine products for reef tank lovers.
@@ -101,7 +105,10 @@ export const Catalog = () => {
 
                         {/* SEARCH */}
                         <div className="catalog-search-wrapper">
-                            <span className="search-icon">🔍</span>
+
+                            <span className="search-icon">
+                                🔍
+                            </span>
 
                             <input
                                 type="text"
@@ -110,12 +117,15 @@ export const Catalog = () => {
                                 onChange={(e) => setSearchTerm(e.target.value)}
                                 className="catalog-search"
                             />
+
                         </div>
+
                     </div>
                 </div>
             </section>
 
-            <div className="container py-5">
+            {/* CONTENT */}
+            <div className="container catalog-container">
 
                 {/* EMPTY STATES */}
                 {products.length === 0 && (
@@ -130,8 +140,9 @@ export const Catalog = () => {
                     </div>
                 )}
 
-                {/* FEATURED */}
+                {/* FEATURED LISTINGS */}
                 {filteredProducts.length > 0 && (
+
                     <section>
 
                         <div className="section-header">
@@ -144,7 +155,7 @@ export const Catalog = () => {
 
                                 <div
                                     key={product.id}
-                                    className="col-md-6 col-lg-3"
+                                    className="col-sm-6 col-lg-3"
                                 >
 
                                     <div className="coral-card">
@@ -171,10 +182,12 @@ export const Catalog = () => {
 
                                         </div>
 
-                                        {/* CONTENT */}
+                                        {/* BODY */}
                                         <div className="coral-card-body">
 
-                                            <h5>{product.name}</h5>
+                                            <h5>
+                                                {product.name}
+                                            </h5>
 
                                             <p>
                                                 {product.description?.substring(0, 70)}
@@ -218,9 +231,78 @@ export const Catalog = () => {
                                             >
                                                 View Product
                                             </Link>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </section>
+                )}
+
+                {/* ======================================== */}
+                {/* RECENTLY ADDED */}
+                {/* ======================================== */}
+
+                {filteredProducts.length > 0 && (
+
+                    <section className="recent-section">
+
+                        <div className="section-header">
+                            <h2>Recently Added</h2>
+                        </div>
+
+                        <div className="recent-list">
+
+                            {filteredProducts.slice(0, 4).map((product) => (
+
+                                <div
+                                    key={`recent-${product.id}`}
+                                    className="recent-card"
+                                >
+
+                                    {/* IMAGE */}
+                                    <img
+                                        src={
+                                            product.image_url ||
+                                            "https://via.placeholder.com/100x100?text=No+Image"
+                                        }
+                                        alt={product.name}
+                                        className="recent-image"
+                                    />
+
+                                    {/* INFO */}
+                                    <div className="recent-info">
+
+                                        <h5>
+                                            {product.name}
+                                        </h5>
+
+                                        <p>
+                                            {product.description?.substring(0, 60)}
+                                            {product.description?.length > 60 ? "..." : ""}
+                                        </p>
+
+                                        <div className="recent-meta">
+
+                                            <span className="recent-price">
+                                                ${product.price.toFixed(2)}
+                                            </span>
+
+                                            <span className="recent-stock">
+                                                Stock: {product.stock}
+                                            </span>
 
                                         </div>
                                     </div>
+
+                                    {/* BUTTON */}
+                                    <Link
+                                        to={`/product/${product.id}`}
+                                        className="recent-btn"
+                                    >
+                                        View Product
+                                    </Link>
+
                                 </div>
                             ))}
                         </div>
@@ -229,5 +311,5 @@ export const Catalog = () => {
             </div>
         </div>
     );
-            
+
 };

@@ -1822,16 +1822,21 @@ user dashboard
 
     color: white !important;
 }
-
-
 /* ========================================
    CATALOG PAGE
 ======================================== */
 
 .catalog-page {
-    background: #F7F4EF;
+    background: #f6f7fb;
     min-height: 100vh;
-    margin-top: 50px;
+}
+.view-product-btn,
+.recent-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    text-decoration: none;
 }
 
 /* ========================================
@@ -1839,35 +1844,45 @@ user dashboard
 ======================================== */
 
 .catalog-hero {
+    position: relative;
+
+    padding: 7rem 0 6rem;
+
     background:
         linear-gradient(
-            rgba(18, 48, 74, 0.88),
-            rgba(18, 48, 74, 0.88)
+            rgba(5, 18, 38, 0.72),
+            rgba(5, 18, 38, 0.72)
         ),
-        url("https://images.unsplash.com/photo-1694661641480-d4e76d6bead3?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
-    background-size: cover;
-    background-position: center;
-
-    padding-block: 6rem;
+        url("https://images.unsplash.com/photo-1546026423-cc4642628d2b?q=80&w=1974&auto=format&fit=crop")
+        center/cover no-repeat;
 }
 
 .catalog-hero-content {
-    max-width: 850px;
+    max-width: 720px;
 }
 
 .catalog-hero h1 {
-    font-size: clamp(2.8rem, 5vw, 4.5rem);
-    font-weight: 800;
     color: white;
-    margin-bottom: 1rem;
+
+    font-size: clamp(2.8rem, 5vw, 4.5rem);
+
+    font-weight: 800;
+
     line-height: 1.1;
+
+    margin-bottom: 1rem;
+
+    letter-spacing: -1px;
 }
 
 .catalog-hero p {
     color: rgba(255,255,255,0.82);
-    font-size: 1.15rem;
+
+    font-size: 1.1rem;
+
     margin-bottom: 2rem;
 }
+
 
 /* ========================================
    SEARCH
@@ -1875,35 +1890,65 @@ user dashboard
 
 .catalog-search-wrapper {
     position: relative;
-    max-width: 950px;
+    max-width: 700px;
 }
 
 .search-icon {
     position: absolute;
-    left: 24px;
+
+    left: 20px;
     top: 50%;
+
     transform: translateY(-50%);
-    font-size: 1.2rem;
-    opacity: 0.5;
+
+    color: #7c8aa5;
+
+    z-index: 2;
 }
 
 .catalog-search {
     width: 100%;
-    height: 72px;
-    border-radius: 24px;
+
+    height: 64px;
+
+    border-radius: 18px;
+
     border: none;
-    padding-inline: 65px 24px;
-    font-size: 1.1rem;
+
+    outline: none;
+
+    padding: 0 24px 0 55px;
+
+    font-size: 1rem;
+
     background: white;
 
     box-shadow:
-        0 10px 30px rgba(0,0,0,0.12);
+        0 10px 30px rgba(0,0,0,0.15);
 
-    outline: none;
+    transition: 0.3s ease;
 }
 
+.catalog-search:focus {
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 16px 40px rgba(0,0,0,0.22);
+}
+
+
 /* ========================================
-   SECTION
+   CONTAINER
+======================================== */
+
+.catalog-container {
+    padding-top: 4rem;
+    padding-bottom: 5rem;
+}
+
+
+/* ========================================
+   SECTION HEADER
 ======================================== */
 
 .section-header {
@@ -1912,35 +1957,41 @@ user dashboard
 
 .section-header h2 {
     font-size: 2rem;
+
     font-weight: 800;
-    color: #12304A;
+
+    color: #071426;
 }
 
+
 /* ========================================
-   PRODUCT CARD
+   CARD
 ======================================== */
 
 .coral-card {
     background: white;
+
     border-radius: 22px;
+
     overflow: hidden;
 
-    transition: 0.3s ease;
+    height: 100%;
 
     border: 1px solid rgba(0,0,0,0.05);
 
-    box-shadow:
-        0 8px 30px rgba(0,0,0,0.06);
+    transition: 0.35s ease;
 
-    height: 100%;
+    box-shadow:
+        0 10px 30px rgba(0,0,0,0.04);
 }
 
 .coral-card:hover {
-    transform: translateY(-6px);
+    transform: translateY(-8px);
 
     box-shadow:
-        0 18px 40px rgba(0,0,0,0.12);
+        0 18px 40px rgba(0,0,0,0.10);
 }
+
 
 /* ========================================
    IMAGE
@@ -1948,82 +1999,104 @@ user dashboard
 
 .coral-image-wrapper {
     position: relative;
+
+    height: 240px;
+
     overflow: hidden;
 }
 
 .coral-image {
     width: 100%;
-    height: 240px;
+    height: 100%;
+
     object-fit: cover;
-    transition: 0.4s ease;
+
+    transition: transform 0.5s ease;
 }
 
 .coral-card:hover .coral-image {
-    transform: scale(1.05);
+    transform: scale(1.06);
 }
+
 
 /* ========================================
    BADGES
 ======================================== */
 
+.new-badge {
+    position: absolute;
+
+    top: 14px;
+    left: 14px;
+
+    background: #5de2d3;
+
+    color: #071426;
+
+    font-size: 0.75rem;
+
+    font-weight: 700;
+
+    padding: 0.35rem 0.8rem;
+
+    border-radius: 999px;
+}
+
 .favorite-btn {
     position: absolute;
-    top: 18px;
-    right: 18px;
 
-    width: 42px;
-    height: 42px;
+    top: 14px;
+    right: 14px;
+
+    width: 38px;
+    height: 38px;
 
     border-radius: 50%;
 
-    background: rgba(0,0,0,0.45);
-    color: white;
+    background: rgba(255,255,255,0.95);
 
     display: flex;
     align-items: center;
     justify-content: center;
 
-    font-size: 1.3rem;
+    cursor: pointer;
 
-    backdrop-filter: blur(8px);
+    transition: 0.3s ease;
 }
 
-.new-badge {
-    position: absolute;
-    top: 18px;
-    left: 18px;
-
-    background: #4EC7C1;
-    color: white;
-
-    padding: 0.4rem 0.8rem;
-
-    border-radius: 999px;
-
-    font-size: 0.8rem;
-    font-weight: 700;
+.favorite-btn:hover {
+    transform: scale(1.08);
 }
+
 
 /* ========================================
-   BODY
+   CARD BODY
 ======================================== */
 
 .coral-card-body {
-    padding: 1.5rem;
+    padding: 1.4rem;
 }
 
 .coral-card-body h5 {
-    font-size: 1.45rem;
-    font-weight: 700;
-    color: #12304A;
-    margin-bottom: 0.8rem;
+    font-size: 1.1rem;
+
+    font-weight: 800;
+
+    color: #071426;
+
+    margin-bottom: 0.5rem;
 }
 
 .coral-card-body p {
-    color: #5B6673;
-    line-height: 1.6;
-    margin-bottom: 1rem;
+    color: #6d7a92;
+
+    font-size: 0.92rem;
+
+    line-height: 1.5;
+
+    min-height: 50px;
 }
+
 
 /* ========================================
    STARS
@@ -2032,26 +2105,35 @@ user dashboard
 .stars-row {
     display: flex;
     align-items: center;
-    gap: 0.6rem;
+
+    gap: 0.4rem;
 
     margin-bottom: 1rem;
 }
 
 .stars {
-    color: #FFB545;
+    color: #ffb545;
 }
+
+.stars-row small {
+    color: #9aa5b8;
+}
+
 
 /* ========================================
    PRICE
 ======================================== */
 
 .product-price {
-    font-size: 2rem;
+    font-size: 1.8rem;
+
     font-weight: 800;
-    color: #FF7A59;
+
+    color: #ff7a59;
 
     margin-bottom: 1rem;
 }
+
 
 /* ========================================
    META
@@ -2059,23 +2141,32 @@ user dashboard
 
 .product-meta {
     display: flex;
+
     justify-content: space-between;
+
     align-items: center;
 
-    margin-bottom: 1.2rem;
+    margin-bottom: 1.3rem;
 }
 
 .stock-badge {
-    background: rgba(78,199,193,0.18);
-    color: #1D9E96;
+    background: rgba(93,226,211,0.15);
 
-    padding: 0.45rem 0.8rem;
+    color: #17a68b;
+
+    font-size: 0.8rem;
+
+    font-weight: 700;
+
+    padding: 0.4rem 0.8rem;
 
     border-radius: 999px;
-
-    font-size: 0.85rem;
-    font-weight: 700;
 }
+
+.product-meta small {
+    color: #9aa5b8;
+}
+
 
 /* ========================================
    BUTTON
@@ -2083,33 +2174,183 @@ user dashboard
 
 .view-product-btn {
     width: 100%;
-    height: 58px;
 
-    border-radius: 16px;
+    height: 52px;
 
-    background: #12304A;
+    border-radius: 14px;
+
+    border: none;
+
+    background: #0b2d52;
+
     color: white;
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    text-decoration: none;
-
     font-weight: 700;
-    font-size: 1rem;
 
     transition: 0.3s ease;
 }
 
 .view-product-btn:hover {
-    background: #FF7A59;
-    color: white;
+    background: #ff7a59;
 
     transform: translateY(-2px);
 }
 
 
+/* ========================================
+   RECENTLY ADDED
+======================================== */
+
+.recent-section {
+    margin-top: 5rem;
+}
+
+.recent-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+
+.recent-card {
+    background: white;
+
+    border-radius: 20px;
+
+    padding: 1rem 1.2rem;
+
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+
+    border: 1px solid rgba(0,0,0,0.05);
+
+    box-shadow:
+        0 10px 30px rgba(0,0,0,0.04);
+
+    transition: 0.3s ease;
+}
+
+.recent-card:hover {
+    transform: translateY(-4px);
+
+    box-shadow:
+        0 18px 40px rgba(0,0,0,0.08);
+}
+
+.recent-image {
+    width: 90px;
+    height: 90px;
+
+    border-radius: 16px;
+
+    object-fit: cover;
+
+    flex-shrink: 0;
+}
+
+.recent-info {
+    flex: 1;
+}
+
+.recent-info h5 {
+    font-size: 1.1rem;
+
+    font-weight: 800;
+
+    margin-bottom: 0.4rem;
+
+    color: #071426;
+}
+
+.recent-info p {
+    font-size: 0.92rem;
+
+    color: #6d7a92;
+
+    margin-bottom: 0.7rem;
+}
+
+.recent-meta {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.recent-price {
+    color: #ff7a59;
+
+    font-weight: 800;
+
+    font-size: 1.1rem;
+}
+
+.recent-stock {
+    color: #9aa5b8;
+
+    font-size: 0.9rem;
+}
+
+.recent-btn {
+    height: 48px;
+
+    padding-inline: 1.4rem;
+
+    border: none;
+
+    border-radius: 14px;
+
+    background: #0b2d52;
+
+    color: white;
+
+    font-weight: 700;
+
+    transition: 0.3s ease;
+}
+
+.recent-btn:hover {
+    background: #ff7a59;
+
+    transform: translateY(-2px);
+}
+
+
+/* ========================================
+   RESPONSIVE
+======================================== */
+
+@media (max-width: 768px) {
+
+    .catalog-hero {
+        padding: 5rem 0;
+    }
+
+    .catalog-hero h1 {
+        font-size: 2.4rem;
+    }
+
+    .catalog-search {
+        height: 58px;
+    }
+
+    .coral-image-wrapper {
+        height: 220px;
+    }
+
+    .recent-card {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .recent-image {
+        width: 100%;
+        height: 220px;
+    }
+
+    .recent-btn {
+        width: 100%;
+    }
+}
 /* =========================================
    USER DASHBOARD
 ========================================= */
@@ -2487,10 +2728,11 @@ user dashboard
 }
 
 .section-header h2 {
+    font-size: 2rem;
 
-    color: white;
+    font-weight: 800;
 
-    font-size: 1.5rem;
+    color: #1A4165;
 }
 
 .section-btn {

@@ -144,7 +144,7 @@ export const ProductDetail = () => {
 
                             <div className="product-actions">
                                 <button
-                                    className="btn add-cart-btn"
+                                    className="hero-btn-solid "
                                     onClick={handleAddToCart}
                                     aria-label={`Add ${product.name} to cart`}
                                 >

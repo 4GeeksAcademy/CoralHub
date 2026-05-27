@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 export const Catalog = () => {
     const [products, setProducts] = useState([]);
@@ -85,154 +86,148 @@ export const Catalog = () => {
     }
 
     return (
-        <div className="container my-5">
-            {/* HEADER */}
-            <div className="text-center mb-5">
-                <h1 className="display-4 fw-bold">CoralHub Marketplace</h1>
-                <p className="lead text-muted">
-                    The Marketplace for Marine Aquarium Lovers
-                </p>
-            </div>
+        <div className="catalog-page">
 
-            {/* ============================= */}
-            {/* BUSCADOR DE PRODUCTOS         */}
-            {/* ============================= */}
-            <div className="row justify-content-center mb-4">
-                <div className="col-md-8">
-                    <div className="input-group input-group-lg shadow-sm">
-                        <span className="input-group-text bg-white border-end-0">
-                            🔍
-                        </span>
-                        <input
-                            type="text"
-                            className="form-control border-start-0"
-                            placeholder="Search products by name or description..."
-                            value={searchTerm}
-                            onChange={(e) => setSearchTerm(e.target.value)}
-                        />
-                        {searchTerm && (
-                            <button
-                                className="btn btn-outline-secondary"
-                                onClick={() => setSearchTerm("")}
-                                title="Clear search"
-                            >
-                                ✕
-                            </button>
-                        )}
-                    </div>
-                    {searchTerm && (
-                        <p className="text-center text-muted mt-2">
-                            Showing {filteredProducts.length} result(s) for "{searchTerm}"
+            {/* HERO */}
+            <section className="catalog-hero">
+                <div className="container">
+
+                    <div className="catalog-hero-content">
+                        <h1>Find the best of the reef</h1>
+
+                        <p>
+                            Premium corals and marine products for reef tank lovers.
                         </p>
-                    )}
+
+                        {/* SEARCH */}
+                        <div className="catalog-search-wrapper">
+                            <span className="search-icon">🔍</span>
+
+                            <input
+                                type="text"
+                                placeholder="Search products by name or description..."
+                                value={searchTerm}
+                                onChange={(e) => setSearchTerm(e.target.value)}
+                                className="catalog-search"
+                            />
+                        </div>
+                    </div>
                 </div>
-            </div>
+            </section>
 
-            {/* Mensaje si no hay productos */}
-            {products.length === 0 && (
-                <div className="alert alert-info text-center">
-                    No products available. Add some from the admin panel.
-                </div>
-            )}
+            <div className="container py-5">
 
-            {/* Mensaje si la búsqueda no tiene resultados */}
-            {products.length > 0 && filteredProducts.length === 0 && (
-                <div className="alert alert-warning text-center">
-                    No products match your search. Try different keywords.
-                </div>
-            )}
+                {/* EMPTY STATES */}
+                {products.length === 0 && (
+                    <div className="alert alert-info text-center">
+                        No products available yet.
+                    </div>
+                )}
 
-            {/* ============================= */}
-            {/* FEATURED LISTINGS             */}
-            {/* ============================= */}
-            {filteredProducts.length > 0 && (
-                <section className="mb-5">
-                    <h2 className="mb-4 border-bottom pb-2">Featured Listings</h2>
-                    <div className="row g-4">
-                        {filteredProducts.map((product) => (
-                            <div key={product.id} className="col-md-6 col-lg-3">
-                                <div className="card h-100 shadow-sm">
-                                    <img
-                                        src={product.image_url || "https://via.placeholder.com/300x200?text=No+Image"}
-                                        className="card-img-top"
-                                        alt={product.name}
-                                        style={{ height: "200px", objectFit: "cover" }}
-                                    />
-                                    <div className="card-body d-flex flex-column">
-                                        <h5 className="card-title">{product.name}</h5>
-                                        <p className="card-text text-muted small">
-                                            {product.description?.substring(0, 60)}
-                                            {product.description?.length > 60 ? "..." : ""}
-                                        </p>
+                {products.length > 0 && filteredProducts.length === 0 && (
+                    <div className="alert alert-warning text-center">
+                        No products match your search.
+                    </div>
+                )}
 
-                                        <div className="mb-2">
-                                            {renderStars(product.rating_average)}
-                                            <small className="text-muted ms-2">
-                                                ({product.reviews_count} reviews)
-                                            </small>
+                {/* FEATURED */}
+                {filteredProducts.length > 0 && (
+                    <section>
+
+                        <div className="section-header">
+                            <h2>Featured Listings</h2>
+                        </div>
+
+                        <div className="row g-4">
+
+                            {filteredProducts.map((product) => (
+
+                                <div
+                                    key={product.id}
+                                    className="col-md-6 col-lg-3"
+                                >
+
+                                    <div className="coral-card">
+
+                                        {/* IMAGE */}
+                                        <div className="coral-image-wrapper">
+
+                                            <img
+                                                src={
+                                                    product.image_url ||
+                                                    "https://via.placeholder.com/300x200?text=No+Image"
+                                                }
+                                                alt={product.name}
+                                                className="coral-image"
+                                            />
+
+                                            <div className="favorite-btn">
+                                                ♡
+                                            </div>
+
+                                            <div className="new-badge">
+                                                New
+                                            </div>
+
                                         </div>
 
-                                        <div className="mt-auto">
-                                            <h4 className="text-primary mb-2">
+                                        {/* CONTENT */}
+                                        <div className="coral-card-body">
+
+                                            <h5>{product.name}</h5>
+
+                                            <p>
+                                                {product.description?.substring(0, 70)}
+                                                {product.description?.length > 70 ? "..." : ""}
+                                            </p>
+
+                                            {/* STARS */}
+                                            <div className="stars-row">
+
+                                                <span className="stars">
+                                                    {renderStars(product.rating_average)}
+                                                </span>
+
+                                                <small>
+                                                    ({product.reviews_count} reviews)
+                                                </small>
+
+                                            </div>
+
+                                            {/* PRICE */}
+                                            <h3 className="product-price">
                                                 ${product.price.toFixed(2)}
-                                            </h4>
-                                            <div className="d-flex justify-content-between align-items-center">
-                                                {renderStatusBadge(product.status)}
-                                                <small className="text-muted">
+                                            </h3>
+
+                                            {/* FOOTER */}
+                                            <div className="product-meta">
+
+                                                <span className="stock-badge">
+                                                    Available
+                                                </span>
+
+                                                <small>
                                                     Stock: {product.stock}
                                                 </small>
+
                                             </div>
+
+                                            <Link
+                                                to={`/product/${product.id}`}
+                                                className="view-product-btn"
+                                            >
+                                                View Product
+                                            </Link>
+
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        ))}
-                    </div>
-                </section>
-            )}
-
-            {/* ============================= */}
-            {/* RECENTLY ADDED                */}
-            {/* ============================= */}
-            {filteredProducts.length > 0 && (
-                <section className="mb-5">
-                    <h2 className="mb-4 border-bottom pb-2">Recently Added</h2>
-                    <div className="list-group">
-                        {filteredProducts.map((product) => (
-                            <div
-                                key={`recent-${product.id}`}
-                                className="list-group-item d-flex justify-content-between align-items-center"
-                            >
-                                <div className="d-flex align-items-center">
-                                    <img
-                                        src={product.image_url || "https://via.placeholder.com/60x60?text=No+Image"}
-                                        alt={product.name}
-                                        style={{
-                                            width: "60px",
-                                            height: "60px",
-                                            objectFit: "cover",
-                                            borderRadius: "8px",
-                                            marginRight: "15px"
-                                        }}
-                                    />
-                                    <div>
-                                        <h6 className="mb-0">{product.name}</h6>
-                                        <small className="text-muted">
-                                            {renderStars(product.rating_average)} · Stock: {product.stock}
-                                        </small>
-                                    </div>
-                                </div>
-                                <div className="text-end">
-                                    <h5 className="mb-0 text-primary">
-                                        ${product.price.toFixed(2)}
-                                    </h5>
-                                    {renderStatusBadge(product.status)}
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </section>
-            )}
+                            ))}
+                        </div>
+                    </section>
+                )}
+            </div>
         </div>
     );
+            
 };

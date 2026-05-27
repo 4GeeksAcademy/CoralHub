@@ -1,6 +1,6 @@
 body {
 
-	background-color: #012C4B !important;
+	background-color: #041937 !important;
 
 	font-family: Inter, sans-serif;
 
@@ -365,6 +365,10 @@ section {
     border: none !important;
 
 }
+
+/* =========================================
+  PRODUCT PAGE
+========================================= */
 
 .product-page {
     min-height: 100vh;
@@ -2094,56 +2098,55 @@ user dashboard
     transform: translateY(-2px);
 }
 
-
 /* ========================================
    FOOTER
 ======================================== */
 
 .footer-section {
-    padding: 5rem 0 2rem;
-    background: #071426;
+    padding: 4rem 0;
+    background: #062B49;
     border-top: 1px solid rgba(255,255,255,0.08);
-}
-
-/* BRAND COLUMN */
-
-.footer-brand {
-    padding-top: 0.3rem;
 }
 
 /* LOGO */
 
 .footer-logo {
-    width: 100%;
-    max-width: 200px;
+    width: 200px;
     height: auto;
     object-fit: contain;
+}
+
+/* DESCRIPTION */
+
+.footer-description {
+    color: rgba(255,255,255,0.75);
+    font-size: 0.95rem;
+    line-height: 1.8;
+    max-width: 240px;
 }
 
 /* TITLES */
 
 .footer-title {
     color: #FFFFFF;
-    margin-bottom: 1rem;
-    font-size: 1rem;
-    font-weight: 600;
-}
-
-/* TEXT */
-
-.footer-text,
-.footer-bottom p {
-    color: rgba(255,255,255,0.7);
-    line-height: 1.7;
+    font-size: 0.95rem;
+    font-weight: 700;
+    margin-bottom: 1.3rem;
 }
 
 /* LINKS */
 
+.footer-links {
+    padding: 0;
+    margin: 0;
+}
+
 .footer-link {
-    color: rgba(255,255,255,0.7);
+    color: rgba(255,255,255,0.75);
     text-decoration: none;
     display: inline-block;
-    margin-bottom: 0.7rem;
+    margin-bottom: 0.9rem;
+    font-size: 0.92rem;
     transition: 0.3s ease;
 }
 
@@ -2151,35 +2154,285 @@ user dashboard
     color: #FE6949;
 }
 
-/* INPUT */
+/* FOLLOW */
 
-.footer-input {
-    background: rgba(255,255,255,0.06);
-    border: 1px solid rgba(255,255,255,0.08);
+.footer-follow {
+    color: #FFFFFF;
+    font-size: 0.92rem;
+    margin-bottom: 0;
+}
+
+/* SOCIAL */
+
+.social-link {
+    color: white;
+    font-size: 1.1rem;
+    transition: 0.3s ease;
+}
+
+.social-link:hover {
+    color: #FE6949;
+    transform: translateY(-2px);
+}
+/* ========================================
+   DASHBOARD LAYOUT
+======================================== */
+
+.dashboard-layout {
+
+    display: flex;
+
+    min-height: 100vh;
+
+    background: #031B34;
+}
+
+/* ========================================
+   SIDEBAR
+======================================== */
+
+.dashboard-sidebar {
+
+    width: 240px;
+
+    background: #021427;
+
+    border-right: 1px solid rgba(255,255,255,0.06);
+
+    padding: 2rem 1.25rem;
+
+    flex-shrink: 0;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: flex-start;
+
+    gap: 2rem;
+}
+
+/* LOGO */
+
+/* .dashboard-logo {
+    color: white;
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin-bottom: 2.5rem;
+} */
+
+.dashboard-logo span {
+    color: #FE6949;
+}
+
+/* USER */
+
+.dashboard-user {
+    text-align: center;
+    margin-bottom: 2.5rem;
+}
+
+.dashboard-avatar {
+    width: 78px;
+    height: 78px;
+    margin: 0 auto 1rem auto;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #0E7490, #14B8A6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.6rem;
+    font-weight: 700;
+    box-shadow: 0 0 30px rgba(20,184,166,0.22);
+}
+
+.dashboard-user h3 {
+    color: white;
+    margin-bottom: 0.25rem;
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.dashboard-user p {
+    color: rgba(255,255,255,0.55);
+    font-size: 0.85rem;
+}
+
+/* NAV */
+
+.dashboard-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+    margin-top: 0;
+}
+
+.dashboard-link {
+    display: flex;
+    align-items: center;
+    min-height: 48px;
+    padding: 0 1rem;
+    border-radius: 14px;
+    text-decoration: none;
+    color: rgba(255,255,255,0.75);
+    font-size: 0.92rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.dashboard-link:hover {
+    background: rgba(78,199,193,0.08);
     color: white;
 }
 
-.footer-input::placeholder {
-    color: rgba(255,255,255,0.5);
+.dashboard-link.active {
+    background: rgba(78,199,193,0.13);
+    border: 1px solid rgba(78,199,193,0.28);
+    color: white;
+    box-shadow: 0 0 20px rgba(78,199,193,0.10);
+}
+
+/* ========================================
+   MAIN
+======================================== */
+
+.dashboard-main {
+
+    flex: 1;
+
+    padding: 2rem 3rem;
+}
+
+/* ========================================
+   HEADER
+======================================== */
+
+.dashboard-header {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    margin-bottom: 2rem;
+}
+
+.dashboard-title {
+
+    color: white;
+
+    font-size: clamp(2rem, 4vw, 3.5rem);
+
+    font-weight: 700;
+
+    margin-bottom: 0.5rem;
+}
+
+.dashboard-subtitle {
+
+    color: rgba(255,255,255,0.7);
 }
 
 /* BUTTON */
 
-.footer-btn {
-    background: #FE6949;
-    color: white;
+.publish-btn {
+
     border: none;
-    padding-inline: 1.2rem;
-    font-weight: 600;
-}
 
-.footer-btn:hover {
-    background: #ff7f63;
+    background: #FE6949;
+
     color: white;
+
+    padding: 1rem 1.6rem;
+
+    border-radius: 18px;
+
+    font-weight: 700;
+
+    cursor: pointer;
 }
 
-/* BOTTOM */
+/* ========================================
+   STATS GRID
+======================================== */
 
-.footer-bottom {
-    border-top: 1px solid rgba(255,255,255,0.08);
+.dashboard-stats-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(auto-fit, minmax(220px, 1fr));
+
+    gap: 1.5rem;
+}
+
+/* ========================================
+   STATS CARD
+======================================== */
+
+.stats-card {
+
+    background: #082544;
+
+    border: 1px solid rgba(255,255,255,0.06);
+
+    border-radius: 24px;
+
+    padding: 2rem;
+}
+
+.stats-title {
+
+    color: rgba(255,255,255,0.7);
+
+    margin-bottom: 1rem;
+}
+
+.stats-value {
+
+    color: white;
+
+    font-size: 2rem;
+
+    font-weight: 700;
+
+    margin-bottom: 0.5rem;
+}
+
+.stats-subtitle {
+
+    color: #4EC7C1;
+}
+
+/* ========================================
+   RESPONSIVE
+======================================== */
+
+@media (max-width: 992px) {
+
+    .dashboard-layout {
+
+        flex-direction: column;
+    }
+
+    .dashboard-sidebar {
+
+        width: 100%;
+    }
+
+    .dashboard-main {
+
+        padding: 2rem;
+    }
+
+    .dashboard-header {
+
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        gap: 1rem;
+    }
 }

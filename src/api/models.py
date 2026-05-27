@@ -58,10 +58,8 @@ class Product(db.Model):
     category = db.Column(db.String(50), nullable=False)
 
     def serialize(self):
-        # Lista de reviews del producto
         review_list = [r.serialize() for r in self.reviews]
 
-        # Promedio de rating (0 si no hay reviews)
         avg_rating = (
             sum(r["rating"] for r in review_list) / len(review_list)
             if review_list else 0
@@ -96,6 +94,20 @@ class Order(db.Model):
     total = db.Column(db.Float, nullable=False, default=0)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
+    # Stripe
+    stripe_session_id = db.Column(db.String(255), unique=True)
+
+    # Delivery
+    delivery_method = db.Column(
+        db.String(20), default="pickup")  # pickup / shipping
+    shipping_full_name = db.Column(db.String(120))
+    shipping_street = db.Column(db.String(200))
+    shipping_city = db.Column(db.String(100))
+    shipping_state = db.Column(db.String(100))
+    shipping_zip = db.Column(db.String(20))
+    shipping_country = db.Column(db.String(100))
+    shipping_phone = db.Column(db.String(50))
+
     items = db.relationship("OrderItem", backref="order", lazy=True)
     tickets = db.relationship("SupportTicket", backref="order", lazy=True)
 
@@ -106,6 +118,17 @@ class Order(db.Model):
             "order_status": self.order_status,
             "total": self.total,
             "created_at": self.created_at.isoformat() if self.created_at else None,
+            "stripe_session_id": self.stripe_session_id,
+            "delivery_method": self.delivery_method,
+            "shipping_address": {
+                "full_name": self.shipping_full_name,
+                "street": self.shipping_street,
+                "city": self.shipping_city,
+                "state": self.shipping_state,
+                "zip_code": self.shipping_zip,
+                "country": self.shipping_country,
+                "phone": self.shipping_phone
+            } if self.delivery_method == "shipping" else None,
             "items": [item.serialize() for item in self.items]
         }
 
@@ -131,7 +154,8 @@ class OrderItem(db.Model):
             "order_id": self.order_id,
             "product_id": self.product_id,
             "quantity": self.quantity,
-            "unit_price": self.unit_price
+            "unit_price": self.unit_price,
+            "product": self.product.serialize() if self.product else None
         }
 
 

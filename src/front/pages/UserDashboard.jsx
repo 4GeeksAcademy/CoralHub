@@ -6,6 +6,7 @@ import { DashboardStatsCard } from "../components/dashboard/DashboardStatsCard";
 import { DashboardProducts } from "../components/dashboard/DashboardProducts";
 import { DashboardOrders } from "../components/dashboard/DashboardOrders";
 import { DashboardProfile } from "../components/dashboard/DashboardProfile";
+import { DashboardActivity } from "../components/dashboard/DashboardActivity";
 
 export const UserDashboard = () => {
   return (
@@ -14,49 +15,57 @@ export const UserDashboard = () => {
       <DashboardSidebar />
 
       <main className="dashboard-main">
+        <div className="dashboard-container">
 
-        <DashboardHeader />
+          <DashboardHeader />
 
-        <div className="dashboard-content">
+          <div className="dashboard-content">
 
-          <section className="dashboard-stats-grid">
+            <section className="dashboard-stats-grid">
 
-            <DashboardStatsCard
-              title="Active Products"
-              value="12"
-              subtitle="2 new this week"
-            />
+              <DashboardStatsCard
+                title="Active Products"
+                value="12"
+                subtitle="2 new this week"
+              />
 
-            <DashboardStatsCard
-              title="Orders"
-              value="4"
-              subtitle="2 pending"
-            />
+              <DashboardStatsCard
+                title="Orders"
+                value="4"
+                subtitle="2 pending"
+              />
 
-            <DashboardStatsCard
-              title="Revenue"
-              value="$1,240"
-              subtitle="+18% this month"
-            />
+              <DashboardStatsCard
+                title="Revenue"
+                value="$1,240"
+                subtitle="+18% this month"
+              />
 
-            <DashboardStatsCard
-              title="Favorites"
-              value="23"
-              subtitle="Saved products"
-            />
+              <DashboardStatsCard
+                title="Favorites"
+                value="23"
+                subtitle="Saved products"
+              />
 
-          </section>
+            </section>
 
-          <div className="dashboard-dual-grid">
+            <div className="dashboard-dual-grid">
 
-            <DashboardProducts />
+              <DashboardProducts />
 
-            <DashboardOrders />
+              <DashboardOrders />
+
+            </div>
+            
+            <div className="dashboard-bottom-grid">
+
+              <DashboardActivity />
+
+              <DashboardProfile />
+
+            </div>
 
           </div>
-
-          <DashboardProfile />
-
         </div>
       </main>
 

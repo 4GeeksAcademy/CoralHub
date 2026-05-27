@@ -9,6 +9,7 @@ from flask_cors import CORS
 import os
 import cloudinary
 import cloudinary.uploader
+import stripe
 
 from flask_jwt_extended import create_access_token
 from flask_jwt_extended import get_jwt_identity
@@ -27,6 +28,9 @@ cloudinary.config(
     api_key=os.environ.get("CLOUDINARY_API_KEY"),
     api_secret=os.environ.get("CLOUDINARY_API_SECRET"),
 )
+
+# Configurar Stripe con la secret key
+stripe.api_key = os.environ.get("STRIPE_SECRET_KEY")
 
 
 # ============================================
@@ -330,26 +334,68 @@ def clear_cart():
 
 
 # ============================================
-# CHECKOUT (placeholder - se reemplazará con Stripe en Fase 2)
+# STRIPE CHECKOUT
 # ============================================
 
-@api.route('/checkout', methods=['POST'])
+@api.route('/create-checkout-session', methods=['POST'])
 @jwt_required()
-def handle_checkout():
+def create_checkout_session():
     current_user_id = get_jwt_identity()
-    body = request.get_json()
 
-    if not body or 'items' not in body:
-        return jsonify({"msg": "Missing cart items or total summary"}), 400
+    # 1. Obtener los items del carrito del usuario desde la BD
+    cart_items = CartItem.query.filter_by(user_id=current_user_id).all()
 
-    items_comprados = body.get("items")
-    total_pagado = body.get("total")
+    if not cart_items:
+        return jsonify({"error": "Cart is empty"}), 400
 
-    print(
-        f"Usuario ID {current_user_id} ha realizado una compra de ${total_pagado}")
+    # 2. Construir la lista de line_items en el formato que Stripe entiende
+    line_items = []
+    for item in cart_items:
+        if not item.product:
+            continue
 
-    return jsonify({
-        "msg": "Purchase processed successfully!",
-        "buyer_id": current_user_id,
-        "total": total_pagado
-    }), 200
+        # Validar stock antes de proceder
+        if item.product.stock < item.quantity:
+            return jsonify({
+                "error": f"Not enough stock for {item.product.name}. Available: {item.product.stock}"
+            }), 400
+
+        line_items.append({
+            "price_data": {
+                "currency": "usd",
+                "product_data": {
+                    "name": item.product.name,
+                    "description": item.product.description or "Marine aquarium product",
+                    "images": [item.product.image_url] if item.product.image_url else [],
+                },
+                # Stripe usa centavos, no dólares (por eso multiplicamos x 100)
+                "unit_amount": int(item.product.price * 100),
+            },
+            "quantity": item.quantity,
+        })
+
+    # 3. Crear la sesión de Stripe
+    try:
+        frontend_url = os.environ.get("FRONTEND_URL", "http://localhost:3000")
+
+        checkout_session = stripe.checkout.Session.create(
+            payment_method_types=["card"],
+            line_items=line_items,
+            mode="payment",
+            success_url=f"{frontend_url}/checkout/success?session_id={{CHECKOUT_SESSION_ID}}",
+            cancel_url=f"{frontend_url}/checkout/cancel",
+            # Guardamos el user_id para identificar al comprador en el webhook
+            metadata={
+                "user_id": str(current_user_id)
+            }
+        )
+
+        return jsonify({
+            "url": checkout_session.url,
+            "session_id": checkout_session.id
+        }), 200
+
+    except stripe.error.StripeError as e:
+        return jsonify({"error": str(e)}), 500
+    except Exception as e:
+        return jsonify({"error": f"Server error: {str(e)}"}), 500

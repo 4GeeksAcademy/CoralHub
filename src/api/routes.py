@@ -341,14 +341,33 @@ def clear_cart():
 @jwt_required()
 def create_checkout_session():
     current_user_id = get_jwt_identity()
+    body = request.get_json() or {}
 
-    # 1. Obtener los items del carrito del usuario desde la BD
+    delivery_method = body.get("delivery_method", "pickup")
+    shipping_address = body.get("shipping_address")
+
+    # Validar delivery method
+    if delivery_method not in ["pickup", "shipping"]:
+        return jsonify({"error": "Invalid delivery method"}), 400
+
+    # Si es shipping, validar que venga la dirección completa
+    if delivery_method == "shipping":
+        if not shipping_address:
+            return jsonify({"error": "Shipping address is required for shipping"}), 400
+
+        required_fields = ["full_name", "street",
+                           "city", "state", "zip_code", "country"]
+        for field in required_fields:
+            if not shipping_address.get(field):
+                return jsonify({"error": f"Missing shipping field: {field}"}), 400
+
+    # 1. Obtener los items del carrito del usuario
     cart_items = CartItem.query.filter_by(user_id=current_user_id).all()
 
     if not cart_items:
         return jsonify({"error": "Cart is empty"}), 400
 
-    # 2. Construir la lista de line_items en el formato que Stripe entiende
+    # 2. Construir line_items de los productos
     line_items = []
     for item in cart_items:
         if not item.product:
@@ -368,15 +387,50 @@ def create_checkout_session():
                     "description": item.product.description or "Marine aquarium product",
                     "images": [item.product.image_url] if item.product.image_url else [],
                 },
-                # Stripe usa centavos, no dólares (por eso multiplicamos x 100)
                 "unit_amount": int(item.product.price * 100),
             },
             "quantity": item.quantity,
         })
 
-    # 3. Crear la sesión de Stripe
+    # 3. Si es shipping, agregar línea adicional de $10
+    if delivery_method == "shipping":
+        line_items.append({
+            "price_data": {
+                "currency": "usd",
+                "product_data": {
+                    "name": "Shipping",
+                    "description": "Standard shipping (3-5 business days)",
+                },
+                "unit_amount": 1000,  # $10.00 en centavos
+            },
+            "quantity": 1,
+        })
+
+    # 4. Crear sesión de Stripe
     try:
         frontend_url = os.environ.get("FRONTEND_URL", "http://localhost:3000")
+
+        # Preparar metadata (incluye dirección si aplica)
+        metadata = {
+            "user_id": str(current_user_id),
+            "delivery_method": delivery_method
+        }
+
+        if delivery_method == "shipping" and shipping_address:
+            # Stripe limita cada metadata value a 500 chars
+            metadata["shipping_full_name"] = shipping_address.get("full_name", "")[
+                :500]
+            metadata["shipping_street"] = shipping_address.get("street", "")[
+                :500]
+            metadata["shipping_city"] = shipping_address.get("city", "")[:500]
+            metadata["shipping_state"] = shipping_address.get("state", "")[
+                :500]
+            metadata["shipping_zip"] = shipping_address.get("zip_code", "")[
+                :500]
+            metadata["shipping_country"] = shipping_address.get("country", "")[
+                :500]
+            metadata["shipping_phone"] = shipping_address.get("phone", "")[
+                :500]
 
         checkout_session = stripe.checkout.Session.create(
             payment_method_types=["card"],
@@ -384,10 +438,7 @@ def create_checkout_session():
             mode="payment",
             success_url=f"{frontend_url}/checkout/success?session_id={{CHECKOUT_SESSION_ID}}",
             cancel_url=f"{frontend_url}/checkout/cancel",
-            # Guardamos el user_id para identificar al comprador en el webhook
-            metadata={
-                "user_id": str(current_user_id)
-            }
+            metadata=metadata
         )
 
         return jsonify({

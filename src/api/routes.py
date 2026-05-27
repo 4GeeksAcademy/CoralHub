@@ -2,7 +2,7 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 from flask import Flask, request, jsonify, url_for, Blueprint
-from api.models import db, User, Product, Review
+from api.models import db, User, Product, Review, CartItem, Order, OrderItem
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 
@@ -13,7 +13,6 @@ import cloudinary.uploader
 from flask_jwt_extended import create_access_token
 from flask_jwt_extended import get_jwt_identity
 from flask_jwt_extended import jwt_required
-
 
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -30,9 +29,12 @@ cloudinary.config(
 )
 
 
+# ============================================
+# UPLOAD IMÁGENES (Cloudinary)
+# ============================================
+
 @api.route('/upload', methods=['POST'])
 def upload_image():
-
     file = request.files.get("image")
 
     if not file:
@@ -63,29 +65,24 @@ def handle_hello():
 
 
 # ============================================
-# CATÁLOGO DE PRODUCTOS (User Story Juan)
+# CATÁLOGO DE PRODUCTOS
 # ============================================
 
-# Listar TODOS los productos disponibles
 @api.route('/products', methods=['GET'])
 def get_products():
     products = Product.query.filter_by(status="active").all()
     return jsonify([p.serialize() for p in products]), 200
 
-# Buscar productos por nombre o categoría (query params)
+
 @api.route('/products/search', methods=['GET'])
 def search_products():
-
     query = request.args.get("q", "")
-
     products = Product.query.filter(
         Product.name.ilike(f"%{query}%")
     ).all()
-
     return jsonify([product.serialize() for product in products]), 200
 
 
-# Obtener UN producto por su ID
 @api.route('/products/<int:product_id>', methods=['GET'])
 def get_product(product_id):
     product = Product.query.get(product_id)
@@ -99,13 +96,11 @@ def get_product(product_id):
 @api.route('/products', methods=['POST'])
 @jwt_required()
 def create_product():
-
     body = request.get_json()
 
     if not body:
         return jsonify({"error": "Request body is required"}), 400
 
-    # Validar campos requeridos
     required_fields = ["name", "price", "category"]
     for field in required_fields:
         if field not in body or not body[field]:
@@ -138,9 +133,12 @@ def create_product():
         return jsonify({"error": f"Error creating product: {str(e)}"}), 500
 
 
+# ============================================
+# AUTENTICACIÓN
+# ============================================
+
 @api.route('/signup', methods=['POST'])
 def signup():
-
     body = request.get_json()
 
     first_name = body.get("first_name")
@@ -148,7 +146,6 @@ def signup():
     email = body.get("email")
     password = body.get("password")
 
-    # VALIDAR SI EL USUARIO YA EXISTE
     existing_user = User.query.filter_by(email=email).first()
 
     if existing_user:
@@ -156,10 +153,8 @@ def signup():
             "message": "User already exists"
         }), 400
 
-    # HASH PASSWORD
     hashed_password = generate_password_hash(password)
 
-    # CREAR USUARIO
     new_user = User(
         first_name=first_name,
         last_name=last_name,
@@ -177,7 +172,6 @@ def signup():
 
 @api.route("/login", methods=["POST"])
 def login():
-
     data = request.get_json()
 
     user = User.query.filter_by(email=data["email"]).first()
@@ -193,7 +187,6 @@ def login():
 @api.route("/private", methods=["GET"])
 @jwt_required()
 def private():
-
     current_user_id = get_jwt_identity()
 
     return jsonify({
@@ -209,34 +202,140 @@ def private():
 @api.route('/users', methods=['GET'])
 @jwt_required()
 def get_all_users():
-    # 1. Obtener el ID del usuario desde el token JWT
     current_user_id = get_jwt_identity()
-
-    # 2. Buscar al usuario en la base de datos para verificar su rol
     admin_user = User.query.get(current_user_id)
 
     if not admin_user:
         return jsonify({"msg": "User not found"}), 404
 
-    # 3. Validar si realmente es un administrador
     if admin_user.role != "admin":
         return jsonify({"msg": "Access denied. Admins only."}), 403
 
-    # 4. Si es admin, traer todos los usuarios de la base de datos
     users = User.query.all()
-
-    # 5. Serializar y retornar la lista de usuarios
     return jsonify([user.serialize() for user in users]), 200
 
 
 # ============================================
-# CARRITO Y PROCESAMIENTO DE COMPRA (Checkout)
+# CART (Carrito de compras)
+# ============================================
+
+@api.route('/cart', methods=['GET'])
+@jwt_required()
+def get_cart():
+    current_user_id = get_jwt_identity()
+    items = CartItem.query.filter_by(user_id=current_user_id).all()
+
+    total = sum(item.product.price *
+                item.quantity for item in items if item.product)
+
+    return jsonify({
+        "items": [item.serialize() for item in items],
+        "total": round(total, 2),
+        "count": sum(item.quantity for item in items)
+    }), 200
+
+
+@api.route('/cart', methods=['POST'])
+@jwt_required()
+def add_to_cart():
+    current_user_id = get_jwt_identity()
+    body = request.get_json()
+
+    if not body or 'product_id' not in body:
+        return jsonify({"error": "product_id is required"}), 400
+
+    product_id = body['product_id']
+    quantity = int(body.get('quantity', 1))
+
+    product = Product.query.get(product_id)
+    if not product:
+        return jsonify({"error": "Product not found"}), 404
+    if product.status != 'active':
+        return jsonify({"error": "Product is not available"}), 400
+    if product.stock < quantity:
+        return jsonify({"error": f"Only {product.stock} units available"}), 400
+
+    existing = CartItem.query.filter_by(
+        user_id=current_user_id,
+        product_id=product_id
+    ).first()
+
+    if existing:
+        new_qty = existing.quantity + quantity
+        if new_qty > product.stock:
+            return jsonify({"error": f"Only {product.stock} units available"}), 400
+        existing.quantity = new_qty
+        db.session.commit()
+        return jsonify(existing.serialize()), 200
+
+    new_item = CartItem(
+        user_id=current_user_id,
+        product_id=product_id,
+        quantity=quantity
+    )
+    db.session.add(new_item)
+    db.session.commit()
+
+    return jsonify(new_item.serialize()), 201
+
+
+@api.route('/cart/<int:item_id>', methods=['PUT'])
+@jwt_required()
+def update_cart_item(item_id):
+    current_user_id = get_jwt_identity()
+    body = request.get_json()
+
+    item = CartItem.query.get(item_id)
+    if not item:
+        return jsonify({"error": "Cart item not found"}), 404
+    if item.user_id != current_user_id:
+        return jsonify({"error": "Unauthorized"}), 403
+
+    new_quantity = int(body.get('quantity', 1))
+    if new_quantity < 1:
+        return jsonify({"error": "Quantity must be at least 1"}), 400
+    if new_quantity > item.product.stock:
+        return jsonify({"error": f"Only {item.product.stock} units available"}), 400
+
+    item.quantity = new_quantity
+    db.session.commit()
+
+    return jsonify(item.serialize()), 200
+
+
+@api.route('/cart/<int:item_id>', methods=['DELETE'])
+@jwt_required()
+def remove_from_cart(item_id):
+    current_user_id = get_jwt_identity()
+
+    item = CartItem.query.get(item_id)
+    if not item:
+        return jsonify({"error": "Cart item not found"}), 404
+    if item.user_id != current_user_id:
+        return jsonify({"error": "Unauthorized"}), 403
+
+    db.session.delete(item)
+    db.session.commit()
+
+    return jsonify({"msg": "Item removed from cart"}), 200
+
+
+@api.route('/cart', methods=['DELETE'])
+@jwt_required()
+def clear_cart():
+    current_user_id = get_jwt_identity()
+    CartItem.query.filter_by(user_id=current_user_id).delete()
+    db.session.commit()
+    return jsonify({"msg": "Cart cleared"}), 200
+
+
+# ============================================
+# CHECKOUT (placeholder - se reemplazará con Stripe en Fase 2)
 # ============================================
 
 @api.route('/checkout', methods=['POST'])
 @jwt_required()
 def handle_checkout():
-    # Identificar de forma segura qué usuario registrado está comprando
     current_user_id = get_jwt_identity()
     body = request.get_json()
 
@@ -246,8 +345,6 @@ def handle_checkout():
     items_comprados = body.get("items")
     total_pagado = body.get("total")
 
-    # Aquí la lógica de tu servidor procesa los datos.
-    # Por ahora, confirmamos la recepción exitosa del pedido.
     print(
         f"Usuario ID {current_user_id} ha realizado una compra de ${total_pagado}")
 

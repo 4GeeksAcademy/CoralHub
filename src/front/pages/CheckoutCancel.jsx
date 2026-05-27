@@ -10,19 +10,19 @@ export const CheckoutCancel = () => {
                         <div style={{ fontSize: "5rem" }}>😕</div>
 
                         <h1 className="fw-bold mt-3 mb-3 text-warning">
-                            Pago cancelado
+                            Payment Cancelled
                         </h1>
 
                         <p className="text-secondary fs-5 mb-4">
-                            No se procesó ningún cobro. Tu carrito sigue intacto.
+                            No charge was made. Your cart is still intact.
                         </p>
 
                         <div className="d-flex flex-column gap-2">
                             <Link to="/cart" className="btn btn-dark py-2 rounded-3">
-                                Volver al carrito
+                                Back to Cart
                             </Link>
                             <Link to="/" className="btn btn-outline-secondary py-2 rounded-3">
-                                Seguir comprando
+                                Continue Shopping
                             </Link>
                         </div>
                     </div>

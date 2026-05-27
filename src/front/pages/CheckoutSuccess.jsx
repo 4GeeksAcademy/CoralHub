@@ -10,20 +10,20 @@ export const CheckoutSuccess = () => {
     const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
     useEffect(() => {
-        // Vaciar el carrito en el backend y en el estado global
+        // Clear cart on backend and in global state
         const clearCart = async () => {
             const token = localStorage.getItem("token");
 
             if (!token) return;
 
             try {
-                // Vaciar el carrito en la BD
+                // Clear cart in DB
                 await fetch(`${backendUrl}/api/cart`, {
                     method: "DELETE",
                     headers: { "Authorization": `Bearer ${token}` }
                 });
 
-                // Vaciar el carrito en el estado global (actualiza el badge de la navbar)
+                // Clear cart in global state (updates the navbar badge)
                 dispatch({ type: "clear_cart" });
             } catch (err) {
                 console.error("Error clearing cart:", err);
@@ -41,30 +41,30 @@ export const CheckoutSuccess = () => {
                         <div style={{ fontSize: "5rem" }}>🎉</div>
 
                         <h1 className="fw-bold mt-3 mb-3 text-success">
-                            ¡Pago exitoso!
+                            Payment Successful!
                         </h1>
 
                         <p className="text-secondary fs-5 mb-4">
-                            Gracias por tu compra. Tu pedido ha sido procesado correctamente.
+                            Thank you for your purchase. Your order has been processed successfully.
                         </p>
 
                         {sessionId && (
                             <p className="text-secondary small mb-4">
-                                ID de transacción: <code>{sessionId.substring(0, 20)}...</code>
+                                Transaction ID: <code>{sessionId.substring(0, 20)}...</code>
                             </p>
                         )}
 
                         <div className="d-flex flex-column gap-2">
                             <Link to="/" className="btn btn-dark py-2 rounded-3">
-                                Volver a la tienda
+                                Back to Store
                             </Link>
                             <Link to="/dashboard" className="btn btn-outline-secondary py-2 rounded-3">
-                                Ver mis pedidos
+                                View My Orders
                             </Link>
                         </div>
 
                         <p className="text-secondary mt-4 mb-0" style={{ fontSize: "0.85rem" }}>
-                            📧 Recibirás un email de confirmación de Stripe en breve.
+                            📧 You'll receive a confirmation email from Stripe shortly.
                         </p>
                     </div>
                 </div>

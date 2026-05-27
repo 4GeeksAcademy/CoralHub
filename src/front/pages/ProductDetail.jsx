@@ -1,19 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
-import useGlobalReducer from "../hooks/useGlobalReducer.jsx"; // 👈 Importamos el estado global
+import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
 import "../index.css";
 
 export const ProductDetail = () => {
     const { id } = useParams();
     const navigate = useNavigate();
 
-    const { store, dispatch } = useGlobalReducer(); // 👈 Consumimos el dispatch
+    const { store, dispatch } = useGlobalReducer();
     const [product, setProduct] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [addingToCart, setAddingToCart] = useState(false);
+
+    const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
     useEffect(() => {
-        fetch(`${import.meta.env.VITE_BACKEND_URL}/api/products/${id}`)
+        fetch(`${backendUrl}/api/products/${id}`)
             .then((response) => {
                 if (!response.ok) throw new Error("Product not found");
                 return response.json();
@@ -29,73 +32,82 @@ export const ProductDetail = () => {
             });
     }, [id]);
 
-    // Función para manejar el clic en Agregar al Carrito
-    const handleAddToCart = () => {
-
+    // Agregar producto al carrito (ahora sincroniza con el backend)
+    const handleAddToCart = async () => {
         const token = localStorage.getItem("token");
 
-        // Verificar si el usuario está logeado
-
+        // Verificar si el usuario está logueado
         if (!token) {
-
             alert("You need to sign in first");
             navigate("/login");
-
             return;
         }
 
-        // Agregar producto al carrito
+        if (!product) return;
 
-        if (product) {
+        setAddingToCart(true);
 
-            dispatch({
-                type: "add_to_cart",
-                payload: product
+        try {
+            // 1. Agregar el producto al carrito en el backend
+            const response = await fetch(`${backendUrl}/api/cart`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                },
+                body: JSON.stringify({
+                    product_id: product.id,
+                    quantity: 1
+                })
             });
 
+            if (!response.ok) {
+                const data = await response.json();
+                alert(data.error || "Error al agregar al carrito");
+                setAddingToCart(false);
+                return;
+            }
+
+            // 2. Refrescar el carrito global para que la Navbar se actualice
+            const cartRes = await fetch(`${backendUrl}/api/cart`, {
+                headers: { "Authorization": `Bearer ${token}` }
+            });
+
+            if (cartRes.ok) {
+                const cartData = await cartRes.json();
+                dispatch({ type: "set_cart", payload: cartData });
+            }
+
             alert(`${product.name} añadido al carrito con éxito 🛒`);
+        } catch (err) {
+            console.error(err);
+            alert("Error de conexión con el servidor");
+        } finally {
+            setAddingToCart(false);
         }
     };
 
-
     if (loading) {
-
         return (
-
             <div className="product-page">
-
                 <div className="container py-5 text-center">
-
                     <div className="spinner-border text-info"></div>
-
                     <p className="mt-3 text-light">
-
                         Loading product...
-
                     </p>
-
                 </div>
-
             </div>
         );
     }
 
     if (error) {
-
         return (
-
             <div className="product-page">
-
                 <div className="container py-5">
-
                     <div className="alert alert-danger">
-
                         {error}
-
                     </div>
-
                 </div>
-
             </div>
         );
     }
@@ -144,18 +156,18 @@ export const ProductDetail = () => {
 
                             <div className="product-actions">
                                 <button
-                                    className="hero-btn-solid "
+                                    className="hero-btn-solid"
                                     onClick={handleAddToCart}
+                                    disabled={addingToCart || product.stock === 0}
                                     aria-label={`Add ${product.name} to cart`}
                                 >
-                                    Add to Cart
+                                    {addingToCart ? "Adding..." : product.stock === 0 ? "Out of Stock" : "Add to Cart"}
                                 </button>
                                 <button className="btn wishlist-btn" aria-label="Add to wishlist">♡</button>
                             </div>
                         </div>
                     </div>
                 </div>
-                {/* Nota: He omitido la sección de comentarios inferior en este bloque para ahorrar espacio, mantén la tuya intacta */}
             </div>
         </div>
     );

@@ -1,13 +1,36 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
 
 export const Navbar = () => {
 
     const navigate = useNavigate();
+    const { store, dispatch } = useGlobalReducer();
 
     const token = localStorage.getItem("token");
 
     const [searchTerm, setSearchTerm] = useState("");
+
+    // Cargar carrito al montar la navbar (si hay sesión activa)
+    useEffect(() => {
+        if (!token) return;
+
+        const fetchCart = async () => {
+            try {
+                const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/cart`, {
+                    headers: { "Authorization": `Bearer ${token}` }
+                });
+                if (res.ok) {
+                    const data = await res.json();
+                    dispatch({ type: "set_cart", payload: data });
+                }
+            } catch (err) {
+                console.error("Error fetching cart:", err);
+            }
+        };
+
+        fetchCart();
+    }, [token]);
 
     const handleLogout = () => {
 
@@ -183,12 +206,18 @@ export const Navbar = () => {
                                     {/* CART */}
                                     <Link
                                         to="/cart"
-                                        className="cart-icon"
+                                        className="cart-icon position-relative"
                                         aria-label="Shopping cart"
                                     >
-
                                         <i className="fa-solid fa-cart-shopping"></i>
-
+                                        {store.cart?.count > 0 && (
+                                            <span
+                                                className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                                                style={{ fontSize: "0.65rem" }}
+                                            >
+                                                {store.cart.count}
+                                            </span>
+                                        )}
                                     </Link>
 
                                     {/* LOGOUT */}
@@ -306,9 +335,14 @@ export const Navbar = () => {
 
                                     <Link
                                         to="/cart"
-                                        className="mobile-nav-link"
+                                        className="mobile-nav-link position-relative"
                                     >
                                         Cart
+                                        {store.cart?.count > 0 && (
+                                            <span className="badge bg-danger ms-2">
+                                                {store.cart.count}
+                                            </span>
+                                        )}
                                     </Link>
 
                                     <button

@@ -9,6 +9,7 @@ from flask_cors import CORS
 import os
 import cloudinary
 import cloudinary.uploader
+import stripe
 
 from flask_jwt_extended import create_access_token
 from flask_jwt_extended import get_jwt_identity
@@ -27,6 +28,9 @@ cloudinary.config(
     api_key=os.environ.get("CLOUDINARY_API_KEY"),
     api_secret=os.environ.get("CLOUDINARY_API_SECRET"),
 )
+
+# Configurar Stripe con la secret key
+stripe.api_key = os.environ.get("STRIPE_SECRET_KEY")
 
 
 # ============================================
@@ -330,26 +334,246 @@ def clear_cart():
 
 
 # ============================================
-# CHECKOUT (placeholder - se reemplazará con Stripe en Fase 2)
+# STRIPE CHECKOUT
 # ============================================
 
-@api.route('/checkout', methods=['POST'])
+@api.route('/create-checkout-session', methods=['POST'])
 @jwt_required()
-def handle_checkout():
+def create_checkout_session():
     current_user_id = get_jwt_identity()
-    body = request.get_json()
+    body = request.get_json() or {}
 
-    if not body or 'items' not in body:
-        return jsonify({"msg": "Missing cart items or total summary"}), 400
+    delivery_method = body.get("delivery_method", "pickup")
+    shipping_address = body.get("shipping_address")
 
-    items_comprados = body.get("items")
-    total_pagado = body.get("total")
+    # Validar delivery method
+    if delivery_method not in ["pickup", "shipping"]:
+        return jsonify({"error": "Invalid delivery method"}), 400
 
-    print(
-        f"Usuario ID {current_user_id} ha realizado una compra de ${total_pagado}")
+    # Si es shipping, validar que venga la dirección completa
+    if delivery_method == "shipping":
+        if not shipping_address:
+            return jsonify({"error": "Shipping address is required for shipping"}), 400
 
-    return jsonify({
-        "msg": "Purchase processed successfully!",
-        "buyer_id": current_user_id,
-        "total": total_pagado
-    }), 200
+        required_fields = ["full_name", "street",
+                           "city", "state", "zip_code", "country"]
+        for field in required_fields:
+            if not shipping_address.get(field):
+                return jsonify({"error": f"Missing shipping field: {field}"}), 400
+
+    # 1. Obtener los items del carrito del usuario
+    cart_items = CartItem.query.filter_by(user_id=current_user_id).all()
+
+    if not cart_items:
+        return jsonify({"error": "Cart is empty"}), 400
+
+    # 2. Construir line_items de los productos
+    line_items = []
+    for item in cart_items:
+        if not item.product:
+            continue
+
+        # Validar stock antes de proceder
+        if item.product.stock < item.quantity:
+            return jsonify({
+                "error": f"Not enough stock for {item.product.name}. Available: {item.product.stock}"
+            }), 400
+
+        line_items.append({
+            "price_data": {
+                "currency": "usd",
+                "product_data": {
+                    "name": item.product.name,
+                    "description": item.product.description or "Marine aquarium product",
+                    "images": [item.product.image_url] if item.product.image_url else [],
+                },
+                "unit_amount": int(item.product.price * 100),
+            },
+            "quantity": item.quantity,
+        })
+
+    # 3. Si es shipping, agregar línea adicional de $10
+    if delivery_method == "shipping":
+        line_items.append({
+            "price_data": {
+                "currency": "usd",
+                "product_data": {
+                    "name": "Shipping",
+                    "description": "Standard shipping (3-5 business days)",
+                },
+                "unit_amount": 1000,  # $10.00 en centavos
+            },
+            "quantity": 1,
+        })
+
+    # 4. Crear sesión de Stripe
+    try:
+        frontend_url = os.environ.get("FRONTEND_URL", "http://localhost:3000")
+
+        # Preparar metadata (incluye dirección si aplica)
+        metadata = {
+            "user_id": str(current_user_id),
+            "delivery_method": delivery_method
+        }
+
+        if delivery_method == "shipping" and shipping_address:
+            # Stripe limita cada metadata value a 500 chars
+            metadata["shipping_full_name"] = shipping_address.get("full_name", "")[
+                :500]
+            metadata["shipping_street"] = shipping_address.get("street", "")[
+                :500]
+            metadata["shipping_city"] = shipping_address.get("city", "")[:500]
+            metadata["shipping_state"] = shipping_address.get("state", "")[
+                :500]
+            metadata["shipping_zip"] = shipping_address.get("zip_code", "")[
+                :500]
+            metadata["shipping_country"] = shipping_address.get("country", "")[
+                :500]
+            metadata["shipping_phone"] = shipping_address.get("phone", "")[
+                :500]
+
+        checkout_session = stripe.checkout.Session.create(
+            payment_method_types=["card"],
+            line_items=line_items,
+            mode="payment",
+            success_url=f"{frontend_url}/checkout/success?session_id={{CHECKOUT_SESSION_ID}}",
+            cancel_url=f"{frontend_url}/checkout/cancel",
+            metadata=metadata
+        )
+
+        return jsonify({
+            "url": checkout_session.url,
+            "session_id": checkout_session.id
+        }), 200
+
+    except stripe.error.StripeError as e:
+        return jsonify({"error": str(e)}), 500
+    except Exception as e:
+        return jsonify({"error": f"Server error: {str(e)}"}), 500
+
+
+# ============================================
+# STRIPE WEBHOOK
+# ============================================
+
+@api.route('/stripe-webhook', methods=['POST'])
+def stripe_webhook():
+    """
+    Endpoint que recibe notificaciones de Stripe cuando suceden eventos.
+    El evento que nos interesa es 'checkout.session.completed' (pago exitoso).
+    """
+    payload = request.data
+    sig_header = request.headers.get('Stripe-Signature')
+    webhook_secret = os.environ.get('STRIPE_WEBHOOK_SECRET')
+
+    if not webhook_secret:
+        return jsonify({"error": "Webhook secret not configured"}), 500
+
+    # 1. Verificar que el evento viene realmente de Stripe (anti-suplantación)
+    try:
+        event = stripe.Webhook.construct_event(
+            payload, sig_header, webhook_secret
+        )
+    except ValueError:
+        return jsonify({"error": "Invalid payload"}), 400
+    except stripe.error.SignatureVerificationError:
+        return jsonify({"error": "Invalid signature"}), 400
+
+    # 2. Manejar el evento de pago completado
+    if event['type'] == 'checkout.session.completed':
+        session = event['data']['object']
+        session_id = session.get('id')
+
+        # Idempotencia: si ya procesamos esta sesión, no la creamos otra vez
+        existing_order = Order.query.filter_by(
+            stripe_session_id=session_id).first()
+        if existing_order:
+            print(f"⚠️ Order ya existe para session {session_id}")
+            return jsonify({"received": True}), 200
+
+        # Extraer metadata
+        metadata = session.get('metadata', {})
+        user_id = metadata.get('user_id')
+        delivery_method = metadata.get('delivery_method', 'pickup')
+
+        if not user_id:
+            print(f"❌ No user_id in session {session_id}")
+            return jsonify({"error": "Missing user_id in metadata"}), 400
+
+        # Obtener el total pagado (Stripe lo devuelve en centavos)
+        total = session.get('amount_total', 0) / 100
+
+        try:
+            # 3. Crear la Order
+            new_order = Order(
+                buyer_id=int(user_id),
+                order_status='paid',
+                total=total,
+                stripe_session_id=session_id,
+                delivery_method=delivery_method
+            )
+
+            # Si fue shipping, guardar la dirección
+            if delivery_method == 'shipping':
+                new_order.shipping_full_name = metadata.get(
+                    'shipping_full_name')
+                new_order.shipping_street = metadata.get('shipping_street')
+                new_order.shipping_city = metadata.get('shipping_city')
+                new_order.shipping_state = metadata.get('shipping_state')
+                new_order.shipping_zip = metadata.get('shipping_zip')
+                new_order.shipping_country = metadata.get('shipping_country')
+                new_order.shipping_phone = metadata.get('shipping_phone')
+
+            db.session.add(new_order)
+            db.session.flush()  # Para obtener el order.id antes del commit
+
+            # 4. Crear los OrderItems desde el carrito del usuario
+            cart_items = CartItem.query.filter_by(user_id=int(user_id)).all()
+
+            for cart_item in cart_items:
+                if not cart_item.product:
+                    continue
+
+                order_item = OrderItem(
+                    order_id=new_order.id,
+                    product_id=cart_item.product_id,
+                    quantity=cart_item.quantity,
+                    unit_price=cart_item.product.price
+                )
+                db.session.add(order_item)
+
+                # 5. Descontar stock del producto
+                cart_item.product.stock -= cart_item.quantity
+                if cart_item.product.stock <= 0:
+                    cart_item.product.status = 'sold_out'
+
+            # 6. Vaciar el carrito del usuario
+            CartItem.query.filter_by(user_id=int(user_id)).delete()
+
+            db.session.commit()
+            print(
+                f"✅ Order #{new_order.id} created for user {user_id} - ${total}")
+
+        except Exception as e:
+            db.session.rollback()
+            print(f"❌ Error creating order: {str(e)}")
+            return jsonify({"error": f"Database error: {str(e)}"}), 500
+
+    return jsonify({"received": True}), 200
+
+
+# ============================================
+# MIS ÓRDENES (Historial del usuario)
+# ============================================
+
+@api.route('/my-orders', methods=['GET'])
+@jwt_required()
+def get_my_orders():
+    """
+    Devuelve todas las órdenes del usuario logueado, ordenadas por más reciente primero.
+    """
+    current_user_id = get_jwt_identity()
+    orders = Order.query.filter_by(buyer_id=current_user_id).order_by(
+        Order.created_at.desc()).all()
+
+    return jsonify([order.serialize() for order in orders]), 200

@@ -16,7 +16,9 @@ import { AddProduct } from "./pages/AddProduct";
 import { Catalog } from "./pages/Catalog";
 import { AdminUsers } from "./pages/AdminUsers";
 import { ProductDetail } from "./pages/ProductDetail";
-import { Cart } from "./pages/Cart.jsx"
+import { Cart } from "./pages/Cart.jsx";
+import { CheckoutSuccess } from "./pages/CheckoutSuccess.jsx";
+import { CheckoutCancel } from "./pages/CheckoutCancel.jsx";
 import { SearchResults } from "./pages/SearchResults";
 import { Privacy } from "./pages/Privacy";
 import { Terms } from "./pages/Terms";
@@ -53,6 +55,8 @@ export const router = createBrowserRouter(
       <Route path="/admin/users" element={<AdminUsers />} />
       <Route path="/product/:id" element={<ProductDetail />} />
       <Route path="/cart" element={<Cart />} />
+      <Route path="/checkout/success" element={<CheckoutSuccess />} />
+      <Route path="/checkout/cancel" element={<CheckoutCancel />} />
       <Route path="/search" element={<SearchResults />} />
       <Route path="/privacy" element={<Privacy />} />
       <Route path="/terms" element={<Terms />} />

@@ -450,3 +450,130 @@ def create_checkout_session():
         return jsonify({"error": str(e)}), 500
     except Exception as e:
         return jsonify({"error": f"Server error: {str(e)}"}), 500
+
+
+# ============================================
+# STRIPE WEBHOOK
+# ============================================
+
+@api.route('/stripe-webhook', methods=['POST'])
+def stripe_webhook():
+    """
+    Endpoint que recibe notificaciones de Stripe cuando suceden eventos.
+    El evento que nos interesa es 'checkout.session.completed' (pago exitoso).
+    """
+    payload = request.data
+    sig_header = request.headers.get('Stripe-Signature')
+    webhook_secret = os.environ.get('STRIPE_WEBHOOK_SECRET')
+
+    if not webhook_secret:
+        return jsonify({"error": "Webhook secret not configured"}), 500
+
+    # 1. Verificar que el evento viene realmente de Stripe (anti-suplantación)
+    try:
+        event = stripe.Webhook.construct_event(
+            payload, sig_header, webhook_secret
+        )
+    except ValueError:
+        return jsonify({"error": "Invalid payload"}), 400
+    except stripe.error.SignatureVerificationError:
+        return jsonify({"error": "Invalid signature"}), 400
+
+    # 2. Manejar el evento de pago completado
+    if event['type'] == 'checkout.session.completed':
+        session = event['data']['object']
+        session_id = session.get('id')
+
+        # Idempotencia: si ya procesamos esta sesión, no la creamos otra vez
+        existing_order = Order.query.filter_by(
+            stripe_session_id=session_id).first()
+        if existing_order:
+            print(f"⚠️ Order ya existe para session {session_id}")
+            return jsonify({"received": True}), 200
+
+        # Extraer metadata
+        metadata = session.get('metadata', {})
+        user_id = metadata.get('user_id')
+        delivery_method = metadata.get('delivery_method', 'pickup')
+
+        if not user_id:
+            print(f"❌ No user_id in session {session_id}")
+            return jsonify({"error": "Missing user_id in metadata"}), 400
+
+        # Obtener el total pagado (Stripe lo devuelve en centavos)
+        total = session.get('amount_total', 0) / 100
+
+        try:
+            # 3. Crear la Order
+            new_order = Order(
+                buyer_id=int(user_id),
+                order_status='paid',
+                total=total,
+                stripe_session_id=session_id,
+                delivery_method=delivery_method
+            )
+
+            # Si fue shipping, guardar la dirección
+            if delivery_method == 'shipping':
+                new_order.shipping_full_name = metadata.get(
+                    'shipping_full_name')
+                new_order.shipping_street = metadata.get('shipping_street')
+                new_order.shipping_city = metadata.get('shipping_city')
+                new_order.shipping_state = metadata.get('shipping_state')
+                new_order.shipping_zip = metadata.get('shipping_zip')
+                new_order.shipping_country = metadata.get('shipping_country')
+                new_order.shipping_phone = metadata.get('shipping_phone')
+
+            db.session.add(new_order)
+            db.session.flush()  # Para obtener el order.id antes del commit
+
+            # 4. Crear los OrderItems desde el carrito del usuario
+            cart_items = CartItem.query.filter_by(user_id=int(user_id)).all()
+
+            for cart_item in cart_items:
+                if not cart_item.product:
+                    continue
+
+                order_item = OrderItem(
+                    order_id=new_order.id,
+                    product_id=cart_item.product_id,
+                    quantity=cart_item.quantity,
+                    unit_price=cart_item.product.price
+                )
+                db.session.add(order_item)
+
+                # 5. Descontar stock del producto
+                cart_item.product.stock -= cart_item.quantity
+                if cart_item.product.stock <= 0:
+                    cart_item.product.status = 'sold_out'
+
+            # 6. Vaciar el carrito del usuario
+            CartItem.query.filter_by(user_id=int(user_id)).delete()
+
+            db.session.commit()
+            print(
+                f"✅ Order #{new_order.id} created for user {user_id} - ${total}")
+
+        except Exception as e:
+            db.session.rollback()
+            print(f"❌ Error creating order: {str(e)}")
+            return jsonify({"error": f"Database error: {str(e)}"}), 500
+
+    return jsonify({"received": True}), 200
+
+
+# ============================================
+# MIS ÓRDENES (Historial del usuario)
+# ============================================
+
+@api.route('/my-orders', methods=['GET'])
+@jwt_required()
+def get_my_orders():
+    """
+    Devuelve todas las órdenes del usuario logueado, ordenadas por más reciente primero.
+    """
+    current_user_id = get_jwt_identity()
+    orders = Order.query.filter_by(buyer_id=current_user_id).order_by(
+        Order.created_at.desc()).all()
+
+    return jsonify([order.serialize() for order in orders]), 200

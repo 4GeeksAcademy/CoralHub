@@ -22,6 +22,11 @@ import { Privacy } from "./pages/Privacy";
 import { Terms } from "./pages/Terms";
 import { Cookies } from "./pages/Cookies";
 import { About } from "./pages/About";
+import { Faq } from "./pages/Faq";
+import { Contact } from "./pages/Contact";
+import { Shipping } from "./pages/Shipping";
+import { Returns } from "./pages/Returns";
+import { Help } from "./pages/Help";
 
 
 export const router = createBrowserRouter(
@@ -53,6 +58,11 @@ export const router = createBrowserRouter(
       <Route path="/terms" element={<Terms />} />
       <Route path="/cookies" element={<Cookies />} />
       <Route path="/about" element={<About />} />
+      <Route path="/faq" element={<Faq />} />
+      <Route path="/contact" element={<Contact />} />
+      <Route path="/shipping" element={<Shipping />} />
+      <Route path="/returns" element={<Returns />} />
+      <Route path="/help" element={<Help />} />
     </Route>
   )
 );

@@ -18,6 +18,7 @@ import { AdminUsers } from "./pages/AdminUsers";
 import { ProductDetail } from "./pages/ProductDetail";
 import { Cart } from "./pages/Cart.jsx"
 import { SearchResults } from "./pages/SearchResults";
+import { Privacy } from "./pages/Privacy";
 
 
 export const router = createBrowserRouter(
@@ -45,6 +46,7 @@ export const router = createBrowserRouter(
       <Route path="/product/:id" element={<ProductDetail />} />
       <Route path="/cart" element={<Cart />} />
       <Route path="/search" element={<SearchResults />} />
+      <Route path="/privacy" element={<Privacy />} />
     </Route>
   )
 );

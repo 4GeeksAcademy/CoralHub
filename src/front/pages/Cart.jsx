@@ -67,7 +67,7 @@ export const Cart = () => {
                 return;
             }
 
-            fetchCart(); // Refresca el carrito completo
+            fetchCart();
         } catch (err) {
             console.error(err);
             alert("Error de conexión");
@@ -93,7 +93,7 @@ export const Cart = () => {
         }
     };
 
-    // Checkout (por ahora usa el endpoint placeholder; en Fase 3 lo cambiamos por Stripe)
+    // ⚡ CHECKOUT CON STRIPE
     const handleCheckout = async () => {
         const token = localStorage.getItem("token");
 
@@ -111,30 +111,33 @@ export const Cart = () => {
         setProcessingCheckout(true);
 
         try {
-            const response = await fetch(`${backendUrl}/api/checkout`, {
+            // 1. Pedir al backend que cree una sesión de Stripe
+            const response = await fetch(`${backendUrl}/api/create-checkout-session`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                     "Authorization": `Bearer ${token}`
-                },
-                body: JSON.stringify({
-                    items: store.cart.items,
-                    total: store.cart.total
-                })
+                }
             });
 
-            if (response.ok) {
-                alert("🎉 ¡Compra realizada con éxito!");
-                dispatch({ type: "clear_cart" });
-                navigate("/private");
+            const data = await response.json();
+
+            if (!response.ok) {
+                alert(data.error || "Hubo un problema al procesar el pago.");
+                setProcessingCheckout(false);
+                return;
+            }
+
+            // 2. Redirigir al usuario a la página de pago de Stripe
+            if (data.url) {
+                window.location.href = data.url;
             } else {
-                const data = await response.json();
-                alert(data.msg || "Hubo un problema al procesar el pago.");
+                alert("Error: no se recibió la URL de pago");
+                setProcessingCheckout(false);
             }
         } catch (err) {
             console.error(err);
             alert("Error de conexión con el servidor.");
-        } finally {
             setProcessingCheckout(false);
         }
     };
@@ -254,8 +257,12 @@ export const Cart = () => {
                             onClick={handleCheckout}
                             disabled={processingCheckout}
                         >
-                            {processingCheckout ? "Procesando..." : "Confirmar y Pagar"}
+                            {processingCheckout ? "Redirigiendo a Stripe..." : "💳 Pagar con Stripe"}
                         </button>
+
+                        <p className="text-center text-secondary mt-3 mb-0" style={{ fontSize: "0.8rem" }}>
+                            🔒 Pago seguro procesado por Stripe
+                        </p>
                     </div>
                 </div>
             </div>

@@ -153,7 +153,7 @@ export const Navbar = () => {
 
                                     {/* DASHBOARD */}
                                     <Link
-                                        to="/private"
+                                        to="/dashboard"
                                         className="nav-link-custom"
                                     >
                                         Dashboard

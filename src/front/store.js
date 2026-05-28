@@ -3,64 +3,67 @@ export const initialStore = () => {
     message: null,
     todos: [
       { id: 1, title: "Make the bed", background: null },
-      { id: 2, title: "Do my homework", background: null },
+      { id: 2, title: "Do my homework", background: null }
     ],
-    cart: {
-      items: [],
-      total: 0,
-      count: 0,
-    },
-    cartLoading: false,
-  };
-};
+    cart: [] // Carrito de compras vacío al inicio
+  }
+}
 
 export default function storeReducer(store, action = {}) {
   switch (action.type) {
-    case "set_hello":
+    case 'set_hello':
       return {
         ...store,
-        message: action.payload,
+        message: action.payload
       };
 
-    // 🛒 Reemplaza el carrito completo (lo usamos cuando hacemos fetch al backend)
-    case "set_cart":
+    case 'add_to_cart':
+      const existingProduct = store.cart.find(item => item.id === action.payload.id);
+      if (existingProduct) {
+        return {
+          ...store,
+          cart: store.cart.map(item =>
+            item.id === action.payload.id 
+              ? { ...item, quantity: (item.quantity || 1) + 1 } 
+              : item
+          )
+        };
+      }
       return {
         ...store,
-        cart: {
-          items: action.payload.items || [],
-          total: action.payload.total || 0,
-          count: action.payload.count || 0,
-        },
+        cart: [...store.cart, { ...action.payload, quantity: 1 }]
       };
 
-    // Loading state para mostrar spinners en el carrito
-    case "set_cart_loading":
+    case 'update_quantity':
       return {
         ...store,
-        cartLoading: action.payload,
+        cart: store.cart.map(item => 
+          item.id === action.payload.id 
+            ? { ...item, quantity: action.payload.quantity } 
+            : item
+        ).filter(item => item.quantity > 0)
       };
 
-    // Limpia el carrito (después de un checkout exitoso)
-    case "clear_cart":
+    case 'remove_from_cart':
       return {
         ...store,
-        cart: {
-          items: [],
-          total: 0,
-          count: 0,
-        },
+        cart: store.cart.filter(item => item.id !== action.payload)
       };
 
-    case "add_task":
-      const { id, color } = action.payload;
+    case 'clear_cart':
       return {
         ...store,
-        todos: store.todos.map((todo) =>
-          todo.id === id ? { ...todo, background: color } : todo,
-        ),
+        cart: []
+      };
+      
+    case 'add_task':
+      const { id, color } = action.payload
+      return {
+        ...store,
+        todos: store.todos.map((todo) => (todo.id === id ? { ...todo, background: color } : todo))
       };
 
     default:
-      throw Error("Unknown action.");
-  }
+      return store; // 👈 Cambiado aquí para evitar la pantalla azul/blanca
+  }    
 }

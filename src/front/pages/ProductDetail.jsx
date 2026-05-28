@@ -33,59 +33,27 @@ export const ProductDetail = () => {
     }, [id]);
 
     // Agregar producto al carrito (ahora sincroniza con el backend)
-    const handleAddToCart = async () => {
-        const token = localStorage.getItem("token");
+    const handleAddToCart = () => {
+    // 1. Verificamos si tenemos los datos del coral/producto actual
+    if (!product) {
+        alert("No se pudo cargar la información del producto.");
+        return;
+    }
 
-        // Verificar si el usuario está logueado
-        if (!token) {
-            alert("You need to sign in first");
-            navigate("/login");
-            return;
+    // 2. Despachamos la acción directamente al reducer global
+    dispatch({
+        type: "add_to_cart",
+        payload: {
+            id: product.id,
+            name: product.name,
+            price: product.price,
+            image_url: product.image_url, // Asegúrate de que coincida con la propiedad de tu objeto
         }
+    });
 
-        if (!product) return;
-
-        setAddingToCart(true);
-
-        try {
-            // 1. Agregar el producto al carrito en el backend
-            const response = await fetch(`${backendUrl}/api/cart`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${token}`
-                },
-                body: JSON.stringify({
-                    product_id: product.id,
-                    quantity: 1
-                })
-            });
-
-            if (!response.ok) {
-                const data = await response.json();
-                alert(data.error || "Error al agregar al carrito");
-                setAddingToCart(false);
-                return;
-            }
-
-            // 2. Refrescar el carrito global para que la Navbar se actualice
-            const cartRes = await fetch(`${backendUrl}/api/cart`, {
-                headers: { "Authorization": `Bearer ${token}` }
-            });
-
-            if (cartRes.ok) {
-                const cartData = await cartRes.json();
-                dispatch({ type: "set_cart", payload: cartData });
-            }
-
-            alert(`${product.name} añadido al carrito con éxito 🛒`);
-        } catch (err) {
-            console.error(err);
-            alert("Error de conexión con el servidor");
-        } finally {
-            setAddingToCart(false);
-        }
-    };
+    // 3. Avisamos al usuario con éxito total
+    alert("🎉 ¡Producto añadido al carrito con éxito!");
+};
 
     if (loading) {
         return (

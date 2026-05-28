@@ -12,7 +12,7 @@ export const Navbar = () => {
     const [searchTerm, setSearchTerm] = useState("");
 
     // Cargar carrito al montar la navbar (si hay sesión activa)
-    useEffect(() => {
+    /*useEffect(() => {
         if (!token) return;
 
         const fetchCart = async () => {
@@ -31,7 +31,7 @@ export const Navbar = () => {
 
         fetchCart();
     }, [token]);
-
+*/
     const handleLogout = () => {
 
         localStorage.removeItem("token");
@@ -210,12 +210,12 @@ export const Navbar = () => {
                                         aria-label="Shopping cart"
                                     >
                                         <i className="fa-solid fa-cart-shopping"></i>
-                                        {store.cart?.count > 0 && (
+                                        {store.cart?.length > 0 && (
                                             <span
                                                 className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
                                                 style={{ fontSize: "0.65rem" }}
                                             >
-                                                {store.cart.count}
+                                                {store.cart.length}
                                             </span>
                                         )}
                                     </Link>
@@ -338,9 +338,9 @@ export const Navbar = () => {
                                         className="mobile-nav-link position-relative"
                                     >
                                         Cart
-                                        {store.cart?.count > 0 && (
+                                        {store.cart?.length > 0 && (
                                             <span className="badge bg-danger ms-2">
-                                                {store.cart.count}
+                                                {store.cart.length}
                                             </span>
                                         )}
                                     </Link>

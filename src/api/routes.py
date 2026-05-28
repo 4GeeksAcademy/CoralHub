@@ -2,7 +2,7 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 from flask import Flask, request, jsonify, url_for, Blueprint
-from api.models import db, User, Product, Review, CartItem, Order, OrderItem
+from api.models import db, User, Product, Review, CartItem, Order, OrderItem, SupportTicket
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 
@@ -10,6 +10,7 @@ import os
 import cloudinary
 import cloudinary.uploader
 import stripe
+from datetime import datetime
 
 from flask_jwt_extended import create_access_token
 from flask_jwt_extended import get_jwt_identity
@@ -576,10 +577,11 @@ def get_my_orders():
         Order.created_at.desc()).all()
 
     return jsonify([order.serialize() for order in orders]), 200
+
+
 # ============================================
 # REVIEWS (Reseñas de productos)
 # ============================================
-
 
 @api.route('/products/<int:product_id>/reviews', methods=['GET'])
 def get_product_reviews(product_id):
@@ -711,3 +713,139 @@ def delete_review(review_id):
     db.session.commit()
 
     return jsonify({"msg": "Review deleted successfully"}), 200
+
+
+# ============================================
+# SUPPORT TICKETS (Contactar administradores)
+# ============================================
+
+@api.route('/support-tickets', methods=['POST'])
+@jwt_required()
+def create_support_ticket():
+    """
+    Crea un ticket de soporte. El usuario debe estar logueado.
+    Puede ser general (sin order_id) o sobre una orden específica.
+    """
+    current_user_id = get_jwt_identity()
+    body = request.get_json() or {}
+
+    subject = body.get('subject', '').strip()
+    message = body.get('message', '').strip()
+    order_id = body.get('order_id')  # opcional
+
+    # Validar campos
+    if not subject:
+        return jsonify({"error": "Subject is required"}), 400
+    if len(subject) > 200:
+        return jsonify({"error": "Subject must be 200 characters or less"}), 400
+    if not message:
+        return jsonify({"error": "Message is required"}), 400
+    if len(message) > 1000:
+        return jsonify({"error": "Message must be 1000 characters or less"}), 400
+
+    # Si viene order_id, validar que la orden exista y sea del usuario
+    if order_id:
+        order = Order.query.get(order_id)
+        if not order:
+            return jsonify({"error": "Order not found"}), 404
+        if order.buyer_id != int(current_user_id):
+            return jsonify({"error": "This order does not belong to you"}), 403
+
+    new_ticket = SupportTicket(
+        user_id=current_user_id,
+        order_id=order_id if order_id else None,
+        subject=subject,
+        message=message,
+        status="open"
+    )
+
+    db.session.add(new_ticket)
+    db.session.commit()
+
+    return jsonify(new_ticket.serialize()), 201
+
+
+@api.route('/support-tickets', methods=['GET'])
+@jwt_required()
+def get_my_support_tickets():
+    """
+    Devuelve todos los tickets del usuario logueado, más reciente primero.
+    """
+    current_user_id = get_jwt_identity()
+    tickets = SupportTicket.query.filter_by(user_id=current_user_id).order_by(
+        SupportTicket.created_at.desc()).all()
+
+    return jsonify([ticket.serialize() for ticket in tickets]), 200
+
+
+@api.route('/admin/support-tickets', methods=['GET'])
+@jwt_required()
+def get_all_support_tickets():
+    """
+    Devuelve TODOS los tickets de soporte. Solo para admins.
+    """
+    current_user_id = get_jwt_identity()
+    admin_user = User.query.get(current_user_id)
+
+    if not admin_user:
+        return jsonify({"error": "User not found"}), 404
+    if admin_user.role != "admin":
+        return jsonify({"error": "Access denied. Admins only."}), 403
+
+    tickets = SupportTicket.query.order_by(
+        SupportTicket.created_at.desc()).all()
+
+    # Incluir el nombre y email del usuario que creó cada ticket
+    result = []
+    for ticket in tickets:
+        ticket_data = ticket.serialize()
+        user = User.query.get(ticket.user_id)
+        ticket_data["user_name"] = f"{user.first_name} {user.last_name}" if user else "Unknown"
+        ticket_data["user_email"] = user.email if user else None
+        result.append(ticket_data)
+
+    return jsonify(result), 200
+
+
+@api.route('/admin/support-tickets/<int:ticket_id>', methods=['PUT'])
+@jwt_required()
+def respond_support_ticket(ticket_id):
+    """
+    El admin responde un ticket y/o cambia su estado. Solo para admins.
+    """
+    current_user_id = get_jwt_identity()
+    admin_user = User.query.get(current_user_id)
+
+    if not admin_user:
+        return jsonify({"error": "User not found"}), 404
+    if admin_user.role != "admin":
+        return jsonify({"error": "Access denied. Admins only."}), 403
+
+    ticket = SupportTicket.query.get(ticket_id)
+    if not ticket:
+        return jsonify({"error": "Ticket not found"}), 404
+
+    body = request.get_json() or {}
+    admin_response = body.get('admin_response', '').strip()
+    status = body.get('status')
+
+    # Si viene respuesta, guardarla
+    if admin_response:
+        if len(admin_response) > 1000:
+            return jsonify({"error": "Response must be 1000 characters or less"}), 400
+        ticket.admin_response = admin_response
+        ticket.responded_at = datetime.utcnow()
+        ticket.responded_by = current_user_id
+        # Si responde y no cambió status manualmente, lo marca como closed
+        if not status:
+            ticket.status = "closed"
+
+    # Si viene un cambio de estado explícito, aplicarlo
+    if status:
+        if status not in ["open", "in_progress", "closed"]:
+            return jsonify({"error": "Invalid status"}), 400
+        ticket.status = status
+
+    db.session.commit()
+
+    return jsonify(ticket.serialize()), 200

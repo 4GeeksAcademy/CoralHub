@@ -19,7 +19,7 @@ class User(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
     # Relaciones
-    products = db.relationship("Product", backref="seller", lazy=True)
+    products = db.relationship("Product", back_populates="seller")
     orders = db.relationship("Order", backref="buyer", lazy=True)
     cart_items = db.relationship("CartItem", backref="user", lazy=True)
     favorites = db.relationship("Favorite", backref="user", lazy=True)
@@ -53,9 +53,10 @@ class Product(db.Model):
     # active / inactive / sold_out
     status = db.Column(db.String(20), default="active")
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
-    updated_at = db.Column(
-        db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
     category = db.Column(db.String(50), nullable=False)
+
+    seller = db.relationship("User", back_populates="products")
 
     def serialize(self):
         review_list = [r.serialize() for r in self.reviews]
@@ -64,6 +65,7 @@ class Product(db.Model):
             sum(r["rating"] for r in review_list) / len(review_list)
             if review_list else 0
         )
+        
 
         return {
             "id": self.id,
@@ -78,7 +80,8 @@ class Product(db.Model):
             "rating_average": round(avg_rating, 1),
             "reviews_count": len(review_list),
             "created_at": self.created_at.isoformat() if self.created_at else None,
-            "category": self.category
+            "category": self.category,
+            "seller_name": f"{self.seller.first_name} {self.seller.last_name}",
         }
 
 

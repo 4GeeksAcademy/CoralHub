@@ -1522,7 +1522,7 @@ user dashboard
 
 .card-header-custom h3,
 .dashboard-card h3 {
-  font-size: 1.25rem;
+  font-size: 1rem;
   font-weight: 800;
   margin: 0;
 }
@@ -1992,7 +1992,7 @@ user dashboard
 
     font-weight: 800;
 
-    color: #071426;
+    color: #ffffff;
 }
 
 
@@ -2497,7 +2497,7 @@ user dashboard
 
     margin-bottom: 0.3rem;
 
-    font-size: 1.2rem;
+    font-size: 1rem;
 
     font-weight: 600;
 }
@@ -2764,7 +2764,7 @@ user dashboard
 
     font-weight: 800;
 
-    color: #1A4165;
+    color: #ffffff;
 }
 
 .section-btn {
@@ -4228,4 +4228,49 @@ user dashboard
 
     box-shadow:
         0 0 0 3px rgba(78,199,193,0.12);
+}
+
+/* ========================================
+   VIEW MORE BUTTON
+======================================== */
+
+.dashboard-load-more {
+
+    margin-top: 1.5rem;
+
+    width: 100%;
+
+    padding: 1rem 1.2rem;
+
+    border: 1px solid rgba(255,255,255,0.08);
+
+    border-radius: 18px;
+
+    background: rgba(255,255,255,0.03);
+
+    color: white;
+
+    font-weight: 600;
+
+    font-size: 0.95rem;
+
+    cursor: pointer;
+
+    transition: all 0.3s ease;
+}
+
+.dashboard-load-more:hover {
+
+    background: rgba(78,199,193,0.12);
+
+    border-color: rgba(78,199,193,0.3);
+
+    color: #4EC7C1;
+
+    transform: translateY(-2px);
+}
+
+.dashboard-load-more:active {
+
+    transform: scale(0.98);
 }

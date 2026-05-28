@@ -9,6 +9,8 @@ export const DashboardProducts = () => {
 
     const [error, setError] = useState(null);
 
+    const [visibleCount, setVisibleCount] = useState(5);
+
     useEffect(() => {
 
         const token = localStorage.getItem("token");
@@ -116,51 +118,80 @@ export const DashboardProducts = () => {
 
             ) : (
 
-                <div className="products-table">
+                <>
 
-                    {products.map(product => (
+                    <div className="products-table">
 
-                        <div
-                            key={product.id}
-                            className="product-row"
-                        >
+                        {products
+                            .slice(0, visibleCount)
+                            .map(product => (
 
-                            <div className="product-info">
+                                <div
+                                    key={product.id}
+                                    className="product-row"
+                                >
 
-                                <img
-                                    src={product.image_url}
-                                    alt={product.name}
-                                    className="product-image"
-                                />
+                                    <div className="product-info">
 
-                                <div>
+                                        <img
+                                            src={product.image_url}
+                                            alt={product.name}
+                                            className="product-image"
+                                        />
 
-                                    <h3>{product.name}</h3>
+                                        <div>
 
-                                    <p>${product.price}</p>
+                                            <h3>{product.name}</h3>
+
+                                            <p>${product.price}</p>
+
+                                        </div>
+
+                                    </div>
+
+                                    <div className="product-stock">
+
+                                        Stock: {product.stock}
+
+                                    </div>
+
+                                    <Link
+                                        to={`/product/${product.id}`}
+                                        className="product-status active"
+                                    >
+                                        View
+                                    </Link>
 
                                 </div>
 
-                            </div>
+                            ))}
 
-                            <div className="product-stock">
+                    </div>
 
-                                Stock: {product.stock}
+                    <button
+                        className="dashboard-load-more"
+                        onClick={() => {
 
-                            </div>
+                            if (visibleCount >= products.length) {
 
-                            <Link
-                                to={`/product/${product.id}`}
-                                className="product-status active"
-                            >
-                                View
-                            </Link>
+                                setVisibleCount(5);
 
-                        </div>
+                            } else {
 
-                    ))}
+                                setVisibleCount(prev => prev + 5);
+                            }
+                        }}
+                    >
 
-                </div>
+                        {visibleCount >= products.length
+
+                            ? "View Less"
+
+                            : "View More"}
+
+                    </button>
+
+                </>
 
             )}
 

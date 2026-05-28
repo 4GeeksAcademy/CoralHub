@@ -577,3 +577,22 @@ def get_my_orders():
         Order.created_at.desc()).all()
 
     return jsonify([order.serialize() for order in orders]), 200
+
+# ============================================
+# MIS PRODUCTOS (Historial del usuario)
+# ============================================
+
+@api.route("/my-products", methods=["GET"])
+@jwt_required()
+def get_my_products():
+
+    current_user_id = get_jwt_identity()
+
+    products = Product.query.filter_by(
+        seller_id=current_user_id
+    ).all()
+
+    return jsonify([
+        product.serialize()
+        for product in products
+    ]), 200

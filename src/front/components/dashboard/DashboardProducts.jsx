@@ -1,32 +1,95 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 export const DashboardProducts = () => {
 
-    const products = [
-        {
-            id: 1,
-            name: "Holy Grail Torch",
-            price: "$250",
-            stock: 2,
-            status: "Active"
-        },
+    const [products, setProducts] = useState([]);
 
-        {
-            id: 2,
-            name: "Rainbow Bubble Tip",
-            price: "$180",
-            stock: 3,
-            status: "Active"
-        },
+    const [loading, setLoading] = useState(true);
 
-        {
-            id: 3,
-            name: "Green Brain Coral",
-            price: "$120",
-            stock: 1,
-            status: "Pending"
-        }
-    ];
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+
+        const token = localStorage.getItem("token");
+
+        fetch(`${import.meta.env.VITE_BACKEND_URL}/api/my-products`, {
+
+            method: "GET",
+
+            headers: {
+                "Authorization": `Bearer ${token}`,
+                "Content-Type": "application/json"
+            }
+
+        })
+
+            .then((response) => {
+
+                if (!response.ok) {
+                    throw new Error("Could not load products");
+                }
+
+                return response.json();
+            })
+
+            .then((data) => {
+
+                setProducts(data);
+
+                setLoading(false);
+            })
+
+            .catch((error) => {
+
+                console.error(error);
+
+                setError(error.message);
+
+                setLoading(false);
+            });
+
+    }, []);
+
+    if (loading) {
+
+        return (
+
+            <section className="dashboard-section">
+
+                <div className="section-header">
+
+                    <h2>My Products</h2>
+
+                </div>
+
+                <p className="dashboard-message">
+                    Loading products...
+                </p>
+
+            </section>
+        );
+    }
+
+    if (error) {
+
+        return (
+
+            <section className="dashboard-section">
+
+                <div className="section-header">
+
+                    <h2>My Products</h2>
+
+                </div>
+
+                <p className="dashboard-error">
+                    {error}
+                </p>
+
+            </section>
+        );
+    }
 
     return (
 
@@ -36,50 +99,71 @@ export const DashboardProducts = () => {
 
                 <h2>My Products</h2>
 
-                <button className="section-btn">
-                    View all
-                </button>
+                <Link
+                    to="/add-product"
+                    className="section-btn"
+                >
+                    Add Product
+                </Link>
 
             </div>
 
-            <div className="products-table">
+            {products.length === 0 ? (
 
-                {products.map(product => (
+                <p className="dashboard-message">
+                    You don't have products yet.
+                </p>
 
-                    <div
-                        key={product.id}
-                        className="product-row"
-                    >
+            ) : (
 
-                        <div className="product-info">
+                <div className="products-table">
 
-                            <div className="product-image"></div>
+                    {products.map(product => (
 
-                            <div>
+                        <div
+                            key={product.id}
+                            className="product-row"
+                        >
 
-                                <h3>{product.name}</h3>
+                            <div className="product-info">
 
-                                <p>{product.price}</p>
+                                <img
+                                    src={product.image_url}
+                                    alt={product.name}
+                                    className="product-image"
+                                />
+
+                                <div>
+
+                                    <h3>{product.name}</h3>
+
+                                    <p>${product.price}</p>
+
+                                </div>
 
                             </div>
 
+                            <div className="product-stock">
+
+                                Stock: {product.stock}
+
+                            </div>
+
+                            <Link
+                                to={`/product/${product.id}`}
+                                className="product-status active"
+                            >
+                                View
+                            </Link>
+
                         </div>
 
-                        <div className="product-stock">
-                            Stock: {product.stock}
-                        </div>
+                    ))}
 
-                        <div className={`product-status ${product.status.toLowerCase()}`}>
-                            {product.status}
-                        </div>
+                </div>
 
-                    </div>
-
-                ))}
-
-            </div>
+            )}
 
         </section>
-
     );
 };

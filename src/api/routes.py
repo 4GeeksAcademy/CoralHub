@@ -2,7 +2,7 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 from flask import Flask, request, jsonify, url_for, Blueprint
-from api.models import db, User, Product, Review, CartItem, Order, OrderItem, SupportTicket
+from api.models import db, User, Product, Review, CartItem, Order, OrderItem, SupportTicket, Claim
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 
@@ -849,3 +849,139 @@ def respond_support_ticket(ticket_id):
     db.session.commit()
 
     return jsonify(ticket.serialize()), 200
+
+
+# ============================================
+# CLAIMS (Reclamos buyer ↔ seller)
+# ============================================
+
+@api.route('/claims', methods=['POST'])
+@jwt_required()
+def create_claim():
+    """
+    El buyer crea un reclamo sobre un producto que compró (un OrderItem).
+    Reglas:
+    - El usuario debe estar logueado.
+    - El OrderItem debe pertenecer a una orden del buyer.
+    - El seller se saca automáticamente del producto.
+    """
+    current_user_id = int(get_jwt_identity())
+    body = request.get_json() or {}
+
+    order_item_id = body.get('order_item_id')
+    subject = body.get('subject', '').strip()
+    message = body.get('message', '').strip()
+
+    # Validar campos
+    if not order_item_id:
+        return jsonify({"error": "order_item_id is required"}), 400
+    if not subject:
+        return jsonify({"error": "Subject is required"}), 400
+    if len(subject) > 200:
+        return jsonify({"error": "Subject must be 200 characters or less"}), 400
+    if not message:
+        return jsonify({"error": "Message is required"}), 400
+    if len(message) > 1000:
+        return jsonify({"error": "Message must be 1000 characters or less"}), 400
+
+    # Validar que el OrderItem exista
+    order_item = OrderItem.query.get(order_item_id)
+    if not order_item:
+        return jsonify({"error": "Order item not found"}), 404
+
+    # Validar que esa compra sea del buyer logueado
+    order = Order.query.get(order_item.order_id)
+    if not order or order.buyer_id != current_user_id:
+        return jsonify({"error": "This purchase does not belong to you"}), 403
+
+    # Sacar el seller del producto
+    product = order_item.product
+    if not product:
+        return jsonify({"error": "Product not found for this item"}), 404
+    seller_id = product.seller_id
+
+    # Evitar que un buyer se reclame a sí mismo (si compró su propio producto)
+    if seller_id == current_user_id:
+        return jsonify({"error": "You cannot file a claim on your own product"}), 400
+
+    new_claim = Claim(
+        order_item_id=order_item_id,
+        buyer_id=current_user_id,
+        seller_id=seller_id,
+        subject=subject,
+        message=message,
+        status="open"
+    )
+
+    db.session.add(new_claim)
+    db.session.commit()
+
+    return jsonify(new_claim.serialize()), 201
+
+
+@api.route('/claims/buyer', methods=['GET'])
+@jwt_required()
+def get_buyer_claims():
+    """
+    Devuelve los reclamos que el usuario logueado hizo como buyer.
+    """
+    current_user_id = int(get_jwt_identity())
+    claims = Claim.query.filter_by(buyer_id=current_user_id).order_by(
+        Claim.created_at.desc()).all()
+
+    return jsonify([claim.serialize() for claim in claims]), 200
+
+
+@api.route('/claims/seller', methods=['GET'])
+@jwt_required()
+def get_seller_claims():
+    """
+    Devuelve los reclamos que le llegaron al usuario logueado como seller.
+    """
+    current_user_id = int(get_jwt_identity())
+    claims = Claim.query.filter_by(seller_id=current_user_id).order_by(
+        Claim.created_at.desc()).all()
+
+    return jsonify([claim.serialize() for claim in claims]), 200
+
+
+@api.route('/claims/<int:claim_id>', methods=['PUT'])
+@jwt_required()
+def respond_claim(claim_id):
+    """
+    El seller responde un reclamo y/o cambia su estado.
+    Solo el seller dueño del reclamo puede responder.
+    """
+    current_user_id = int(get_jwt_identity())
+
+    claim = Claim.query.get(claim_id)
+    if not claim:
+        return jsonify({"error": "Claim not found"}), 404
+
+    # Solo el seller al que va dirigido el reclamo puede responder
+    if claim.seller_id != current_user_id:
+        return jsonify({"error": "Access denied. This claim is not addressed to you."}), 403
+
+    body = request.get_json() or {}
+    seller_response = body.get('seller_response', '').strip()
+    status = body.get('status')
+
+    # Si viene respuesta, guardarla
+    if seller_response:
+        if len(seller_response) > 1000:
+            return jsonify({"error": "Response must be 1000 characters or less"}), 400
+        claim.seller_response = seller_response
+        claim.responded_at = datetime.utcnow()
+        # Si responde y no cambió status manualmente, lo marca como responded
+        if not status:
+            claim.status = "responded"
+
+    # Si viene un cambio de estado explícito, aplicarlo
+    if status:
+        if status not in ["open", "responded", "resolved"]:
+            return jsonify({"error": "Invalid status"}), 400
+        claim.status = status
+
+    db.session.commit()
+
+    return jsonify(claim.serialize()), 200

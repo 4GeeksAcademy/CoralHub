@@ -408,23 +408,7 @@ section {
     object-fit: cover;
 }
 
-.thumbnail {
-    width: 90px;
-    height: 90px;
-    object-fit: cover;
-    border-radius: 14px;
-    border: 2px solid transparent;
-    cursor: pointer;
-    transition: 0.3s ease;
-}
 
-.thumbnail:hover {
-    transform: scale(1.05);
-}
-
-.active-thumbnail {
-    border: 2px solid #00d9ff;
-}
 
 /* PRODUCT INFO */
 
@@ -508,9 +492,9 @@ section {
 
 .wishlist-btn {
 
-    width: 60px;
+    width: 65px;
 
-    height: 60px;
+    height: 65px;
 
     border-radius: 14px;
 
@@ -520,7 +504,7 @@ section {
 
     color: white;
 
-    font-size: 1.5rem;
+    font-size: 1rem;
 
     display: flex;
 
@@ -4861,4 +4845,42 @@ user dashboard
 
 		font-size: 2rem;
 	}
+}
+
+/* PRODUCT DETAIL WISHLIST BUTTON */
+
+.product-wishlist-btn {
+
+    width: 60px;
+
+    height: 60px;
+
+    border-radius: 18px;
+
+    border: 1px solid rgba(255,255,255,0.12);
+
+    background: rgba(255,255,255,0.03);
+
+    color: white;
+
+    font-size: 1.4rem;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 0;
+
+    transition: all 0.3s ease;
+}
+
+.product-wishlist-btn:hover {
+
+    background: rgba(255,122,89,0.12);
+
+    border-color: rgba(255,122,89,0.35);
+
+    color: #FE6949;
 }

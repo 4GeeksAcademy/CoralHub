@@ -24,7 +24,12 @@ class User(db.Model):
     cart_items = db.relationship("CartItem", backref="user", lazy=True)
     favorites = db.relationship("Favorite", backref="user", lazy=True)
     reviews = db.relationship("Review", backref="user", lazy=True)
-    tickets = db.relationship("SupportTicket", backref="user", lazy=True)
+    tickets = db.relationship(
+        "SupportTicket",
+        backref="user",
+        lazy=True,
+        foreign_keys="SupportTicket.user_id"
+    )
 
     def serialize(self):
         return {
@@ -245,6 +250,11 @@ class SupportTicket(db.Model):
     status = db.Column(db.String(20), default="open")
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
+    # Admin response
+    admin_response = db.Column(db.String(1000))
+    responded_at = db.Column(db.DateTime)
+    responded_by = db.Column(db.Integer, db.ForeignKey("users.id"))
+
     def serialize(self):
         return {
             "id": self.id,
@@ -253,5 +263,8 @@ class SupportTicket(db.Model):
             "subject": self.subject,
             "message": self.message,
             "status": self.status,
+            "admin_response": self.admin_response,
+            "responded_at": self.responded_at.isoformat() if self.responded_at else None,
+            "responded_by": self.responded_by,
             "created_at": self.created_at.isoformat() if self.created_at else None
         }

@@ -195,6 +195,19 @@ export const Navbar = () => {
 
                                     )}
 
+                                    {/* SUPPORT TICKETS (ADMIN) */}
+                                    {JSON.parse(localStorage.getItem("user"))?.role === "admin" && (
+
+                                        <Link
+                                            to="/admin/tickets"
+                                            className="nav-link-custom admin-link"
+                                        >
+                                            <i className="fa-solid fa-ticket me-1"></i>
+                                            Tickets
+                                        </Link>
+
+                                    )}
+
                                     {/* MY PRODUCTS */}
                                     <Link
                                         to="/my-products"

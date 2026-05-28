@@ -1436,6 +1436,7 @@ user dashboard
   border-radius: 18px;
   font-weight: 700;
   box-shadow: 0 8px 22px rgba(255, 122, 89, 0.22);
+  text-decoration: none;
 }
 
 .stat-card,

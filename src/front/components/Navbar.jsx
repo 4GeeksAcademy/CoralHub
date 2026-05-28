@@ -208,6 +208,22 @@ export const Navbar = () => {
 
                                     )}
 
+                                    {/* MY CLAIMS (buyer) */}
+                                    <Link
+                                        to="/my-claims"
+                                        className="nav-link-custom"
+                                    >
+                                        My Claims
+                                    </Link>
+
+                                    {/* CLAIMS RECEIVED (seller) */}
+                                    <Link
+                                        to="/seller-claims"
+                                        className="nav-link-custom"
+                                    >
+                                        Claims Received
+                                    </Link>
+
                                     {/* MY PRODUCTS */}
                                     <Link
                                         to="/my-products"

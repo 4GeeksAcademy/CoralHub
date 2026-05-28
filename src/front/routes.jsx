@@ -30,6 +30,8 @@ import { Shipping } from "./pages/Shipping";
 import { Returns } from "./pages/Returns";
 import { Help } from "./pages/Help";
 import { UserDashboard } from "./pages/UserDashboard";
+import { MyTickets } from "./pages/MyTickets";
+import { AdminTickets } from "./pages/AdminTickets";
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
@@ -68,6 +70,8 @@ export const router = createBrowserRouter(
       <Route path="/returns" element={<Returns />} />
       <Route path="/help" element={<Help />} />
       <Route path="/dashboard" element={<UserDashboard />} />
+      <Route path="/my-tickets" element={<MyTickets />} />
+      <Route path="/admin/tickets" element={<AdminTickets />} />
     </Route>
   )
 );

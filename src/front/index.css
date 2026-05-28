@@ -2919,6 +2919,10 @@ user dashboard
    ACTIVITY
 ======================================== */
 
+/* ========================================
+   ACTIVITY
+======================================== */
+
 .activity-list {
 
     display: flex;
@@ -2936,6 +2940,8 @@ user dashboard
 
     align-items: center;
 
+    gap: 1rem;
+
     padding: 1rem 0;
 
     border-bottom: 1px solid rgba(255,255,255,0.06);
@@ -2948,6 +2954,8 @@ user dashboard
     align-items: center;
 
     gap: 1rem;
+
+    flex: 1;
 }
 
 .activity-icon {
@@ -2956,14 +2964,17 @@ user dashboard
 
     height: 42px;
 
-    border-radius: 50%;
+    border-radius: 12px;
 
-    background:
-        linear-gradient(
-            135deg,
-            #0E7490,
-            #14B8A6
-        );
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background: rgba(78,199,193,0.12);
+
+    font-size: 1.1rem;
 
     flex-shrink: 0;
 }
@@ -2973,30 +2984,28 @@ user dashboard
     color: white;
 
     margin: 0;
+
+    font-size: 0.95rem;
+
+    line-height: 1.4;
 }
 
 .activity-time {
 
-    color: rgba(255,255,255,0.6);
+    color: rgba(255,255,255,0.55);
 
-    font-size: 0.9rem;
+    font-size: 0.82rem;
+
+    white-space: nowrap;
 }
 
-.activity-btn {
+/* EMPTY STATE */
 
-    margin-top: 2rem;
+.dashboard-message {
 
-    width: 100%;
+    color: rgba(255,255,255,0.65);
 
-    border: none;
-
-    background: transparent;
-
-    color: #4EC7C1;
-
-    font-weight: 600;
-
-    cursor: pointer;
+    margin: 0;
 }
 
 /* ========================================

@@ -582,6 +582,7 @@ def get_my_orders():
 # MIS PRODUCTOS (Historial del usuario)
 # ============================================
 
+
 @api.route("/my-products", methods=["GET"])
 @jwt_required()
 def get_my_products():
@@ -596,3 +597,60 @@ def get_my_products():
         product.serialize()
         for product in products
     ]), 200
+
+# ============================================
+# USER DASHBOARD PROFILE
+# ============================================
+
+
+@api.route("/profile", methods=["PUT"])
+@jwt_required()
+def update_profile():
+
+    current_user_id = get_jwt_identity()
+
+    user = User.query.get(current_user_id)
+
+    if not user:
+        return jsonify({
+            "msg": "User not found"
+        }), 404
+
+    body = request.get_json()
+
+    user.first_name = body.get(
+    "first_name",
+    user.first_name
+)
+
+    user.last_name = body.get(
+    "last_name",
+    user.last_name
+)
+
+    user.email = body.get(
+    "email",
+    user.email
+)
+
+    db.session.commit()
+
+    return jsonify({
+        "msg": "Profile updated",
+        "user": user.serialize()
+    }), 200
+
+@api.route("/profile", methods=["GET"])
+@jwt_required()
+def get_profile():
+
+    current_user_id = get_jwt_identity()
+
+    user = User.query.get(current_user_id)
+
+    if not user:
+        return jsonify({
+            "msg": "User not found"
+        }), 404
+
+    return jsonify(user.serialize()), 200

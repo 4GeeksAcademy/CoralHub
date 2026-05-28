@@ -4198,3 +4198,34 @@ user dashboard
   background: rgba(255, 255, 255, 0.1);
   color: white;
 }
+
+/* ========================================
+   PROFILE INPUTS
+======================================== */
+
+.profile-input {
+
+    width: 220px;
+
+    background: rgba(255,255,255,0.04);
+
+    border: 1px solid rgba(255,255,255,0.08);
+
+    border-radius: 12px;
+
+    padding: 0.7rem 1rem;
+
+    color: white;
+
+    outline: none;
+
+    transition: all 0.3s ease;
+}
+
+.profile-input:focus {
+
+    border-color: #4EC7C1;
+
+    box-shadow:
+        0 0 0 3px rgba(78,199,193,0.12);
+}

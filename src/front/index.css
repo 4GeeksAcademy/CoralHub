@@ -159,9 +159,9 @@ section {
 
 .signin-btn {
 
-    height: 60px;
+    height: 45px;
 
-    padding-inline: 2rem;
+    padding-inline: 1.5rem;
 
     border-radius: 18px;
 
@@ -191,9 +191,9 @@ section {
 
 .signup-btn {
 
-    height: 60px;
+    height: 45px;
 
-    padding-inline: 2rem;
+    padding-inline: 1.5rem;
 
     border-radius: 18px;
 

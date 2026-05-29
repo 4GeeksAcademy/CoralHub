@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 export const DashboardHeader = () => {
 
@@ -16,9 +17,12 @@ export const DashboardHeader = () => {
                 </p>
             </div>
 
-            <button className="publish-btn">
-                + Publish Product
-            </button>
+            <Link
+                to="/addproduct"
+                className="publish-btn"
+            >
+                Publish Product
+            </Link>
 
         </div>
 

@@ -159,9 +159,9 @@ section {
 
 .signin-btn {
 
-    height: 60px;
+    height: 45px;
 
-    padding-inline: 2rem;
+    padding-inline: 1.5rem;
 
     border-radius: 18px;
 
@@ -191,9 +191,9 @@ section {
 
 .signup-btn {
 
-    height: 60px;
+    height: 45px;
 
-    padding-inline: 2rem;
+    padding-inline: 1.5rem;
 
     border-radius: 18px;
 
@@ -408,23 +408,7 @@ section {
     object-fit: cover;
 }
 
-.thumbnail {
-    width: 90px;
-    height: 90px;
-    object-fit: cover;
-    border-radius: 14px;
-    border: 2px solid transparent;
-    cursor: pointer;
-    transition: 0.3s ease;
-}
 
-.thumbnail:hover {
-    transform: scale(1.05);
-}
-
-.active-thumbnail {
-    border: 2px solid #00d9ff;
-}
 
 /* PRODUCT INFO */
 
@@ -508,9 +492,9 @@ section {
 
 .wishlist-btn {
 
-    width: 60px;
+    width: 65px;
 
-    height: 60px;
+    height: 65px;
 
     border-radius: 14px;
 
@@ -520,7 +504,7 @@ section {
 
     color: white;
 
-    font-size: 1.5rem;
+    font-size: 1rem;
 
     display: flex;
 
@@ -1436,6 +1420,7 @@ user dashboard
   border-radius: 18px;
   font-weight: 700;
   box-shadow: 0 8px 22px rgba(255, 122, 89, 0.22);
+  text-decoration: none;
 }
 
 .stat-card,
@@ -1522,7 +1507,7 @@ user dashboard
 
 .card-header-custom h3,
 .dashboard-card h3 {
-  font-size: 1.25rem;
+  font-size: 1rem;
   font-weight: 800;
   margin: 0;
 }
@@ -1992,7 +1977,7 @@ user dashboard
 
     font-weight: 800;
 
-    color: #071426;
+    color: #ffffff;
 }
 
 
@@ -2497,7 +2482,7 @@ user dashboard
 
     margin-bottom: 0.3rem;
 
-    font-size: 1.2rem;
+    font-size: 1rem;
 
     font-weight: 600;
 }
@@ -2764,7 +2749,7 @@ user dashboard
 
     font-weight: 800;
 
-    color: #1A4165;
+    color: #ffffff;
 }
 
 .section-btn {
@@ -2919,6 +2904,10 @@ user dashboard
    ACTIVITY
 ======================================== */
 
+/* ========================================
+   ACTIVITY
+======================================== */
+
 .activity-list {
 
     display: flex;
@@ -2936,6 +2925,8 @@ user dashboard
 
     align-items: center;
 
+    gap: 1rem;
+
     padding: 1rem 0;
 
     border-bottom: 1px solid rgba(255,255,255,0.06);
@@ -2948,6 +2939,8 @@ user dashboard
     align-items: center;
 
     gap: 1rem;
+
+    flex: 1;
 }
 
 .activity-icon {
@@ -2956,14 +2949,17 @@ user dashboard
 
     height: 42px;
 
-    border-radius: 50%;
+    border-radius: 12px;
 
-    background:
-        linear-gradient(
-            135deg,
-            #0E7490,
-            #14B8A6
-        );
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background: rgba(78,199,193,0.12);
+
+    font-size: 1.1rem;
 
     flex-shrink: 0;
 }
@@ -2973,30 +2969,28 @@ user dashboard
     color: white;
 
     margin: 0;
+
+    font-size: 0.95rem;
+
+    line-height: 1.4;
 }
 
 .activity-time {
 
-    color: rgba(255,255,255,0.6);
+    color: rgba(255,255,255,0.55);
 
-    font-size: 0.9rem;
+    font-size: 0.82rem;
+
+    white-space: nowrap;
 }
 
-.activity-btn {
+/* EMPTY STATE */
 
-    margin-top: 2rem;
+.dashboard-message {
 
-    width: 100%;
+    color: rgba(255,255,255,0.65);
 
-    border: none;
-
-    background: transparent;
-
-    color: #4EC7C1;
-
-    font-weight: 600;
-
-    cursor: pointer;
+    margin: 0;
 }
 
 /* ========================================
@@ -4188,4 +4182,705 @@ user dashboard
 .about-btn-ghost-dark:hover {
   background: rgba(255, 255, 255, 0.1);
   color: white;
+}
+
+/* ========================================
+   PROFILE INPUTS
+======================================== */
+
+.profile-input {
+
+    width: 220px;
+
+    background: rgba(255,255,255,0.04);
+
+    border: 1px solid rgba(255,255,255,0.08);
+
+    border-radius: 12px;
+
+    padding: 0.7rem 1rem;
+
+    color: white;
+
+    outline: none;
+
+    transition: all 0.3s ease;
+}
+
+.profile-input:focus {
+
+    border-color: #4EC7C1;
+
+    box-shadow:
+        0 0 0 3px rgba(78,199,193,0.12);
+}
+
+/* ========================================
+   VIEW MORE BUTTON
+======================================== */
+
+.dashboard-load-more {
+
+    margin-top: 1.5rem;
+
+    width: 100%;
+
+    padding: 1rem 1.2rem;
+
+    border: 1px solid rgba(255,255,255,0.08);
+
+    border-radius: 18px;
+
+    background: rgba(255,255,255,0.03);
+
+    color: white;
+
+    font-weight: 600;
+
+    font-size: 0.95rem;
+
+    cursor: pointer;
+
+    transition: all 0.3s ease;
+}
+
+.dashboard-load-more:hover {
+
+    background: rgba(78,199,193,0.12);
+
+    border-color: rgba(78,199,193,0.3);
+
+    color: #4EC7C1;
+
+    transform: translateY(-2px);
+}
+
+.dashboard-load-more:active {
+
+    transform: scale(0.98);
+}
+
+/* ========================================
+   RECENTLY ADDED
+======================================== */
+
+.recently-added-section {
+
+    padding-block: 5rem;
+
+    position: relative;
+}
+
+.section-heading {
+
+    margin-bottom: 2rem;
+}
+
+.section-title {
+
+    font-size: clamp(2rem, 4vw, 3rem);
+
+    font-weight: 700;
+
+    color: #FFFFFF;
+
+    margin-bottom: 0.5rem;
+}
+
+.section-title span {
+
+    color: #4EC7C1;
+}
+
+.section-subtitle {
+
+    color: rgba(255,255,255,0.7);
+
+    font-size: 1rem;
+}
+
+.recently-added-list {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 1.5rem;
+}
+
+/* CARD */
+
+.horizontal-product-card {
+
+    width: 100%;
+
+    background: linear-gradient(
+        180deg,
+        rgba(12, 35, 64, 0.95) 0%,
+        rgba(9, 28, 52, 0.98) 100%
+    );
+
+    border: 1px solid rgba(78,199,193,0.08);
+
+    border-radius: 24px;
+
+    padding: 1.5rem;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    transition: 0.3s ease;
+
+    backdrop-filter: blur(10px);
+}
+
+.horizontal-product-card:hover {
+
+    transform: translateY(-4px);
+
+    border-color: rgba(78,199,193,0.25);
+
+    box-shadow:
+        0 10px 30px rgba(0,0,0,0.25);
+}
+
+.horizontal-product-left {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 1.5rem;
+}
+
+.horizontal-product-image {
+
+    width: 110px;
+
+    height: 110px;
+
+    object-fit: cover;
+
+    border-radius: 18px;
+}
+
+.horizontal-product-info {
+
+    display: flex;
+
+    flex-direction: column;
+}
+
+.product-tag {
+
+    width: fit-content;
+
+    padding: 0.3rem 0.8rem;
+
+    border-radius: 999px;
+
+    background: rgba(255,122,89,0.12);
+
+    border: 1px solid rgba(255,122,89,0.25);
+
+    color: #FF7A59;
+
+    font-size: 0.75rem;
+
+    margin-bottom: 0.8rem;
+}
+
+.horizontal-product-title {
+
+    color: #FFFFFF;
+
+    font-size: 1.4rem;
+
+    font-weight: 700;
+
+    margin-bottom: 0.4rem;
+}
+
+.horizontal-product-seller {
+
+    color: rgba(255,255,255,0.65);
+
+    margin-bottom: 0.8rem;
+}
+
+.horizontal-product-meta {
+
+    display: flex;
+
+    gap: 1rem;
+
+    color: rgba(255,255,255,0.5);
+
+    font-size: 0.85rem;
+}
+
+.horizontal-product-right {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 1rem;
+}
+
+.horizontal-product-price {
+
+    color: #FF7A59;
+
+    font-size: 2rem;
+
+    font-weight: 700;
+
+    margin: 0;
+}
+
+.wishlist-btn {
+
+    width: 56px;
+
+    height: 56px;
+
+    border-radius: 18px;
+
+    border: 1px solid rgba(255,255,255,0.12);
+
+    background: rgba(255,255,255,0.03);
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    text-decoration: none;
+
+    color: #FFFFFF;
+
+    font-size: 1.4rem;
+
+    transition: 0.3s ease;
+}
+
+.wishlist-btn:hover {
+
+    background: rgba(255,122,89,0.12);
+
+    border-color: rgba(255,122,89,0.35);
+
+    color: #FF7A59;
+}
+
+/* ========================================
+   RESPONSIVE
+======================================== */
+
+@media (max-width: 768px) {
+
+    .horizontal-product-card {
+
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        gap: 1.5rem;
+    }
+
+    .horizontal-product-left {
+
+        flex-direction: column;
+
+        align-items: flex-start;
+    }
+
+    .horizontal-product-right {
+
+        width: 100%;
+
+        justify-content: space-between;
+    }
+
+    .horizontal-product-image {
+
+        width: 100%;
+
+        height: 220px;
+    }
+}
+
+/* ========================================
+   RECENTLY ADDED
+======================================== */
+
+.recent-section {
+
+	background:
+		radial-gradient(circle at top, rgba(78,199,193,0.08), transparent 40%),
+		#041937;
+}
+
+/* TITLE */
+
+.recent-title {
+
+	color: white;
+
+	font-size: clamp(2rem, 4vw, 38px);
+
+	font-weight: 700;
+	
+}
+
+.recent-title span {
+
+	color: #4EC7C1;
+}
+
+.recent-subtitle {
+
+	color: rgba(255,255,255,0.7);
+
+	font-size: 1.1rem;
+}
+
+/* VIEW BUTTON */
+
+.recent-view-btn {
+
+	background: transparent;
+
+	border: none;
+
+	color: #4EC7C1;
+
+	font-weight: 600;
+
+	font-size: 1rem;
+
+	transition: all 0.3s ease;
+}
+
+.recent-view-btn:hover {
+
+	color: white;
+
+	transform: translateX(4px);
+}
+
+/* CARD */
+
+.listing-card {
+
+	background:
+		rgba(255,255,255,0.03);
+
+	border:
+		1px solid rgba(255,255,255,0.08);
+
+	border-radius: 26px;
+
+	padding: 1.5rem;
+
+	display: flex;
+
+	justify-content: space-between;
+
+	align-items: center;
+
+	gap: 2rem;
+
+	backdrop-filter: blur(10px);
+
+	transition: all 0.3s ease;
+}
+
+.listing-card:hover {
+
+	transform: translateY(-4px);
+
+	background:
+		rgba(255,255,255,0.05);
+}
+
+/* LEFT */
+
+.listing-left {
+
+	display: flex;
+
+	align-items: center;
+
+	gap: 1.5rem;
+
+	flex: 1;
+}
+
+/* IMAGE */
+
+.listing-image {
+
+	width: 160px;
+
+	height: 160px;
+
+	object-fit: cover;
+
+	border-radius: 22px;
+}
+
+/* CONTENT */
+
+.listing-content {
+
+	display: flex;
+
+	flex-direction: column;
+
+	gap: 0.7rem;
+}
+
+/* TAG */
+
+.listing-tag {
+
+	display: inline-flex;
+
+	align-items: center;
+
+	gap: 0.4rem;
+
+	padding: 0.45rem 1rem;
+
+	border-radius: 999px;
+
+	font-size: 0.9rem;
+
+	font-weight: 600;
+
+	width: fit-content;
+}
+
+/* TAG COLORS */
+
+.coral-tag {
+
+	color: #FE6949;
+
+	border: 1px solid rgba(255,122,89,0.4);
+
+	background:
+		rgba(255,122,89,0.08);
+}
+
+.fish-tag {
+
+	color: #4EC7C1;
+
+	border: 1px solid rgba(78,199,193,0.4);
+
+	background:
+		rgba(78,199,193,0.08);
+}
+
+.equipment-tag {
+
+	color: #A16CFF;
+
+	border: 1px solid rgba(161,108,255,0.4);
+
+	background:
+		rgba(161,108,255,0.08);
+}
+
+.lighting-tag {
+
+	color: #4C8FFF;
+
+	border: 1px solid rgba(76,143,255,0.4);
+
+	background:
+		rgba(76,143,255,0.08);
+}
+
+/* NAME */
+
+.listing-name {
+
+	color: white;
+
+	font-size: 1.25rem;
+
+	font-weight: 700;
+
+	margin: 0;
+}
+
+/* AUTHOR */
+
+.listing-author {
+
+	color: rgba(255,255,255,0.7);
+
+	font-size: 1.1rem;
+
+	margin: 0;
+}
+
+/* META */
+
+.listing-meta {
+
+	display: flex;
+
+	flex-wrap: wrap;
+
+	gap: 1.5rem;
+
+	color: rgba(255,255,255,0.6);
+
+	font-size: 0.95rem;
+}
+
+/* RIGHT */
+
+.listing-right {
+
+	display: flex;
+
+	align-items: center;
+
+	gap: 1rem;
+}
+
+/* PRICE */
+
+.listing-price {
+
+	font-size: 2rem;
+
+	font-weight: 700;
+
+	color: #FE6949;
+}
+
+/* WISHLIST */
+
+.wishlist-btn {
+
+	width: 60px;
+
+	height: 60px;
+
+	border-radius: 22px;
+
+	border:
+		1px solid rgba(255,255,255,0.1);
+
+	background:
+		rgba(255,255,255,0.03);
+
+	color: white;
+
+	font-size: 2rem;
+
+	transition: all 0.3s ease;
+}
+
+.wishlist-btn:hover {
+
+	background:
+		rgba(255,122,89,0.12);
+
+	border-color:
+		rgba(255,122,89,0.4);
+
+	color: #FE6949;
+}
+
+/* MOBILE */
+
+@media (max-width: 992px) {
+
+	.listing-card {
+
+		flex-direction: column;
+
+		align-items: flex-start;
+	}
+
+	.listing-left {
+
+		flex-direction: column;
+
+		align-items: flex-start;
+	}
+
+	.listing-image {
+
+		width: 100%;
+
+		height: 240px;
+	}
+
+	.listing-right {
+
+		width: 100%;
+
+		justify-content: space-between;
+	}
+
+	.listing-name {
+
+		font-size: 1.5rem;
+	}
+
+	.listing-price {
+
+		font-size: 2rem;
+	}
+}
+
+/* PRODUCT DETAIL WISHLIST BUTTON */
+
+.product-wishlist-btn {
+
+    width: 60px;
+
+    height: 60px;
+
+    border-radius: 18px;
+
+    border: 1px solid rgba(255,255,255,0.12);
+
+    background: rgba(255,255,255,0.03);
+
+    color: white;
+
+    font-size: 1.4rem;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 0;
+
+    transition: all 0.3s ease;
+}
+
+.product-wishlist-btn:hover {
+
+    background: rgba(255,122,89,0.12);
+
+    border-color: rgba(255,122,89,0.35);
+
+    color: #FE6949;
 }

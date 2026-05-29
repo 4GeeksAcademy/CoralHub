@@ -291,7 +291,7 @@ export const ProductDetail = () => {
                                 >
                                     {addingToCart ? "Adding..." : product.stock === 0 ? "Out of Stock" : "Add to Cart"}
                                 </button>
-                                <button className="btn wishlist-btn" aria-label="Add to wishlist">♡</button>
+                                <button className="btn product-wishlist-btn" aria-label="Add to wishlist">♡</button>
                             </div>
                         </div>
                     </div>

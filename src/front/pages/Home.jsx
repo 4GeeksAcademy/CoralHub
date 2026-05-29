@@ -5,7 +5,7 @@ import { Categories } from "../components/Categories";
 import { Link, useNavigate } from "react-router-dom";
 import { RecentlyAdded } from "../components/RecentlyAdded";
 import { TopSellers } from "../components/TopSellers";
-
+import { Favorites } from "../components/Favorites";
 
 
 export const Home = () => {
@@ -240,6 +240,7 @@ export const Home = () => {
 
 			</section>
 			<Categories />
+			<Favorites />
 			<RecentlyAdded />
 			<TopSellers />
 		</div>

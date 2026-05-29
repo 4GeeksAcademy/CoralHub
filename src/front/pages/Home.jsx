@@ -4,6 +4,7 @@ import heroFish from "../assets/img/mandarin_goby.png";
 import { Categories } from "../components/Categories";
 import { Link, useNavigate } from "react-router-dom";
 import { RecentlyAdded } from "../components/RecentlyAdded";
+import { TopSellers } from "../components/TopSellers";
 
 
 
@@ -240,6 +241,7 @@ export const Home = () => {
 			</section>
 			<Categories />
 			<RecentlyAdded />
+			<TopSellers />
 		</div>
 
 		

@@ -667,6 +667,220 @@ section {
         0 0 15px rgba(180, 190, 200, 0.4);
 }
 
+/* ========================================
+   TOP RATED SELLERS
+======================================== */
+
+.sellers-section {
+
+	background:
+		radial-gradient(circle at top, rgba(78,199,193,0.08), transparent 35%),
+		#041937;
+}
+
+/* TITLE */
+
+.sellers-title {
+
+	color: white;
+
+	font-size: clamp(2rem, 4vw, 38px);
+
+	font-weight: 700;
+
+	margin: 0;
+}
+
+.sellers-title span {
+
+	color: #4EC7C1;
+}
+
+/* VIEW ALL */
+
+.sellers-view-btn {
+
+	background: transparent;
+
+	border: none;
+
+	color: #4EC7C1;
+
+	font-weight: 600;
+
+	font-size: 1rem;
+
+	transition: all 0.3s ease;
+}
+
+.sellers-view-btn:hover {
+
+	color: white;
+
+	transform: translateX(4px);
+}
+
+/* CARD */
+
+.seller-card {
+
+	background:
+		rgba(255,255,255,0.03);
+
+	border:
+		1px solid rgba(78,199,193,0.25);
+
+	border-radius: 28px;
+
+	padding: 2rem;
+
+	text-align: center;
+
+	backdrop-filter: blur(10px);
+
+	height: 100%;
+
+	transition: all 0.3s ease;
+}
+
+.seller-card:hover {
+
+	transform: translateY(-6px);
+
+	background:
+		rgba(255,255,255,0.05);
+
+	box-shadow:
+		0 0 30px rgba(78,199,193,0.12);
+}
+
+/* AVATAR */
+
+.seller-avatar {
+
+	width: 110px;
+
+	height: 110px;
+
+	border-radius: 50%;
+
+	border:
+		2px solid rgba(255,255,255,0.25);
+
+	display: flex;
+
+	align-items: center;
+
+	justify-content: center;
+
+	font-size: 3rem;
+
+	margin-inline: auto;
+
+	margin-bottom: 1.5rem;
+
+	background:
+		rgba(255,255,255,0.03);
+
+	box-shadow:
+		0 0 24px rgba(255,255,255,0.08);
+}
+
+/* NAME */
+
+.seller-name {
+
+	color: white;
+
+	font-size: 2rem;
+
+	font-weight: 700;
+
+	margin-bottom: 0.8rem;
+}
+
+/* RATING */
+
+.seller-rating {
+
+	color: #4EC7C1;
+
+	font-size: 1.05rem;
+
+	font-weight: 600;
+
+	margin-bottom: 0.5rem;
+}
+
+/* SALES */
+
+.seller-sales {
+
+	color: rgba(255,255,255,0.65);
+
+	font-size: 1rem;
+
+	margin-bottom: 2rem;
+}
+
+/* BUTTON */
+
+.seller-btn {
+
+	width: 100%;
+
+	height: 60px;
+
+	border-radius: 18px;
+
+	border:
+		1px solid #4EC7C1;
+
+	background: transparent;
+
+	color: #4EC7C1;
+
+	font-size: 1.1rem;
+
+	font-weight: 700;
+
+	transition: all 0.3s ease;
+}
+
+.seller-btn:hover {
+
+	background: #4EC7C1;
+
+	color: #041937;
+
+	box-shadow:
+		0 0 20px rgba(78,199,193,0.35);
+}
+
+/* MOBILE */
+
+@media (max-width: 768px) {
+
+	.seller-card {
+
+		padding: 1.5rem;
+	}
+
+	.seller-name {
+
+		font-size: 1.6rem;
+	}
+
+	.seller-avatar {
+
+		width: 90px;
+
+		height: 90px;
+
+		font-size: 2.5rem;
+	}
+}
+
 /* =========================================
    RESPONSIVE
 ========================================= */

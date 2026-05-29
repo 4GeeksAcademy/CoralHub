@@ -6,6 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { RecentlyAdded } from "../components/RecentlyAdded";
 import { TopSellers } from "../components/TopSellers";
 import { Favorites } from "../components/Favorites";
+import { Community } from "../components/Community";
 
 
 export const Home = () => {
@@ -241,8 +242,10 @@ export const Home = () => {
 			</section>
 			<Categories />
 			<Favorites />
+			
 			<RecentlyAdded />
 			<TopSellers />
+			<Community />
 		</div>
 
 		

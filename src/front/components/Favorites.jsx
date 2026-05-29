@@ -92,7 +92,7 @@ export const Favorites = () => {
 
 									<img
 										src="https://images.unsplash.com/photo-1520301255226-bf5f144451c1?q=80&w=1200&auto=format&fit=crop"
-										alt="Yellow Tang"
+										alt="Blood Parrot"
 										className="favorite-image"
 									/>
 
@@ -109,7 +109,7 @@ export const Favorites = () => {
 									</div>
 
 									<h3 className="favorite-name">
-										Yellow Tang
+										Blood Parrotfish
 									</h3>
 
 									<p className="favorite-author">

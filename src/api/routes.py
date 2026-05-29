@@ -1,22 +1,28 @@
 """
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
+from werkzeug.security import generate_password_hash, check_password_hash
+from flask_jwt_extended import jwt_required
+from flask_jwt_extended import get_jwt_identity
+from flask_jwt_extended import create_access_token
 from flask import Flask, request, jsonify, url_for, Blueprint
 from api.models import db, User, Product, Review, CartItem, Order, OrderItem, SupportTicket, Claim
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 
 import os
+from pathlib import Path
+from dotenv import load_dotenv
 import cloudinary
 import cloudinary.uploader
 import stripe
 from datetime import datetime
 
-from flask_jwt_extended import create_access_token
-from flask_jwt_extended import get_jwt_identity
-from flask_jwt_extended import jwt_required
+# Cargar el archivo .env desde la raíz del proyecto.
+# routes.py está en src/api/routes.py, por eso subimos 2 niveles.
+BASE_DIR = Path(__file__).resolve().parents[2]
+load_dotenv(BASE_DIR / ".env", override=True)
 
-from werkzeug.security import generate_password_hash, check_password_hash
 
 api = Blueprint('api', __name__)
 
@@ -30,7 +36,7 @@ cloudinary.config(
 )
 
 # Configurar Stripe con la secret key
-stripe.api_key = os.environ.get("STRIPE_SECRET_KEY")
+stripe.api_key = os.getenv("STRIPE_SECRET_KEY")
 
 
 # ============================================
@@ -343,6 +349,14 @@ def create_checkout_session():
     current_user_id = get_jwt_identity()
     body = request.get_json() or {}
 
+    # Asegura que Stripe lea la secret key desde el .env
+    stripe.api_key = os.getenv("STRIPE_SECRET_KEY")
+
+    if not stripe.api_key:
+        return jsonify({
+            "error": f"Stripe secret key is missing. Looking for .env here: {BASE_DIR / '.env'}"
+        }), 500
+
     delivery_method = body.get("delivery_method", "pickup")
     shipping_address = body.get("shipping_address")
 
@@ -408,7 +422,7 @@ def create_checkout_session():
 
     # 4. Crear sesión de Stripe
     try:
-        frontend_url = os.environ.get("FRONTEND_URL", "http://localhost:3000")
+        frontend_url = os.getenv("FRONTEND_URL", "http://localhost:3000")
 
         # Preparar metadata (incluye dirección si aplica)
         metadata = {
@@ -619,19 +633,19 @@ def update_profile():
     body = request.get_json()
 
     user.first_name = body.get(
-    "first_name",
-    user.first_name
-)
+        "first_name",
+        user.first_name
+    )
 
     user.last_name = body.get(
-    "last_name",
-    user.last_name
-)
+        "last_name",
+        user.last_name
+    )
 
     user.email = body.get(
-    "email",
-    user.email
-)
+        "email",
+        user.email
+    )
 
     db.session.commit()
 
@@ -639,6 +653,7 @@ def update_profile():
         "msg": "Profile updated",
         "user": user.serialize()
     }), 200
+
 
 @api.route("/profile", methods=["GET"])
 @jwt_required()
@@ -658,6 +673,7 @@ def get_profile():
 # ============================================
 # REVIEWS (Reseñas de productos)
 # ============================================
+
 
 @api.route('/products/<int:product_id>/reviews', methods=['GET'])
 def get_product_reviews(product_id):

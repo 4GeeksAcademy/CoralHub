@@ -17,6 +17,12 @@ export default function storeReducer(store, action = {}) {
         message: action.payload
       };
 
+    case 'set_cart':
+      return {
+        ...store,
+        cart: action.payload
+      };
+
     case 'add_to_cart':
       const existingProduct = store.cart.find(item => item.id === action.payload.id);
       if (existingProduct) {

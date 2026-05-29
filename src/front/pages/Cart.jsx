@@ -51,7 +51,10 @@ export const Cart = () => {
         }
 
         try {
-            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/checkout`, {
+            // Sanitizamos la URL quitando barras diagonales al final si existen
+            const cleanUrl = import.meta.env.VITE_BACKEND_URL.replace(/\/$/, "");
+            
+            const response = await fetch(`${cleanUrl}/api/create-checkout-session`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -68,8 +71,14 @@ export const Cart = () => {
                 dispatch({ type: "clear_cart" });
                 navigate("/private");
             } else {
-                const data = await response.json();
-                alert(data.msg || "Hubo un problema al procesar el pago.");
+                // Manejo de error seguro por si el backend no devuelve un JSON válido (ej: Error 405 HTML)
+                const responseText = await response.text();
+                try {
+                    const data = JSON.parse(responseText);
+                    alert(data.msg || data.error || `Error del servidor: ${response.status}`);
+                } catch (jsonErr) {
+                    alert(`El servidor respondió con un error (${response.status}). Verifica el método de la ruta en Flask.`);
+                }
             }
         } catch (error) {
             console.error(error);

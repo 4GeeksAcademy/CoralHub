@@ -22,7 +22,6 @@ api = Blueprint('api', __name__)
 # Allow CORS requests to this API
 CORS(api)
 
-
 cloudinary.config(
     cloud_name=os.environ.get("CLOUDINARY_CLOUD_NAME"),
     api_key=os.environ.get("CLOUDINARY_API_KEY"),
@@ -577,3 +576,138 @@ def get_my_orders():
         Order.created_at.desc()).all()
 
     return jsonify([order.serialize() for order in orders]), 200
+# ============================================
+# REVIEWS (Reseñas de productos)
+# ============================================
+
+
+@api.route('/products/<int:product_id>/reviews', methods=['GET'])
+def get_product_reviews(product_id):
+    """
+    Devuelve todas las reseñas de un producto, con info del usuario que las hizo.
+    """
+    product = Product.query.get(product_id)
+    if not product:
+        return jsonify({"error": "Product not found"}), 404
+
+    reviews = Review.query.filter_by(product_id=product_id).order_by(
+        Review.created_at.desc()).all()
+
+    # Serializar incluyendo el nombre del usuario
+    reviews_data = []
+    for review in reviews:
+        user = User.query.get(review.user_id)
+        reviews_data.append({
+            "id": review.id,
+            "user_id": review.user_id,
+            "user_name": f"{user.first_name} {user.last_name}" if user else "Anonymous",
+            "product_id": review.product_id,
+            "rating": review.rating,
+            "comment": review.comment,
+            "created_at": review.created_at.isoformat() if review.created_at else None
+        })
+
+    return jsonify(reviews_data), 200
+
+
+@api.route('/products/<int:product_id>/reviews', methods=['POST'])
+@jwt_required()
+def create_review(product_id):
+    """
+    Crea una nueva reseña para un producto.
+    Reglas:
+    - El usuario debe estar logueado.
+    - Debe haber comprado el producto (tener una Order con OrderItem de ese producto).
+    - No puede haber reseñado el mismo producto antes.
+    """
+    current_user_id = get_jwt_identity()
+    body = request.get_json() or {}
+
+    # Validar producto existe
+    product = Product.query.get(product_id)
+    if not product:
+        return jsonify({"error": "Product not found"}), 404
+
+    # Validar campos
+    rating = body.get('rating')
+    comment = body.get('comment', '').strip()
+
+    if rating is None:
+        return jsonify({"error": "Rating is required"}), 400
+
+    try:
+        rating = int(rating)
+    except (ValueError, TypeError):
+        return jsonify({"error": "Rating must be a number"}), 400
+
+    if rating < 1 or rating > 5:
+        return jsonify({"error": "Rating must be between 1 and 5"}), 400
+
+    if not comment:
+        return jsonify({"error": "Comment is required"}), 400
+
+    if len(comment) > 500:
+        return jsonify({"error": "Comment must be 500 characters or less"}), 400
+
+    # Validar que el usuario haya comprado el producto
+    has_purchased = db.session.query(OrderItem).join(Order).filter(
+        Order.buyer_id == current_user_id,
+        OrderItem.product_id == product_id,
+        Order.order_status == 'paid'
+    ).first()
+
+    if not has_purchased:
+        return jsonify({"error": "You can only review products you have purchased"}), 403
+
+    # Validar que no haya reseñado antes
+    existing = Review.query.filter_by(
+        user_id=current_user_id,
+        product_id=product_id
+    ).first()
+
+    if existing:
+        return jsonify({"error": "You have already reviewed this product"}), 409
+
+    # Crear la reseña
+    new_review = Review(
+        user_id=current_user_id,
+        product_id=product_id,
+        rating=rating,
+        comment=comment
+    )
+
+    db.session.add(new_review)
+    db.session.commit()
+
+    # Devolver con info del usuario
+    user = User.query.get(current_user_id)
+    return jsonify({
+        "id": new_review.id,
+        "user_id": new_review.user_id,
+        "user_name": f"{user.first_name} {user.last_name}" if user else "Anonymous",
+        "product_id": new_review.product_id,
+        "rating": new_review.rating,
+        "comment": new_review.comment,
+        "created_at": new_review.created_at.isoformat()
+    }), 201
+
+
+@api.route('/reviews/<int:review_id>', methods=['DELETE'])
+@jwt_required()
+def delete_review(review_id):
+    """
+    Borra una reseña. Solo el dueño de la reseña puede borrarla.
+    """
+    current_user_id = get_jwt_identity()
+
+    review = Review.query.get(review_id)
+    if not review:
+        return jsonify({"error": "Review not found"}), 404
+
+    if review.user_id != current_user_id:
+        return jsonify({"error": "You can only delete your own reviews"}), 403
+
+    db.session.delete(review)
+    db.session.commit()
+
+    return jsonify({"msg": "Review deleted successfully"}), 200

@@ -63,8 +63,8 @@ export const ProductDetail = () => {
         ? (reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length).toFixed(1)
         : 0;
 
-    // Agregar al carrito
-    const handleAddToCart = async () => {
+    // Agregar al carrito (Lógica Front-End Persistente en LocalStorage)
+    const handleAddToCart = () => {
         const token = localStorage.getItem("token");
 
         if (!token) {
@@ -73,46 +73,26 @@ export const ProductDetail = () => {
             return;
         }
 
-        if (!product) return;
+        if (!product) {
+            alert("No se pudo cargar la información del producto.");
+            return;
+        }
 
         setAddingToCart(true);
 
-        try {
-            const response = await fetch(`${backendUrl}/api/cart`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${token}`
-                },
-                body: JSON.stringify({
-                    product_id: product.id,
-                    quantity: 1
-                })
-            });
-
-            if (!response.ok) {
-                const data = await response.json();
-                alert(data.error || "Error adding to cart");
-                setAddingToCart(false);
-                return;
+        // Despachamos la acción directamente al reducer global para guardarlo en localStorage
+        dispatch({
+            type: "add_to_cart",
+            payload: {
+                id: product.id,
+                name: product.name,
+                price: product.price,
+                image_url: product.image_url
             }
+        });
 
-            const cartRes = await fetch(`${backendUrl}/api/cart`, {
-                headers: { "Authorization": `Bearer ${token}` }
-            });
-
-            if (cartRes.ok) {
-                const cartData = await cartRes.json();
-                dispatch({ type: "set_cart", payload: cartData });
-            }
-
-            alert(`${product.name} added to cart 🛒`);
-        } catch (err) {
-            console.error(err);
-            alert("Connection error with server");
-        } finally {
-            setAddingToCart(false);
-        }
+        alert(`🎉 ¡${product.name} añadido al carrito con éxito! 🛒`);
+        setAddingToCart(false);
     };
 
     // Enviar reseña
@@ -298,7 +278,7 @@ export const ProductDetail = () => {
                 </div>
 
                 {/* ============================ */}
-                {/* SECCIÓN DE REVIEWS */}
+                {/* SECCIÓN DE REVIEWS           */}
                 {/* ============================ */}
                 <div className="row mt-5">
                     <div className="col-12">

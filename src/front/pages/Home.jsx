@@ -1,7 +1,7 @@
 import React, { useEffect } from "react"
 import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
 import heroFish from "../assets/img/mandarin_goby.png";
-// import CoralIcon from "../assets/img/Coral-icon.svg";
+import { Categories } from "../components/Categories";
 import { Link, useNavigate } from "react-router-dom";
 import { RecentlyAdded } from "../components/RecentlyAdded";
 
@@ -238,6 +238,7 @@ export const Home = () => {
 				</svg>
 
 			</section>
+			<Categories />
 			<RecentlyAdded />
 		</div>
 

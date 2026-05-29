@@ -24,7 +24,12 @@ class User(db.Model):
     cart_items = db.relationship("CartItem", backref="user", lazy=True)
     favorites = db.relationship("Favorite", backref="user", lazy=True)
     reviews = db.relationship("Review", backref="user", lazy=True)
-    tickets = db.relationship("SupportTicket", backref="user", lazy=True)
+    tickets = db.relationship(
+        "SupportTicket",
+        backref="user",
+        lazy=True,
+        foreign_keys="SupportTicket.user_id"
+    )
 
     def serialize(self):
         return {
@@ -248,6 +253,11 @@ class SupportTicket(db.Model):
     status = db.Column(db.String(20), default="open")
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
+    # Admin response
+    admin_response = db.Column(db.String(1000))
+    responded_at = db.Column(db.DateTime)
+    responded_by = db.Column(db.Integer, db.ForeignKey("users.id"))
+
     def serialize(self):
         return {
             "id": self.id,
@@ -256,5 +266,57 @@ class SupportTicket(db.Model):
             "subject": self.subject,
             "message": self.message,
             "status": self.status,
+            "admin_response": self.admin_response,
+            "responded_at": self.responded_at.isoformat() if self.responded_at else None,
+            "responded_by": self.responded_by,
             "created_at": self.created_at.isoformat() if self.created_at else None
+        }
+
+    # ============================================
+# CLAIMS (Buyer ↔ Seller disputes)
+# ============================================
+
+
+class Claim(db.Model):
+    __tablename__ = "claims"
+    id = db.Column(db.Integer, primary_key=True)
+
+    order_item_id = db.Column(
+        db.Integer, db.ForeignKey("order_items.id"), nullable=False)
+    buyer_id = db.Column(
+        db.Integer, db.ForeignKey("users.id"), nullable=False)
+    seller_id = db.Column(
+        db.Integer, db.ForeignKey("users.id"), nullable=False)
+
+    subject = db.Column(db.String(200), nullable=False)
+    message = db.Column(db.String(1000), nullable=False)
+
+    # open / responded / resolved
+    status = db.Column(db.String(20), default="open")
+
+    seller_response = db.Column(db.String(1000))
+    responded_at = db.Column(db.DateTime)
+
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+    # Relaciones
+    order_item = db.relationship("OrderItem", backref="claims", lazy=True)
+    buyer = db.relationship("User", foreign_keys=[buyer_id], lazy=True)
+    seller = db.relationship("User", foreign_keys=[seller_id], lazy=True)
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "order_item_id": self.order_item_id,
+            "buyer_id": self.buyer_id,
+            "seller_id": self.seller_id,
+            "subject": self.subject,
+            "message": self.message,
+            "status": self.status,
+            "seller_response": self.seller_response,
+            "responded_at": self.responded_at.isoformat() if self.responded_at else None,
+            "created_at": self.created_at.isoformat() if self.created_at else None,
+            "product_name": self.order_item.product.name if self.order_item and self.order_item.product else None,
+            "buyer_name": f"{self.buyer.first_name} {self.buyer.last_name}" if self.buyer else None,
+            "seller_name": f"{self.seller.first_name} {self.seller.last_name}" if self.seller else None
         }

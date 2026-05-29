@@ -2,7 +2,7 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 from flask import Flask, request, jsonify, url_for, Blueprint
-from api.models import db, User, Product, Review, CartItem, Order, OrderItem
+from api.models import db, User, Product, Review, CartItem, Order, OrderItem, SupportTicket, Claim
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 
@@ -10,6 +10,7 @@ import os
 import cloudinary
 import cloudinary.uploader
 import stripe
+from datetime import datetime
 
 from flask_jwt_extended import create_access_token
 from flask_jwt_extended import get_jwt_identity
@@ -21,7 +22,6 @@ api = Blueprint('api', __name__)
 
 # Allow CORS requests to this API
 CORS(api)
-
 
 cloudinary.config(
     cloud_name=os.environ.get("CLOUDINARY_CLOUD_NAME"),
@@ -654,3 +654,410 @@ def get_profile():
         }), 404
 
     return jsonify(user.serialize()), 200
+
+# ============================================
+# REVIEWS (Reseñas de productos)
+# ============================================
+
+@api.route('/products/<int:product_id>/reviews', methods=['GET'])
+def get_product_reviews(product_id):
+    """
+    Devuelve todas las reseñas de un producto, con info del usuario que las hizo.
+    """
+    product = Product.query.get(product_id)
+    if not product:
+        return jsonify({"error": "Product not found"}), 404
+
+    reviews = Review.query.filter_by(product_id=product_id).order_by(
+        Review.created_at.desc()).all()
+
+    # Serializar incluyendo el nombre del usuario
+    reviews_data = []
+    for review in reviews:
+        user = User.query.get(review.user_id)
+        reviews_data.append({
+            "id": review.id,
+            "user_id": review.user_id,
+            "user_name": f"{user.first_name} {user.last_name}" if user else "Anonymous",
+            "product_id": review.product_id,
+            "rating": review.rating,
+            "comment": review.comment,
+            "created_at": review.created_at.isoformat() if review.created_at else None
+        })
+
+    return jsonify(reviews_data), 200
+
+
+@api.route('/products/<int:product_id>/reviews', methods=['POST'])
+@jwt_required()
+def create_review(product_id):
+    """
+    Crea una nueva reseña para un producto.
+    Reglas:
+    - El usuario debe estar logueado.
+    - Debe haber comprado el producto (tener una Order con OrderItem de ese producto).
+    - No puede haber reseñado el mismo producto antes.
+    """
+    current_user_id = get_jwt_identity()
+    body = request.get_json() or {}
+
+    # Validar producto existe
+    product = Product.query.get(product_id)
+    if not product:
+        return jsonify({"error": "Product not found"}), 404
+
+    # Validar campos
+    rating = body.get('rating')
+    comment = body.get('comment', '').strip()
+
+    if rating is None:
+        return jsonify({"error": "Rating is required"}), 400
+
+    try:
+        rating = int(rating)
+    except (ValueError, TypeError):
+        return jsonify({"error": "Rating must be a number"}), 400
+
+    if rating < 1 or rating > 5:
+        return jsonify({"error": "Rating must be between 1 and 5"}), 400
+
+    if not comment:
+        return jsonify({"error": "Comment is required"}), 400
+
+    if len(comment) > 500:
+        return jsonify({"error": "Comment must be 500 characters or less"}), 400
+
+    # Validar que el usuario haya comprado el producto
+    has_purchased = db.session.query(OrderItem).join(Order).filter(
+        Order.buyer_id == current_user_id,
+        OrderItem.product_id == product_id,
+        Order.order_status == 'paid'
+    ).first()
+
+    if not has_purchased:
+        return jsonify({"error": "You can only review products you have purchased"}), 403
+
+    # Validar que no haya reseñado antes
+    existing = Review.query.filter_by(
+        user_id=current_user_id,
+        product_id=product_id
+    ).first()
+
+    if existing:
+        return jsonify({"error": "You have already reviewed this product"}), 409
+
+    # Crear la reseña
+    new_review = Review(
+        user_id=current_user_id,
+        product_id=product_id,
+        rating=rating,
+        comment=comment
+    )
+
+    db.session.add(new_review)
+    db.session.commit()
+
+    # Devolver con info del usuario
+    user = User.query.get(current_user_id)
+    return jsonify({
+        "id": new_review.id,
+        "user_id": new_review.user_id,
+        "user_name": f"{user.first_name} {user.last_name}" if user else "Anonymous",
+        "product_id": new_review.product_id,
+        "rating": new_review.rating,
+        "comment": new_review.comment,
+        "created_at": new_review.created_at.isoformat()
+    }), 201
+
+
+@api.route('/reviews/<int:review_id>', methods=['DELETE'])
+@jwt_required()
+def delete_review(review_id):
+    """
+    Borra una reseña. Solo el dueño de la reseña puede borrarla.
+    """
+    current_user_id = get_jwt_identity()
+
+    review = Review.query.get(review_id)
+    if not review:
+        return jsonify({"error": "Review not found"}), 404
+
+    if review.user_id != current_user_id:
+        return jsonify({"error": "You can only delete your own reviews"}), 403
+
+    db.session.delete(review)
+    db.session.commit()
+
+    return jsonify({"msg": "Review deleted successfully"}), 200
+
+
+# ============================================
+# SUPPORT TICKETS (Contactar administradores)
+# ============================================
+
+@api.route('/support-tickets', methods=['POST'])
+@jwt_required()
+def create_support_ticket():
+    """
+    Crea un ticket de soporte. El usuario debe estar logueado.
+    Puede ser general (sin order_id) o sobre una orden específica.
+    """
+    current_user_id = get_jwt_identity()
+    body = request.get_json() or {}
+
+    subject = body.get('subject', '').strip()
+    message = body.get('message', '').strip()
+    order_id = body.get('order_id')  # opcional
+
+    # Validar campos
+    if not subject:
+        return jsonify({"error": "Subject is required"}), 400
+    if len(subject) > 200:
+        return jsonify({"error": "Subject must be 200 characters or less"}), 400
+    if not message:
+        return jsonify({"error": "Message is required"}), 400
+    if len(message) > 1000:
+        return jsonify({"error": "Message must be 1000 characters or less"}), 400
+
+    # Si viene order_id, validar que la orden exista y sea del usuario
+    if order_id:
+        order = Order.query.get(order_id)
+        if not order:
+            return jsonify({"error": "Order not found"}), 404
+        if order.buyer_id != int(current_user_id):
+            return jsonify({"error": "This order does not belong to you"}), 403
+
+    new_ticket = SupportTicket(
+        user_id=current_user_id,
+        order_id=order_id if order_id else None,
+        subject=subject,
+        message=message,
+        status="open"
+    )
+
+    db.session.add(new_ticket)
+    db.session.commit()
+
+    return jsonify(new_ticket.serialize()), 201
+
+
+@api.route('/support-tickets', methods=['GET'])
+@jwt_required()
+def get_my_support_tickets():
+    """
+    Devuelve todos los tickets del usuario logueado, más reciente primero.
+    """
+    current_user_id = get_jwt_identity()
+    tickets = SupportTicket.query.filter_by(user_id=current_user_id).order_by(
+        SupportTicket.created_at.desc()).all()
+
+    return jsonify([ticket.serialize() for ticket in tickets]), 200
+
+
+@api.route('/admin/support-tickets', methods=['GET'])
+@jwt_required()
+def get_all_support_tickets():
+    """
+    Devuelve TODOS los tickets de soporte. Solo para admins.
+    """
+    current_user_id = get_jwt_identity()
+    admin_user = User.query.get(current_user_id)
+
+    if not admin_user:
+        return jsonify({"error": "User not found"}), 404
+    if admin_user.role != "admin":
+        return jsonify({"error": "Access denied. Admins only."}), 403
+
+    tickets = SupportTicket.query.order_by(
+        SupportTicket.created_at.desc()).all()
+
+    # Incluir el nombre y email del usuario que creó cada ticket
+    result = []
+    for ticket in tickets:
+        ticket_data = ticket.serialize()
+        user = User.query.get(ticket.user_id)
+        ticket_data["user_name"] = f"{user.first_name} {user.last_name}" if user else "Unknown"
+        ticket_data["user_email"] = user.email if user else None
+        result.append(ticket_data)
+
+    return jsonify(result), 200
+
+
+@api.route('/admin/support-tickets/<int:ticket_id>', methods=['PUT'])
+@jwt_required()
+def respond_support_ticket(ticket_id):
+    """
+    El admin responde un ticket y/o cambia su estado. Solo para admins.
+    """
+    current_user_id = get_jwt_identity()
+    admin_user = User.query.get(current_user_id)
+
+    if not admin_user:
+        return jsonify({"error": "User not found"}), 404
+    if admin_user.role != "admin":
+        return jsonify({"error": "Access denied. Admins only."}), 403
+
+    ticket = SupportTicket.query.get(ticket_id)
+    if not ticket:
+        return jsonify({"error": "Ticket not found"}), 404
+
+    body = request.get_json() or {}
+    admin_response = body.get('admin_response', '').strip()
+    status = body.get('status')
+
+    # Si viene respuesta, guardarla
+    if admin_response:
+        if len(admin_response) > 1000:
+            return jsonify({"error": "Response must be 1000 characters or less"}), 400
+        ticket.admin_response = admin_response
+        ticket.responded_at = datetime.utcnow()
+        ticket.responded_by = current_user_id
+        # Si responde y no cambió status manualmente, lo marca como closed
+        if not status:
+            ticket.status = "closed"
+
+    # Si viene un cambio de estado explícito, aplicarlo
+    if status:
+        if status not in ["open", "in_progress", "closed"]:
+            return jsonify({"error": "Invalid status"}), 400
+        ticket.status = status
+
+    db.session.commit()
+
+    return jsonify(ticket.serialize()), 200
+
+
+# ============================================
+# CLAIMS (Reclamos buyer ↔ seller)
+# ============================================
+
+@api.route('/claims', methods=['POST'])
+@jwt_required()
+def create_claim():
+    """
+    El buyer crea un reclamo sobre un producto que compró (un OrderItem).
+    Reglas:
+    - El usuario debe estar logueado.
+    - El OrderItem debe pertenecer a una orden del buyer.
+    - El seller se saca automáticamente del producto.
+    """
+    current_user_id = int(get_jwt_identity())
+    body = request.get_json() or {}
+
+    order_item_id = body.get('order_item_id')
+    subject = body.get('subject', '').strip()
+    message = body.get('message', '').strip()
+
+    # Validar campos
+    if not order_item_id:
+        return jsonify({"error": "order_item_id is required"}), 400
+    if not subject:
+        return jsonify({"error": "Subject is required"}), 400
+    if len(subject) > 200:
+        return jsonify({"error": "Subject must be 200 characters or less"}), 400
+    if not message:
+        return jsonify({"error": "Message is required"}), 400
+    if len(message) > 1000:
+        return jsonify({"error": "Message must be 1000 characters or less"}), 400
+
+    # Validar que el OrderItem exista
+    order_item = OrderItem.query.get(order_item_id)
+    if not order_item:
+        return jsonify({"error": "Order item not found"}), 404
+
+    # Validar que esa compra sea del buyer logueado
+    order = Order.query.get(order_item.order_id)
+    if not order or order.buyer_id != current_user_id:
+        return jsonify({"error": "This purchase does not belong to you"}), 403
+
+    # Sacar el seller del producto
+    product = order_item.product
+    if not product:
+        return jsonify({"error": "Product not found for this item"}), 404
+    seller_id = product.seller_id
+
+    # Evitar que un buyer se reclame a sí mismo (si compró su propio producto)
+    if seller_id == current_user_id:
+        return jsonify({"error": "You cannot file a claim on your own product"}), 400
+
+    new_claim = Claim(
+        order_item_id=order_item_id,
+        buyer_id=current_user_id,
+        seller_id=seller_id,
+        subject=subject,
+        message=message,
+        status="open"
+    )
+
+    db.session.add(new_claim)
+    db.session.commit()
+
+    return jsonify(new_claim.serialize()), 201
+
+
+@api.route('/claims/buyer', methods=['GET'])
+@jwt_required()
+def get_buyer_claims():
+    """
+    Devuelve los reclamos que el usuario logueado hizo como buyer.
+    """
+    current_user_id = int(get_jwt_identity())
+    claims = Claim.query.filter_by(buyer_id=current_user_id).order_by(
+        Claim.created_at.desc()).all()
+
+    return jsonify([claim.serialize() for claim in claims]), 200
+
+
+@api.route('/claims/seller', methods=['GET'])
+@jwt_required()
+def get_seller_claims():
+    """
+    Devuelve los reclamos que le llegaron al usuario logueado como seller.
+    """
+    current_user_id = int(get_jwt_identity())
+    claims = Claim.query.filter_by(seller_id=current_user_id).order_by(
+        Claim.created_at.desc()).all()
+
+    return jsonify([claim.serialize() for claim in claims]), 200
+
+
+@api.route('/claims/<int:claim_id>', methods=['PUT'])
+@jwt_required()
+def respond_claim(claim_id):
+    """
+    El seller responde un reclamo y/o cambia su estado.
+    Solo el seller dueño del reclamo puede responder.
+    """
+    current_user_id = int(get_jwt_identity())
+
+    claim = Claim.query.get(claim_id)
+    if not claim:
+        return jsonify({"error": "Claim not found"}), 404
+
+    # Solo el seller al que va dirigido el reclamo puede responder
+    if claim.seller_id != current_user_id:
+        return jsonify({"error": "Access denied. This claim is not addressed to you."}), 403
+
+    body = request.get_json() or {}
+    seller_response = body.get('seller_response', '').strip()
+    status = body.get('status')
+
+    # Si viene respuesta, guardarla
+    if seller_response:
+        if len(seller_response) > 1000:
+            return jsonify({"error": "Response must be 1000 characters or less"}), 400
+        claim.seller_response = seller_response
+        claim.responded_at = datetime.utcnow()
+        # Si responde y no cambió status manualmente, lo marca como responded
+        if not status:
+            claim.status = "responded"
+
+    # Si viene un cambio de estado explícito, aplicarlo
+    if status:
+        if status not in ["open", "responded", "resolved"]:
+            return jsonify({"error": "Invalid status"}), 400
+        claim.status = status
+
+    db.session.commit()
+
+    return jsonify(claim.serialize()), 200

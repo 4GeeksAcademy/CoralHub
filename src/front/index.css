@@ -155,9 +155,7 @@ section {
     font-size: 1.2rem;
 }
 
-/* BUTTONS */
-
-.signin-btn {
+/* BUTTONS */.signin-btn {
 
     height: 45px;
 
@@ -166,6 +164,8 @@ section {
     border-radius: 18px;
 
     border: 2px solid #FE6949;
+
+    background: transparent;
 
     display: flex;
 
@@ -224,6 +224,42 @@ section {
     transform: translateY(-2px);
 
     background: #ff896b;
+}
+
+.nav-link-custom {
+
+    color: #FFFFFF;
+
+    text-decoration: none;
+
+    font-weight: 500;
+
+    transition: all 0.3s ease;
+
+}
+
+.nav-link-custom:hover {
+
+    color: #4EC7C1;
+
+}
+
+.cart-icon {
+
+    color: #FFFFFF;
+
+    font-size: 1.1rem;
+
+    text-decoration: none;
+
+    transition: all 0.3s ease;
+
+}
+
+.cart-icon:hover {
+
+    color: #4EC7C1;
+
 }
 
 /* HAMBURGER */

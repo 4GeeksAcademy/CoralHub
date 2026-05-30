@@ -25,7 +25,7 @@ export const AdminDashboard = () => {
                 const statsRes = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/admin/dashboard-stats`, {
                     headers: { "Authorization": `Bearer ${token}` }
                 });
-                
+
                 // 2. Cargar Lista de Usuarios para gestión de roles
                 const usersRes = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/admin/users`, {
                     headers: { "Authorization": `Bearer ${token}` }
@@ -64,11 +64,37 @@ export const AdminDashboard = () => {
 
             // Actualizar el estado local para reflejar el cambio de rol en la tabla al instante
             setUsers(users.map(u => u.id === userId ? { ...u, role: newRole } : u));
-            
-            // Recargar estadísticas por si influye en algo
-            setStats(prev => ({ ...prev, users_count: prev.users_count }));
-            
+
             alert("User role updated successfully!");
+        } catch (err) {
+            alert(err.message);
+        }
+    };
+
+    // Función para eliminar un usuario de forma permanente
+    const handleDeleteUser = async (userId, userEmail) => {
+        // Preguntar confirmación antes de borrar
+        const confirmDelete = window.confirm(`Are you sure you want to permanently delete user: ${userEmail}?`);
+        if (!confirmDelete) return;
+
+        try {
+            const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/admin/users/${userId}`, {
+                method: "DELETE",
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                }
+            });
+
+            const data = await res.json();
+            if (!res.ok) throw new Error(data.error || "Failed to delete user");
+
+            // Quitar el usuario eliminado del estado local para que desaparezca de la tabla inmediatamente
+            setUsers(users.filter(u => u.id !== userId));
+
+            // Restar 1 al contador de usuarios en las tarjetas
+            setStats(prev => ({ ...prev, users_count: prev.users_count - 1 }));
+
+            alert("User deleted successfully!");
         } catch (err) {
             alert(err.message);
         }
@@ -81,14 +107,14 @@ export const AdminDashboard = () => {
         <div className="container my-5">
             <h2 className="mb-4"><i className="fa-solid fa-chart-line me-2 text-danger"></i>Admin Dashboard</h2>
 
-            {/* SECCIÓN 1: TARJETAS DE ESTADÍSTICAS (Métricas globales requeridas) */}
+            {/* SECCIÓN 1: TARJETAS DE ESTADÍSTICAS */}
             <div className="row g-4 mb-5">
                 <div className="col-md-4">
                     <div className="card bg-primary text-white shadow-sm">
                         <div className="card-body d-flex align-items-center justify-content-between">
                             <div>
                                 <h6 className="text-uppercase mb-1 small text-white-50">Registered Users</h6>
-                                <h2 className="mb-0 ">{stats.users_count}</h2>
+                                <h2 className="mb-0">{stats.users_count}</h2>
                             </div>
                             <i className="fa-solid fa-users fa-2x text-white-50"></i>
                         </div>
@@ -118,10 +144,10 @@ export const AdminDashboard = () => {
                 </div>
             </div>
 
-            {/* SECCIÓN 2: GESTIÓN DE ROLES DE USUARIOS */}
+            {/* SECCIÓN 2: GESTIÓN DE ROLES Y ELIMINACIÓN */}
             <div className="card shadow-sm">
                 <div className="card-header bg-white py-3">
-                    <h5 className="mb-0"><i className="fa-solid fa-user-gear me-2 text-secondary"></i>Manage User Roles</h5>
+                    <h5 className="mb-0"><i className="fa-solid fa-user-gear me-2 text-secondary"></i>Manage User Roles & Accounts</h5>
                 </div>
                 <div className="card-body p-0">
                     <div className="table-responsive">
@@ -131,7 +157,7 @@ export const AdminDashboard = () => {
                                     <th>ID</th>
                                     <th>Email / Username</th>
                                     <th>Current Role</th>
-                                    <th className="text-end">Actions (Change Role)</th>
+                                    <th className="text-end">Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -146,18 +172,30 @@ export const AdminDashboard = () => {
                                                 {user.role}
                                             </span>
                                         </td>
-                                        <td className="text-end" style={{ maxWidth: "200px" }}>
-                                            {/* Selector dinámico de Roles */}
-                                            <select
-                                                className="form-select form-select-sm d-inline-block w-auto"
-                                                value={user.role}
-                                                disabled={user.id === currentUser.id} // Evita que el admin logueado se quite el rol a sí mismo por error
-                                                onChange={(e) => handleRoleChange(user.id, e.target.value)}
-                                            >
-                                                <option value="buyer">Buyer</option>
-                                                <option value="seller">Seller</option>
-                                                <option value="admin">Admin</option>
-                                            </select>
+                                        <td className="text-end" style={{ maxWidth: "250px" }}>
+                                            <div className="d-flex justify-content-end align-items-center gap-2">
+                                                {/* Selector dinámico de Roles */}
+                                                <select
+                                                    className="form-select form-select-sm w-auto"
+                                                    value={user.role}
+                                                    disabled={user.id === currentUser.id}
+                                                    onChange={(e) => handleRoleChange(user.id, e.target.value)}
+                                                >
+                                                    <option value="buyer">Buyer</option>
+                                                    <option value="seller">Seller</option>
+                                                    <option value="admin">Admin</option>
+                                                </select>
+
+                                                {/* Botón de Eliminar Usuario */}
+                                                <button
+                                                    className="btn btn-sm btn-outline-danger"
+                                                    disabled={user.id === currentUser.id}
+                                                    onClick={() => handleDeleteUser(user.id, user.email)}
+                                                    title="Delete User permanently"
+                                                >
+                                                    <i className="fa-solid fa-trash-can"></i>
+                                                </button>
+                                            </div>
                                         </td>
                                     </tr>
                                 ))}

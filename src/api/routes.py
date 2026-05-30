@@ -1149,3 +1149,35 @@ def admin_update_user_role(user_id):
     db.session.commit()
 
     return jsonify({"message": f"User {user_to_modify.id} role updated to {new_role}", "user": user_to_modify.serialize()}), 200
+
+# DELETE USER
+
+
+@api.route('/admin/users/<int:user_id>', methods=['DELETE'])
+@jwt_required()
+def admin_delete_user(user_id):
+    """
+    Elimina un usuario de la base de datos de forma permanente.
+    """
+    current_user_id = int(get_jwt_identity())
+    admin_user = User.query.get(current_user_id)
+
+    # 1. Verificar si es administrador
+    if not admin_user or admin_user.role != 'admin':
+        return jsonify({"error": "Access denied. Admins only."}), 403
+
+    # 2. Evitar que se elimine a sí mismo
+    if current_user_id == user_id:
+        return jsonify({"error": "You cannot delete your own admin account."}), 400
+
+    user_to_delete = User.query.get(user_id)
+    if not user_to_delete:
+        return jsonify({"error": "User not found"}), 404
+
+    try:
+        db.session.delete(user_to_delete)
+        db.session.commit()
+        return jsonify({"message": f"User {user_id} deleted successfully"}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": f"Could not delete user. It might be linked to other data. Error: {str(e)}"}), 500

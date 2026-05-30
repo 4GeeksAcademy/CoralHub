@@ -102,7 +102,423 @@ products = [
         image_url="https://cdn.shopify.com/s/files/1/0095/4993/8784/files/Acan_Brain_LPS_Coral_Acanthastrea_echinata_d8833f91-0683-48ef-b6fd-a594633771eb.jpg?v=1664453185",
         status="active",
         category="Corals"
-    )
+    ),
+    # ============================================
+    # EQUIPMENT
+    # ============================================
+
+    Product(
+        seller_id=2,
+        name="Nyos Quantum 160",
+        description="Premium protein skimmer for reef aquariums.",
+        price=399.99,
+        stock=2,
+        image_url="https://images.unsplash.com/photo-1581092334651-ddf26d9a09d0",
+        status="active",
+        category="Equipment"
+    ),
+
+    Product(
+        seller_id=3,
+        name="Reef Octopus Classic 150INT",
+        description="Reliable internal protein skimmer.",
+        price=329.99,
+        stock=3,
+        image_url="https://images.unsplash.com/photo-1518770660439-4636190af475",
+        status="active",
+        category="Equipment"
+    ),
+
+    Product(
+        seller_id=4,
+        name="Ecotech Vectra M2",
+        description="High-performance DC return pump.",
+        price=449.99,
+        stock=2,
+        image_url="https://images.unsplash.com/photo-1580894908361-967195033215",
+        status="active",
+        category="Equipment"
+    ),
+
+    Product(
+        seller_id=5,
+        name="Sicce Syncra SDC 7.0",
+        description="Silent and efficient return pump.",
+        price=279.99,
+        stock=4,
+        image_url="https://images.unsplash.com/photo-1563298723-dcfebaa392e3",
+        status="active",
+        category="Equipment"
+    ),
+
+    Product(
+        seller_id=1,
+        name="Neptune DOS",
+        description="Automated dosing system.",
+        price=349.99,
+        stock=5,
+        image_url="https://images.unsplash.com/photo-1516321318423-f06f85e504b3",
+        status="active",
+        category="Equipment"
+    ),
+
+    Product(
+        seller_id=2,
+        name="Red Sea ReefDose 4",
+        description="Four-head dosing pump.",
+        price=299.99,
+        stock=3,
+        image_url="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b",
+        status="active",
+        category="Equipment"
+    ),
+
+    Product(
+        seller_id=3,
+        name="Tunze Osmolator 3155",
+        description="Top-off system with optical sensor.",
+        price=219.99,
+        stock=6,
+        image_url="https://images.unsplash.com/photo-1498050108023-c5249f4df085",
+        status="active",
+        category="Equipment"
+    ),
+
+    Product(
+        seller_id=4,
+        name="Ecotech MP40 Vortech",
+        description="Wireless controllable wave pump.",
+        price=429.99,
+        stock=4,
+        image_url="https://images.unsplash.com/photo-1517841905240-472988babdf9",
+        status="active",
+        category="Equipment"
+    ),
+
+    Product(
+        seller_id=5,
+        name="Nero 5 Wave Pump",
+        description="Compact and powerful flow pump.",
+        price=199.99,
+        stock=5,
+        image_url="https://images.unsplash.com/photo-1485827404703-89b55fcc595e",
+        status="active",
+        category="Equipment"
+    ),
+
+    # ============================================
+    # AQUARIUMS
+    # ============================================
+
+    Product(
+        seller_id=1,
+        name="Waterbox 35.2",
+        description="Modern rimless reef aquarium.",
+        price=799.99,
+        stock=1,
+        image_url="https://images.unsplash.com/photo-1520637836862-4d197d17c90a",
+        status="active",
+        category="Aquariums"
+    ),
+
+    Product(
+        seller_id=2,
+        name="Waterbox 50.3",
+        description="Elegant reef-ready aquarium.",
+        price=1199.99,
+        stock=1,
+        image_url="https://images.unsplash.com/photo-1571752726703-5e7d1f6a2cc1",
+        status="active",
+        category="Aquariums"
+    ),
+
+    Product(
+        seller_id=3,
+        name="Waterbox 90.3",
+        description="Premium reef system.",
+        price=1999.99,
+        stock=1,
+        image_url="https://images.unsplash.com/photo-1517849845537-4d257902454a",
+        status="active",
+        category="Aquariums"
+    ),
+
+    Product(
+        seller_id=4,
+        name="Red Sea Reefer 170",
+        description="Complete reef-ready aquarium.",
+        price=1499.99,
+        stock=1,
+        image_url="https://images.unsplash.com/photo-1520637736862-4d197d17c90a",
+        status="active",
+        category="Aquariums"
+    ),
+
+    Product(
+        seller_id=5,
+        name="Red Sea Reefer 250",
+        description="Popular reef aquarium system.",
+        price=2199.99,
+        stock=1,
+        image_url="https://images.unsplash.com/photo-1544551763-46a013bb70d5",
+        status="active",
+        category="Aquariums"
+    ),
+
+    Product(
+        seller_id=1,
+        name="Innovative Marine Fusion 20",
+        description="Compact all-in-one aquarium.",
+        price=449.99,
+        stock=2,
+        image_url="https://images.unsplash.com/photo-1500375592092-40eb2168fd21",
+        status="active",
+        category="Aquariums"
+    ),
+
+    Product(
+        seller_id=2,
+        name="Innovative Marine Fusion 40",
+        description="Mid-sized all-in-one aquarium.",
+        price=699.99,
+        stock=2,
+        image_url="https://images.unsplash.com/photo-1507525428034-b723cf961d3e",
+        status="active",
+        category="Aquariums"
+    ),
+
+    Product(
+        seller_id=3,
+        name="CADE Reef 1200",
+        description="Luxury reef aquarium system.",
+        price=3299.99,
+        stock=1,
+        image_url="https://images.unsplash.com/photo-1506744038136-46273834b3fb",
+        status="active",
+        category="Aquariums"
+    ),
+
+    Product(
+        seller_id=4,
+        name="Custom Rimless 120",
+        description="Large custom reef aquarium.",
+        price=3999.99,
+        stock=1,
+        image_url="https://images.unsplash.com/photo-1470770841072-f978cf4d019e",
+        status="active",
+        category="Aquariums"
+    ),
+
+    # ============================================
+
+    # LIGHTING
+
+    # ============================================
+
+    Product(
+        seller_id=5,
+        name="Ecotech Radion XR15 G6 Blue",
+        description="Premium reef LED lighting system.",
+        price=499.99,
+        stock=3,
+        image_url="https://images.unsplash.com/photo-1516321318423-f06f85e504b3",
+        status="active",
+        category="Lighting"
+    ),
+
+    Product(
+        seller_id=1,
+        name="Ecotech Radion XR30 G6 Blue",
+        description="High-output reef LED fixture.",
+        price=899.99,
+        stock=2,
+        image_url="https://images.unsplash.com/photo-1498050108023-c5249f4df085",
+        status="active",
+        category="Lighting"
+    ),
+
+    Product(
+        seller_id=2,
+        name="AI Prime 16HD",
+        description="Popular compact reef light.",
+        price=249.99,
+        stock=6,
+        image_url="https://images.unsplash.com/photo-1518770660439-4636190af475",
+        status="active",
+        category="Lighting"
+    ),
+
+    Product(
+        seller_id=3,
+        name="AI Hydra 32HD",
+        description="Advanced reef aquarium lighting.",
+        price=429.99,
+        stock=4,
+        image_url="https://images.unsplash.com/photo-1517048676732-d65bc937f952",
+        status="active",
+        category="Lighting"
+    ),
+
+    Product(
+        seller_id=4,
+        name="AI Blade Grow",
+        description="Supplemental reef spectrum lighting.",
+        price=189.99,
+        stock=5,
+        image_url="https://images.unsplash.com/photo-1581092919535-7146ff1a5901",
+        status="active",
+        category="Lighting"
+    ),
+
+    Product(
+        seller_id=5,
+        name="Kessil A360X",
+        description="Dense matrix LED reef lighting.",
+        price=449.99,
+        stock=4,
+        image_url="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b",
+        status="active",
+        category="Lighting"
+    ),
+
+    Product(
+        seller_id=1,
+        name="Kessil AP9X",
+        description="Premium reef lighting fixture.",
+        price=869.99,
+        stock=2,
+        image_url="https://images.unsplash.com/photo-1563298723-dcfebaa392e3",
+        status="active",
+        category="Lighting"
+    ),
+
+    Product(
+        seller_id=2,
+        name="Red Sea ReefLED 90",
+        description="Smart reef aquarium LED.",
+        price=369.99,
+        stock=4,
+        image_url="https://images.unsplash.com/photo-1580894908361-967195033215",
+        status="active",
+        category="Lighting"
+    ),
+
+    Product(
+        seller_id=3,
+        name="Orphek Atlantik iCon",
+        description="Professional reef lighting system.",
+        price=999.99,
+        stock=1,
+        image_url="https://images.unsplash.com/photo-1485827404703-89b55fcc595e",
+        status="active",
+        category="Lighting"
+    ),
+
+    # ============================================
+
+    # USED
+
+    # ============================================
+
+    Product(
+        seller_id=4,
+        name="Used Radion XR15 G5",
+        description="Pre-owned Radion in excellent condition.",
+        price=299.99,
+        stock=1,
+        image_url="https://images.unsplash.com/photo-1516321318423-f06f85e504b3",
+        status="active",
+        category="Used"
+    ),
+
+    Product(
+        seller_id=5,
+        name="Used AI Prime 16HD",
+        description="Used reef light with mounting arm.",
+        price=149.99,
+        stock=1,
+        image_url="https://images.unsplash.com/photo-1498050108023-c5249f4df085",
+        status="active",
+        category="Used"
+    ),
+
+    Product(
+        seller_id=1,
+        name="Used MP40 Vortech",
+        description="Second-hand wave pump in good condition.",
+        price=220.00,
+        stock=1,
+        image_url="https://images.unsplash.com/photo-1518770660439-4636190af475",
+        status="active",
+        category="Used"
+    ),
+
+    Product(
+        seller_id=2,
+        name="Used Waterbox 20",
+        description="Small reef aquarium, lightly used.",
+        price=250.00,
+        stock=1,
+        image_url="https://images.unsplash.com/photo-1544551763-46a013bb70d5",
+        status="active",
+        category="Used"
+    ),
+
+    Product(
+        seller_id=3,
+        name="Used Reef Octopus 150",
+        description="Reliable skimmer, cleaned and tested.",
+        price=180.00,
+        stock=1,
+        image_url="https://images.unsplash.com/photo-1500375592092-40eb2168fd21",
+        status="active",
+        category="Used"
+    ),
+
+    Product(
+        seller_id=4,
+        name="Used Kessil A360X",
+        description="Great condition reef LED.",
+        price=280.00,
+        stock=1,
+        image_url="https://images.unsplash.com/photo-1507525428034-b723cf961d3e",
+        status="active",
+        category="Used"
+    ),
+
+    Product(
+        seller_id=5,
+        name="Used Red Sea Reefer 250",
+        description="Complete reef-ready setup.",
+        price=1200.00,
+        stock=1,
+        image_url="https://images.unsplash.com/photo-1470770841072-f978cf4d019e",
+        status="active",
+        category="Used"
+    ),
+
+    Product(
+        seller_id=1,
+        name="Used Nero 5",
+        description="Compact wave maker with controller.",
+        price=120.00,
+        stock=1,
+        image_url="https://images.unsplash.com/photo-1520637836862-4d197d17c90a",
+        status="active",
+        category="Used"
+    ),
+
+    Product(
+        seller_id=2,
+        name="Used Neptune DOS",
+        description="Dosing system in working condition.",
+        price=180.00,
+        stock=1,
+        image_url="https://images.unsplash.com/photo-1571752726703-5e7d1f6a2cc1",
+        status="active",
+        category="Used"
+    ),
+
 
 ]
 

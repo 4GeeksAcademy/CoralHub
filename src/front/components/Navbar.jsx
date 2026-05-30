@@ -72,11 +72,56 @@ export const Navbar = () => {
                                 Categories
                             </button>
 
-                            <ul className="dropdown-menu" aria-labelledby="categoriesDropdown">
-                                <li><Link to="/categories/corals" className="dropdown-item">Corals</Link></li>
-                                <li><Link to="/categories/equipments" className="dropdown-item">Equipments</Link></li>
-                                <li><Link to="/categories/used" className="dropdown-item">Used</Link></li>
-                                <li><Link to="/categories/lights" className="dropdown-item">Lights</Link></li>
+                            <ul
+                                className="dropdown-menu"
+                                aria-labelledby="categoriesDropdown"
+                            >
+
+                                <li>
+                                    <Link
+                                        to="/category/Corals"
+                                        className="dropdown-item"
+                                    >
+                                        Corals
+                                    </Link>
+                                </li>
+
+                                <li>
+                                    <Link
+                                        to="/category/Equipment"
+                                        className="dropdown-item"
+                                    >
+                                        Equipment
+                                    </Link>
+                                </li>
+
+                                <li>
+                                    <Link
+                                        to="/category/Aquariums"
+                                        className="dropdown-item"
+                                    >
+                                        Aquariums
+                                    </Link>
+                                </li>
+
+                                <li>
+                                    <Link
+                                        to="/category/Lighting"
+                                        className="dropdown-item"
+                                    >
+                                        Lighting
+                                    </Link>
+                                </li>
+
+                                <li>
+                                    <Link
+                                        to="/category/Used"
+                                        className="dropdown-item"
+                                    >
+                                        Used
+                                    </Link>
+                                </li>
+
                             </ul>
 
                         </div>
@@ -172,22 +217,108 @@ export const Navbar = () => {
                         <form onSubmit={handleSearch} className="mobile-search-wrapper">
                             <input type="search" placeholder="Search products..." className="mobile-search-input" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
                         </form>
-                        <Link to="/" className="mobile-nav-link">Explore</Link>
-                        <Link to="/categories/corals" className="mobile-nav-link">Corals</Link>
-                        <Link to="/categories/equipments" className="mobile-nav-link">Equipments</Link>
-                        {token ? (
-                            <>
-                                <Link to="/private" className="mobile-nav-link">Dashboard</Link>
-                                <Link to="/my-products" className="mobile-nav-link">My Products</Link>
-                                <Link to="/cart" className="mobile-nav-link position-relative">Cart{store.cart && store.cart.length > 0 && <span className="badge bg-danger ms-2">{store.cart.length}</span>}</Link>
-                                <button onClick={handleLogout} className="mobile-signup-btn">Logout</button>
-                            </>
-                        ) : (
-                            <>
-                                <Link to="/login" className="mobile-nav-link">Sign in</Link>
-                                <Link to="/signup" className="mobile-signup-btn">Sign up</Link>
-                            </>
-                        )}
+
+                        <Link
+                            to="/"
+                            className="mobile-nav-link"
+                        >
+                            Explore
+                        </Link>
+
+                        <Link
+                            to="/category/Corals"
+                            className="mobile-nav-link"
+                        >
+                            Corals
+                        </Link>
+
+                        <Link
+                            to="/category/Equipment"
+                            className="mobile-nav-link"
+                        >
+                            Equipment
+                        </Link>
+
+                        <Link
+                            to="/category/Aquariums"
+                            className="mobile-nav-link"
+                        >
+                            Aquariums
+                        </Link>
+
+                        <Link
+                            to="/category/Lighting"
+                            className="mobile-nav-link"
+                        >
+                            Lighting
+                        </Link>
+
+                        <Link
+                            to="/category/Used"
+                            className="mobile-nav-link"
+                        >
+                            Used
+                        </Link>
+
+                        {
+                            token ? (
+                                <>
+
+                                    <Link
+                                        to="/private"
+                                        className="mobile-nav-link"
+                                    >
+                                        Dashboard
+                                    </Link>
+
+                                    <Link
+                                        to="/my-products"
+                                        className="mobile-nav-link"
+                                    >
+                                        My Products
+                                    </Link>
+
+                                    <Link
+                                        to="/cart"
+                                        className="mobile-nav-link position-relative"
+                                    >
+                                        Cart
+                                        {store.cart && store.cart.length > 0 && (
+                                            <span className="badge bg-danger ms-2">
+                                                {store.cart.length}
+                                            </span>
+                                        )}
+                                    </Link>
+
+                                    <button
+                                        onClick={handleLogout}
+                                        className="mobile-signup-btn"
+                                    >
+                                        Logout
+                                    </button>
+
+                                </>
+                            ) : (
+                                <>
+
+                                    <Link
+                                        to="/login"
+                                        className="mobile-nav-link"
+                                    >
+                                        Sign in
+                                    </Link>
+
+                                    <Link
+                                        to="/signup"
+                                        className="mobile-signup-btn"
+                                    >
+                                        Sign up
+                                    </Link>
+
+                                </>
+                            )
+                        }
+
                     </div>
                 </div>
 

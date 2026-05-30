@@ -1181,3 +1181,19 @@ def admin_delete_user(user_id):
     except Exception as e:
         db.session.rollback()
         return jsonify({"error": f"Could not delete user. It might be linked to other data. Error: {str(e)}"}), 500
+# ============================================
+# CATEGORIES (Vistas de categorias)
+# ============================================
+
+from sqlalchemy import func
+
+@api.route("/products/category/<string:category>", methods=["GET"])
+def get_products_by_category(category):
+
+    products = Product.query.filter(
+        func.lower(Product.category) == category.lower()
+    ).all()
+
+    return jsonify(
+        [product.serialize() for product in products]
+    ), 200

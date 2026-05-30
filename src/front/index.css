@@ -2296,6 +2296,52 @@ h3 {
 }
 
 /* ========================================
+   SEE MORE BUTTON
+======================================== */
+
+.see-more-btn {
+    height: 60px;
+    padding-inline: 2rem;
+
+    border-radius: 18px;
+    border: none;
+
+    background: #FE6949;
+    color: white;
+
+    font-weight: 700;
+    font-size: 1rem;
+
+    transition: all 0.3s ease;
+
+    box-shadow: 0 10px 25px rgba(254, 105, 73, 0.22);
+}
+
+.see-more-btn:hover {
+    background: #ff896b;
+    transform: translateY(-2px);
+    box-shadow: 0 16px 30px rgba(254, 105, 73, 0.32);
+}
+
+.see-less-btn {
+
+    background: transparent;
+
+    border: none;
+
+    color: #4A90E2;
+
+    font-weight: 600;
+
+    transition: all 0.3s ease;
+}
+
+.see-less-btn:hover {
+
+    color: #FE6949;
+}
+
+/* ========================================
    RECENTLY ADDED
 ======================================== */
 

@@ -172,7 +172,7 @@ export const Catalog = () => {
                                                 className="coral-image"
                                             />
 
-                                            <div className="favorite-btn">
+                                            <div className="favorite-like-btn">
                                                 ♡
                                             </div>
 

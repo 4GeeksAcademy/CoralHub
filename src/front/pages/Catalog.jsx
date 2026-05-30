@@ -145,7 +145,7 @@ export const Catalog = () => {
 
                     <section>
 
-                        <div className="section-header">
+                        <div className="section-header-catalog">
                             <h2>Featured Listings</h2>
                         </div>
 
@@ -247,7 +247,7 @@ export const Catalog = () => {
 
                     <section className="recent-section">
 
-                        <div className="section-header">
+                        <div className="section-header-catalog">
                             <h2>Recently Added</h2>
                         </div>
 

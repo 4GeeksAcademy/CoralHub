@@ -244,23 +244,7 @@ section {
 
 }
 
-.cart-icon {
 
-    color: #FFFFFF;
-
-    font-size: 1.1rem;
-
-    text-decoration: none;
-
-    transition: all 0.3s ease;
-
-}
-
-.cart-icon:hover {
-
-    color: #4EC7C1;
-
-}
 
 /* HAMBURGER */
 
@@ -2241,12 +2225,12 @@ section {
     margin-bottom: 2rem;
 }
 
-.section-header h2 {
+.section-header-catalog h2 {
     font-size: 2rem;
 
     font-weight: 800;
 
-    color: #ffffff;
+    color: #021427;
 }
 
 
@@ -3018,7 +3002,7 @@ section {
 
     font-weight: 800;
 
-    color: #0B2D52;
+    color: #d7d9dd;
 }
 
 .section-btn {

@@ -1,5 +1,6 @@
 import React from "react";
 import CoralIcon from "../assets/img/Coral-icon.svg";
+import { Link } from "react-router-dom";
 
 import {
     Wrench,
@@ -33,9 +34,10 @@ export const Categories = () => {
 
                     <div className="col-6 col-md-4 col-lg">
 
-                        <button
+                        <Link
+                            to="/category/Corals"
                             className="category-card coral-category"
-                            type="button"
+
                         >
 
                             <div className="category-icon">
@@ -52,15 +54,15 @@ export const Categories = () => {
 
                             <span className="category-line"></span>
 
-                        </button>
+                        </Link>
 
                     </div>
 
                     <div className="col-6 col-md-4 col-lg">
 
-                        <button
+                        <Link
+                            to="/category/Equipment"
                             className="category-card equipment-category"
-                            type="button"
                         >
 
                             <div className="category-icon">
@@ -76,15 +78,15 @@ export const Categories = () => {
 
                             <span className="category-line"></span>
 
-                        </button>
+                        </Link>
 
                     </div>
 
                     <div className="col-6 col-md-4 col-lg">
 
-                        <button
+                        <Link
+                            to="/category/Aquariums"
                             className="category-card aquarium-category"
-                            type="button"
                         >
 
                             <div className="category-icon">
@@ -100,15 +102,15 @@ export const Categories = () => {
 
                             <span className="category-line"></span>
 
-                        </button>
+                        </Link>
 
                     </div>
 
                     <div className="col-6 col-md-4 col-lg">
 
-                        <button
+                        <Link
+                            to="/category/Lighting"
                             className="category-card lighting-category"
-                            type="button"
                         >
 
                             <div className="category-icon">
@@ -124,15 +126,15 @@ export const Categories = () => {
 
                             <span className="category-line"></span>
 
-                        </button>
+                        </Link>
 
                     </div>
 
                     <div className="col-6 col-md-4 col-lg">
 
-                        <button
+                        <Link
+                            to="/category/used"
                             className="category-card used-category"
-                            type="button"
                         >
 
                             <div className="category-icon">
@@ -148,7 +150,7 @@ export const Categories = () => {
 
                             <span className="category-line"></span>
 
-                        </button>
+                        </Link>
 
                     </div>
 

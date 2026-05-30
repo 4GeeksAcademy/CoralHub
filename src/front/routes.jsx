@@ -34,6 +34,7 @@ import { MyTickets } from "./pages/MyTickets";
 import { AdminTickets } from "./pages/AdminTickets";
 import { MyClaims } from "./pages/MyClaims";
 import { SellerClaims } from "./pages/SellerClaims";
+import { CategoryPage } from "./pages/CategoryPage";
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
@@ -76,6 +77,7 @@ export const router = createBrowserRouter(
       <Route path="/admin/tickets" element={<AdminTickets />} />
       <Route path="/my-claims" element={<MyClaims />} />
       <Route path="/seller-claims" element={<SellerClaims />} />
+      <Route path="/category/:category" element={<CategoryPage />} />
     </Route>
   )
 );

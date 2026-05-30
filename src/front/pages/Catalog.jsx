@@ -212,6 +212,19 @@ export const Catalog = () => {
                                                 ${product.price.toFixed(2)}
                                             </h3>
 
+                                            {/* SELLER */}
+                                            <div className="seller-row">
+
+                                                <div className="seller-avatar-placeholder">
+                                                    {product.seller_name?.charAt(0)}
+                                                </div>
+
+                                                <span className="seller-name">
+                                                    {product.seller_name}
+                                                </span>
+
+                                            </div>
+
                                             {/* FOOTER */}
                                             <div className="product-meta">
 

@@ -1077,3 +1077,20 @@ def respond_claim(claim_id):
     db.session.commit()
 
     return jsonify(claim.serialize()), 200
+
+# ============================================
+# CATEGORIES (Vistas de categorias)
+# ============================================
+
+from sqlalchemy import func
+
+@api.route("/products/category/<string:category>", methods=["GET"])
+def get_products_by_category(category):
+
+    products = Product.query.filter(
+        func.lower(Product.category) == category.lower()
+    ).all()
+
+    return jsonify(
+        [product.serialize() for product in products]
+    ), 200

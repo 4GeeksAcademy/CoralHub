@@ -100,7 +100,7 @@ export const Navbar = () => {
 
                                 <li>
                                     <Link
-                                        to="/categories/corals"
+                                        to="/category/Corals"
                                         className="dropdown-item"
                                     >
                                         Corals
@@ -109,28 +109,37 @@ export const Navbar = () => {
 
                                 <li>
                                     <Link
-                                        to="/categories/equipments"
+                                        to="/category/Equipment"
                                         className="dropdown-item"
                                     >
-                                        Equipments
+                                        Equipment
                                     </Link>
                                 </li>
 
                                 <li>
                                     <Link
-                                        to="/categories/used"
+                                        to="/category/Aquariums"
+                                        className="dropdown-item"
+                                    >
+                                        Aquariums
+                                    </Link>
+                                </li>
+
+                                <li>
+                                    <Link
+                                        to="/category/Lighting"
+                                        className="dropdown-item"
+                                    >
+                                        Lighting
+                                    </Link>
+                                </li>
+
+                                <li>
+                                    <Link
+                                        to="/category/Used"
                                         className="dropdown-item"
                                     >
                                         Used
-                                    </Link>
-                                </li>
-
-                                <li>
-                                    <Link
-                                        to="/categories/lights"
-                                        className="dropdown-item"
-                                    >
-                                        Lights
                                     </Link>
                                 </li>
 
@@ -333,17 +342,38 @@ export const Navbar = () => {
                         </Link>
 
                         <Link
-                            to="/categories/corals"
+                            to="/category/Corals"
                             className="mobile-nav-link"
                         >
                             Corals
                         </Link>
 
                         <Link
-                            to="/categories/equipments"
+                            to="/category/Equipment"
                             className="mobile-nav-link"
                         >
-                            Equipments
+                            Equipment
+                        </Link>
+
+                        <Link
+                            to="/category/Aquariums"
+                            className="mobile-nav-link"
+                        >
+                            Aquariums
+                        </Link>
+
+                        <Link
+                            to="/category/Lighting"
+                            className="mobile-nav-link"
+                        >
+                            Lighting
+                        </Link>
+
+                        <Link
+                            to="/category/Used"
+                            className="mobile-nav-link"
+                        >
+                            Used
                         </Link>
 
                         {

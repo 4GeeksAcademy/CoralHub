@@ -6,6 +6,7 @@ export const Catalog = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [searchTerm, setSearchTerm] = useState("");
+    const [visibleProducts, setVisibleProducts] = useState(16);
 
     useEffect(() => {
         const fetchProducts = async () => {
@@ -39,6 +40,7 @@ export const Catalog = () => {
         product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         product.description?.toLowerCase().includes(searchTerm.toLowerCase())
     );
+    const visibleFilteredProducts = filteredProducts.slice(0, visibleProducts);
 
     const renderStars = (rating) => {
         const fullStars = Math.floor(rating);
@@ -151,7 +153,7 @@ export const Catalog = () => {
 
                         <div className="row g-4">
 
-                            {filteredProducts.map((product) => (
+                            {visibleFilteredProducts.map((product) => (
 
                                 <div
                                     key={product.id}
@@ -212,6 +214,19 @@ export const Catalog = () => {
                                                 ${product.price.toFixed(2)}
                                             </h3>
 
+                                            {/* SELLER */}
+                                            <div className="seller-row">
+
+                                                <div className="seller-avatar-placeholder">
+                                                    {product.seller_name?.charAt(0)}
+                                                </div>
+
+                                                <span className="seller-name">
+                                                    {product.seller_name}
+                                                </span>
+
+                                            </div>
+
                                             {/* FOOTER */}
                                             <div className="product-meta">
 
@@ -236,6 +251,27 @@ export const Catalog = () => {
                                 </div>
                             ))}
                         </div>
+                        {visibleProducts < filteredProducts.length && (
+                            <div className="text-center mt-5">
+                                <button
+                                    className="see-more-btn"
+                                    onClick={() => setVisibleProducts(prev => prev + 8)}
+                                >
+                                    See More Products
+                                </button>
+                            </div>
+                        )}
+
+                        {visibleProducts > 16 && (
+                            <div className="text-center mt-3">
+                                <button
+                                    className="see-less-btn"
+                                    onClick={() => setVisibleProducts(16)}
+                                >
+                                    Show Less
+                                </button>
+                            </div>
+                        )}
                     </section>
                 )}
 

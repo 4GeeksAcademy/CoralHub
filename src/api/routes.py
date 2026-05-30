@@ -1077,3 +1077,75 @@ def respond_claim(claim_id):
     db.session.commit()
 
     return jsonify(claim.serialize()), 200
+
+# =====================================================================
+# ENDPOINTS PARA EL ADMINISTRADOR
+# =====================================================================
+
+
+@api.route('/admin/dashboard-stats', methods=['GET'])
+@jwt_required()
+def get_admin_stats():
+    """
+    Devuelve métricas globales para el dashboard de administrador.
+    """
+    current_user_id = int(get_jwt_identity())
+    # Verificar si el usuario actual es administrador
+    user = User.query.get(current_user_id)
+    if not user or user.role != 'admin':
+        return jsonify({"error": "Access denied. Admins only."}), 403
+
+    # Obtener conteos totales de tus modelos
+    total_users = User.query.count()
+    total_products = Product.query.count()
+    # Si tienes un modelo de Órdenes/Orders, descomenta y ajusta la siguiente línea:
+    # total_orders = Order.query.count()
+    total_orders = 0  # Temporal si no tienes el modelo mapeado aún
+
+    return jsonify({
+        "users_count": total_users,
+        "products_count": total_products,
+        "orders_count": total_orders
+    }), 200
+
+
+@api.route('/admin/users', methods=['GET'])
+@jwt_required()
+def admin_get_all_users():
+    """
+    Devuelve la lista de todos los usuarios para poder gestionar sus roles.
+    """
+    current_user_id = int(get_jwt_identity())
+    user = User.query.get(current_user_id)
+    if not user or user.role != 'admin':
+        return jsonify({"error": "Access denied. Admins only."}), 403
+
+    users = User.query.all()
+    return jsonify([u.serialize() for u in users]), 200
+
+
+@api.route('/admin/users/<int:user_id>/role', methods=['PUT'])
+@jwt_required()
+def admin_update_user_role(user_id):
+    """
+    Modifica el rol de un usuario específico (ej: cambiar de 'buyer' o 'seller' a 'admin').
+    """
+    current_user_id = int(get_jwt_identity())
+    admin_user = User.query.get(current_user_id)
+    if not admin_user or admin_user.role != 'admin':
+        return jsonify({"error": "Access denied. Admins only."}), 403
+
+    user_to_modify = User.query.get(user_id)
+    if not user_to_modify:
+        return jsonify({"error": "User not found"}), 404
+
+    body = request.get_json() or {}
+    new_role = body.get('role')
+
+    if new_role not in ['buyer', 'seller', 'admin']:
+        return jsonify({"error": "Invalid role. Must be 'buyer', 'seller', or 'admin'"}), 400
+
+    user_to_modify.role = new_role
+    db.session.commit()
+
+    return jsonify({"message": f"User {user_to_modify.id} role updated to {new_role}", "user": user_to_modify.serialize()}), 200

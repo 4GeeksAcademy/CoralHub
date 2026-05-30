@@ -188,11 +188,11 @@ export const Navbar = () => {
                                     {JSON.parse(localStorage.getItem("user"))?.role === "admin" && (
 
                                         <Link
-                                            to="/admin/users"
+                                            to="/admin/dashboard"
                                             className="nav-link-custom admin-link"
                                         >
                                             <i className="fa-solid fa-users-gear me-1"></i>
-                                            Admin
+                                            Admin Dashboard
                                         </Link>
 
                                     )}

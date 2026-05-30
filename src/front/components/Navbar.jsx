@@ -1,66 +1,44 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom"; // <-- Añadimos useLocation aquí
 import { useState, useEffect } from "react";
 import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
 
 export const Navbar = () => {
 
     const navigate = useNavigate();
+    const location = useLocation(); // <-- Inicializamos el hook para saber en qué página estamos
     const { store, dispatch } = useGlobalReducer();
 
     const token = localStorage.getItem("token");
 
     const [searchTerm, setSearchTerm] = useState("");
 
-    // Cargar carrito desactivado temporalmente para usar persistencia LocalStorage sin conflictos de API vacía
-    /*
-    useEffect(() => {
-        if (!token) return;
+    // Verificamos si el usuario está exactamente en la página de administración
+    const isAdminPage = location.pathname === "/admin/dashboard";
 
-        const fetchCart = async () => {
-            try {
-                const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/cart`, {
-                    headers: { "Authorization": `Bearer ${token}` }
-                });
-                if (res.ok) {
-                    const data = await res.json();
-                    dispatch({ type: "set_cart", payload: data });
-                }
-            } catch (err) {
-                console.error("Error fetching cart:", err);
-            }
-        };
-
-        fetchCart();
-    }, [token]);
-    */
-
+    // ... (Tu lógica de handleLogout y handleSearch se mantiene exactamente igual) ...
     const handleLogout = () => {
-
         localStorage.removeItem("token");
         localStorage.removeItem("user");
-
         navigate("/");
-
         window.location.reload();
     };
 
-    // SEARCH FUNCTION
     const handleSearch = (e) => {
-
         e.preventDefault();
-
         if (!searchTerm.trim()) return;
-
         navigate(`/search?q=${searchTerm}`);
     };
 
     return (
-
-        <nav className="coralhub-navbar">
+        /* Aquí está el truco: Si isAdminPage es true, le inyectamos la clase 'admin-navbar-compact'.
+          Si es false, se queda con sus estilos normales de siempre en las otras páginas.
+        */
+        <nav className={`coralhub-navbar ${isAdminPage ? "admin-navbar-compact py-1" : ""}`}>
 
             <div className="container">
 
-                <div className="coralhub-navbar-wrapper">
+                {/* Hacemos lo mismo con el wrapper interno */}
+                <div className={`coralhub-navbar-wrapper ${isAdminPage ? "admin-wrapper-compact" : ""}`}>
 
                     {/* LEFT SIDE */}
                     <div className="d-flex align-items-center gap-4">
@@ -71,11 +49,12 @@ export const Navbar = () => {
                             className="coralhub-logo"
                             aria-label="CoralHub homepage"
                         >
-
                             <img
                                 src="/src/front/assets/img/CoralHub_logo.png"
                                 alt="CoralHub"
                                 className="coralhub-logo-img"
+                                /* Si estamos en admin, encogemos un poco el logo para que no estire el óvalo */
+                                style={isAdminPage ? { maxHeight: "32px", width: "auto" } : {}}
                             />
 
                         </Link>
@@ -156,7 +135,6 @@ export const Navbar = () => {
                         role="search"
                         aria-label="Product search"
                     >
-
                         <input
                             type="search"
                             placeholder="Search corals, fish, lights..."
@@ -165,128 +143,61 @@ export const Navbar = () => {
                             onChange={(e) => setSearchTerm(e.target.value)}
                             aria-label="Search products"
                         />
-
-                        <button
-                            type="submit"
-                            className="coralhub-search-btn"
-                            aria-label="Submit search"
-                        >
-
+                        <button type="submit" className="coralhub-search-btn" aria-label="Submit search">
                             <i className="fa-solid fa-magnifying-glass"></i>
-
                         </button>
-
                     </form>
 
                     {/* RIGHT SIDE */}
-                    <div className="d-none d-lg-flex align-items-center gap-3">
+                    {/* Si es la página de admin, reducimos un poco el tamaño de letra general de este contenedor */}
+                    <div className={`d-none d-lg-flex align-items-center gap-3 ${isAdminPage ? "small-admin-links" : ""}`}>
 
                         {
                             token ? (
                                 <>
-
                                     {/* DASHBOARD */}
-                                    <Link
-                                        to="/dashboard"
-                                        className="nav-link-custom"
-                                    >
-                                        Dashboard
-                                    </Link>
+                                    <Link to="/dashboard" className="nav-link-custom">Dashboard</Link>
 
                                     {/* ADMIN */}
                                     {JSON.parse(localStorage.getItem("user"))?.role === "admin" && (
-
-                                        <Link
-                                            to="/admin/users"
-                                            className="nav-link-custom admin-link"
-                                        >
-                                            <i className="fa-solid fa-users-gear me-1"></i>
-                                            Admin
+                                        <Link to="/admin/dashboard" className="nav-link-custom admin-link">
+                                            <i className="fa-solid fa-users-gear me-1"></i>Admin Dashboard
                                         </Link>
-
                                     )}
 
                                     {/* SUPPORT TICKETS (ADMIN) */}
                                     {JSON.parse(localStorage.getItem("user"))?.role === "admin" && (
-
-                                        <Link
-                                            to="/admin/tickets"
-                                            className="nav-link-custom admin-link"
-                                        >
-                                            <i className="fa-solid fa-ticket me-1"></i>
-                                            Tickets
+                                        <Link to="/admin/tickets" className="nav-link-custom admin-link">
+                                            <i className="fa-solid fa-ticket me-1"></i>Tickets
                                         </Link>
-
                                     )}
 
                                     {/* MY CLAIMS (buyer) */}
-                                    <Link
-                                        to="/my-claims"
-                                        className="nav-link-custom"
-                                    >
-                                        My Claims
-                                    </Link>
+                                    <Link to="/my-claims" className="nav-link-custom">My Claims</Link>
 
                                     {/* CLAIMS RECEIVED (seller) */}
-                                    <Link
-                                        to="/seller-claims"
-                                        className="nav-link-custom"
-                                    >
-                                        Claims Received
-                                    </Link>
+                                    <Link to="/seller-claims" className="nav-link-custom">Claims Received</Link>
 
                                     {/* MY PRODUCTS */}
-                                    <Link
-                                        to="/my-products"
-                                        className="nav-link-custom"
-                                    >
-                                        My Products
-                                    </Link>
+                                    <Link to="/my-products" className="nav-link-custom">My Products</Link>
 
                                     {/* CART */}
-                                    <Link
-                                        to="/cart"
-                                        className="cart-icon position-relative"
-                                        aria-label="Shopping cart"
-                                    >
+                                    <Link to="/cart" className="cart-icon position-relative" aria-label="Shopping cart">
                                         <i className="fa-solid fa-cart-shopping"></i>
                                         {store.cart && store.cart.length > 0 && (
-                                            <span
-                                                className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
-                                                style={{ fontSize: "0.65rem" }}
-                                            >
+                                            <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style={{ fontSize: "0.65rem" }}>
                                                 {store.cart.length}
                                             </span>
                                         )}
                                     </Link>
 
                                     {/* LOGOUT */}
-                                    <button
-                                        onClick={handleLogout}
-                                        className="signin-btn"
-                                        aria-label="Log out"
-                                    >
-                                        Logout
-                                    </button>
-
+                                    <button onClick={handleLogout} className="signin-btn" aria-label="Log out">Logout</button>
                                 </>
                             ) : (
                                 <>
-
-                                    <Link
-                                        to="/login"
-                                        className="signin-btn"
-                                    >
-                                        Sign in
-                                    </Link>
-
-                                    <Link
-                                        to="/signup"
-                                        className="signup-btn"
-                                    >
-                                        Sign up
-                                    </Link>
-
+                                    <Link to="/login" className="signin-btn">Sign in</Link>
+                                    <Link to="/signup" className="signup-btn">Sign up</Link>
                                 </>
                             )
                         }
@@ -294,44 +205,17 @@ export const Navbar = () => {
                     </div>
 
                     {/* MOBILE HAMBURGER */}
-                    <button
-                        className="navbar-hamburger d-lg-none"
-                        type="button"
-                        data-bs-toggle="collapse"
-                        data-bs-target="#mobileNavbar"
-                        aria-controls="mobileNavbar"
-                        aria-expanded="false"
-                        aria-label="Toggle navigation"
-                    >
-
+                    <button className="navbar-hamburger d-lg-none" type="button" data-bs-toggle="collapse" data-bs-target="#mobileNavbar">
                         <i className="fa-solid fa-bars"></i>
-
                     </button>
 
                 </div>
 
-                {/* MOBILE MENU */}
-                <div
-                    className="collapse mobile-navbar-menu"
-                    id="mobileNavbar"
-                >
-
+                {/* MOBILE MENU (Se queda igual) */}
+                <div className="collapse mobile-navbar-menu" id="mobileNavbar">
                     <div className="mobile-navbar-content">
-
-                        {/* MOBILE SEARCH */}
-                        <form
-                            onSubmit={handleSearch}
-                            className="mobile-search-wrapper"
-                        >
-
-                            <input
-                                type="search"
-                                placeholder="Search products..."
-                                className="mobile-search-input"
-                                value={searchTerm}
-                                onChange={(e) => setSearchTerm(e.target.value)}
-                            />
-
+                        <form onSubmit={handleSearch} className="mobile-search-wrapper">
+                            <input type="search" placeholder="Search products..." className="mobile-search-input" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
                         </form>
 
                         <Link
@@ -436,7 +320,6 @@ export const Navbar = () => {
                         }
 
                     </div>
-
                 </div>
 
             </div>

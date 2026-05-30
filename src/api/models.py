@@ -18,17 +18,20 @@ class User(db.Model):
     is_active = db.Column(db.Boolean(), default=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
-    # Relaciones
-    products = db.relationship("Product", back_populates="seller")
-    orders = db.relationship("Order", backref="buyer", lazy=True)
-    cart_items = db.relationship("CartItem", backref="user", lazy=True)
-    favorites = db.relationship("Favorite", backref="user", lazy=True)
-    reviews = db.relationship("Review", backref="user", lazy=True)
+    # 🚀 RELACIONES CON BORRADO EN CASCADA AGREGADO 🚀
+    # Al eliminar al usuario, se eliminan automáticamente todos sus registros dependientes
+    products = db.relationship("Product", back_populates="seller", cascade="all, delete-orphan")
+    orders = db.relationship("Order", backref="buyer", lazy=True, cascade="all, delete-orphan")
+    cart_items = db.relationship("CartItem", backref="user", lazy=True, cascade="all, delete-orphan")
+    favorites = db.relationship("Favorite", backref="user", lazy=True, cascade="all, delete-orphan")
+    reviews = db.relationship("Review", backref="user", lazy=True, cascade="all, delete-orphan")
+    
     tickets = db.relationship(
         "SupportTicket",
         backref="user",
         lazy=True,
-        foreign_keys="SupportTicket.user_id"
+        foreign_keys="SupportTicket.user_id",
+        cascade="all, delete-orphan"
     )
 
     def serialize(self):
@@ -116,7 +119,8 @@ class Order(db.Model):
     shipping_country = db.Column(db.String(100))
     shipping_phone = db.Column(db.String(50))
 
-    items = db.relationship("OrderItem", backref="order", lazy=True)
+    # También agregamos cascada a los elementos de una orden si la orden llega a borrarse
+    items = db.relationship("OrderItem", backref="order", lazy=True, cascade="all, delete-orphan")
     tickets = db.relationship("SupportTicket", backref="order", lazy=True)
 
     def serialize(self):
@@ -272,11 +276,10 @@ class SupportTicket(db.Model):
             "created_at": self.created_at.isoformat() if self.created_at else None
         }
 
-    # ============================================
+
+# ============================================
 # CLAIMS (Buyer ↔ Seller disputes)
 # ============================================
-
-
 class Claim(db.Model):
     __tablename__ = "claims"
     id = db.Column(db.Integer, primary_key=True)

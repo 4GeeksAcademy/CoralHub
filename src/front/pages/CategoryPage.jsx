@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export const CategoryPage = () => {
 
     const { category } = useParams();
+    console.log("CATEGORY:", category);
 
     const [products, setProducts] = useState([]);
 
@@ -33,17 +34,55 @@ export const CategoryPage = () => {
 
     return (
 
-        <div className="catalog-page">
+        <div className="category-page">
+
+            <section className="category-hero">
+
+                <div className="container">
+
+                    <nav
+                        aria-label="breadcrumb"
+                        className="mb-4"
+                    >
+                        <ol className="breadcrumb custom-breadcrumb">
+
+                            <li className="breadcrumb-item">
+                                <Link to="/">
+                                    Home
+                                </Link>
+                            </li>
+
+                            <li className="breadcrumb-item">
+                                <Link to="/catalog">
+                                    Categories
+                                </Link>
+                            </li>
+
+                            <li
+                                className="breadcrumb-item active"
+                                aria-current="page"
+                            >
+                                {category}
+                            </li>
+
+                        </ol>
+                    </nav>
+
+                    <h1 className="category-title">
+                        {category}
+                    </h1>
+
+                    <p className="category-subtitle">
+                        Browse our selection of {category.toLowerCase()} available from trusted reef hobbyists.
+                    </p>
+
+                </div>
+
+            </section>
+
 
             <div className="container catalog-container">
 
-                <div className="section-header-catalog mb-5">
-
-                    <h2>
-                        {category}
-                    </h2>
-
-                </div>
 
                 <div className="row g-4">
 

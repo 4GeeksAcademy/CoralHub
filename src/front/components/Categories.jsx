@@ -133,7 +133,7 @@ export const Categories = () => {
                     <div className="col-6 col-md-4 col-lg">
 
                         <Link
-                            to="/category/used"
+                            to="/category/Used"
                             className="category-card used-category"
                         >
 

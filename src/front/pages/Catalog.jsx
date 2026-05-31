@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { FavoriteButton } from "../components/FavoriteButton";
 
 export const Catalog = () => {
     const [products, setProducts] = useState([]);
@@ -7,6 +8,7 @@ export const Catalog = () => {
     const [error, setError] = useState(null);
     const [searchTerm, setSearchTerm] = useState("");
     const [visibleProducts, setVisibleProducts] = useState(16);
+    const [favoriteIds, setFavoriteIds] = useState([]);
 
     useEffect(() => {
         const fetchProducts = async () => {
@@ -34,6 +36,33 @@ export const Catalog = () => {
 
         fetchProducts();
     }, []);
+
+
+    useEffect(() => {
+
+        const token = localStorage.getItem("token");
+
+        if (!token) return;
+
+        fetch(`${import.meta.env.VITE_BACKEND_URL}/api/favorites`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
+            .then((response) => response.json())
+            .then((data) => {
+
+                const ids = data.map(
+                    favorite => favorite.product_id
+                );
+
+                setFavoriteIds(ids);
+
+            })
+            .catch((error) => console.error(error));
+
+    }, []);
+
 
     // Filtrar productos según el término de búsqueda
     const filteredProducts = products.filter((product) =>
@@ -86,6 +115,77 @@ export const Catalog = () => {
             </div>
         );
     }
+
+
+    const handleFavorite = async (productId) => {
+
+        const token = localStorage.getItem("token");
+
+        if (!token) {
+
+            alert("You need to sign in first");
+
+            return;
+        }
+
+        const isAlreadyFavorite =
+            favoriteIds.includes(productId);
+
+        try {
+
+            if (!isAlreadyFavorite) {
+
+                const response = await fetch(
+                    `${import.meta.env.VITE_BACKEND_URL}/api/favorites`,
+                    {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            Authorization: `Bearer ${token}`
+                        },
+                        body: JSON.stringify({
+                            product_id: productId
+                        })
+                    }
+                );
+
+                if (response.ok) {
+
+                    setFavoriteIds([
+                        ...favoriteIds,
+                        productId
+                    ]);
+                }
+
+            } else {
+
+                const response = await fetch(
+                    `${import.meta.env.VITE_BACKEND_URL}/api/favorites/${productId}`,
+                    {
+                        method: "DELETE",
+                        headers: {
+                            Authorization: `Bearer ${token}`
+                        }
+                    }
+                );
+
+                if (response.ok) {
+
+                    setFavoriteIds(
+                        favoriteIds.filter(
+                            id => id !== productId
+                        )
+                    );
+                }
+            }
+
+        } catch (error) {
+
+            console.error(error);
+
+        }
+    
+    };
 
     return (
         <div className="catalog-page">
@@ -174,9 +274,11 @@ export const Catalog = () => {
                                                 className="coral-image"
                                             />
 
-                                            <div className="favorite-like-btn">
-                                                ♡
-                                            </div>
+                                            <FavoriteButton
+                                                className="favorite-btn-card"
+                                                isFavorite={favoriteIds.includes(product.id)}
+                                                onClick={() => handleFavorite(product.id)}
+                                            />
 
                                             <div className="new-badge">
                                                 New

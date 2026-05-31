@@ -61,8 +61,6 @@ export const UserDashboard = () => {
 
               <DashboardActivity />
 
-              <DashboardProfile />
-
             </div>
 
           </div>

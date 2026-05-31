@@ -181,10 +181,17 @@ export const Navbar = () => {
 
                                     {/* MY PROFILE */}
                                     <Link
-                                        to="/profile"
+                                        to="/my-claims"
                                         className="nav-link-custom"
                                     >
-                                        My Profile
+                                        My Claims
+                                    </Link>
+
+                                    <Link
+                                        to="/my-tickets"
+                                        className="nav-link-custom"
+                                    >
+                                        My Tickets
                                     </Link>
 
                                     {/* LOGOUT */}

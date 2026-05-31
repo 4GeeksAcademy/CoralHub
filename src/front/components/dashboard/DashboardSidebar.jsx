@@ -25,8 +25,8 @@ export const DashboardSidebar = () => {
 
             <nav className="dashboard-nav">
 
-                <Link to="/dashboard" className="dashboard-link active">
-                    Dashboard
+                <Link to="/profile" className="dashboard-link active">
+                    Profile
                 </Link>
 
                 <Link to="/products" className="dashboard-link">
@@ -45,9 +45,9 @@ export const DashboardSidebar = () => {
                     Favorites
                 </Link>
 
-                <Link to="/settings" className="dashboard-link">
+                {/* <Link to="/settings" className="dashboard-link">
                     Settings
-                </Link>
+                </Link> */}
 
             </nav>
 

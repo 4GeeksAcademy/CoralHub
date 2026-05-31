@@ -8,6 +8,8 @@ from flask_jwt_extended import create_access_token
 from flask import Flask, request, jsonify, url_for, Blueprint
 from api.models import db, User, Product, Review, CartItem, Order, OrderItem, SupportTicket, Claim, Favorite
 from api.utils import generate_sitemap, APIException
+from sqlalchemy import func
+
 from flask_cors import CORS
 
 import os
@@ -1284,3 +1286,29 @@ def remove_favorite(product_id):
     return jsonify({
         "msg": "Favorite removed"
     }), 200
+
+
+@api.route("/favorites/top", methods=["GET"])
+def top_favorites():
+
+    results = db.session.query(
+        Product,
+        func.count(Favorite.id).label("favorites_count")
+    )\
+    .join(Favorite, Favorite.product_id == Product.id)\
+    .group_by(Product.id)\
+    .order_by(func.count(Favorite.id).desc())\
+    .limit(4)\
+    .all()
+
+    response = []
+
+    for product, favorites_count in results:
+
+        product_data = product.serialize()
+
+        product_data["favorites_count"] = favorites_count
+
+        response.append(product_data)
+
+    return jsonify(response), 200

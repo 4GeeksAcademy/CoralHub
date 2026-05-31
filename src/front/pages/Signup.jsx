@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
+
 export const Signup = () => {
 
     const navigate = useNavigate();
@@ -57,20 +58,17 @@ export const Signup = () => {
 
     return (
 
-        <div className="container d-flex justify-content-center align-items-center min-vh-100">
+        <div className="auth-page">
 
-            <div
-                className="bg-white border rounded p-4 shadow-sm"
-                style={{ width: "420px" }}
-            >
+            <div className="auth-card">
 
                 {/* TITLE */}
-                <h2 className="fw-bold mb-2">
+                <h2 className="auth-title">
                     Create Account
                 </h2>
 
-                <p className="text-secondary mb-4">
-                    Enter your information to get started
+                <p className="auth-subtitle">
+                    Join the CoralHub community and start buying or selling reef products.
                 </p>
 
                 <form onSubmit={handleSubmit}>
@@ -80,7 +78,7 @@ export const Signup = () => {
 
                         <div className="col-md-6 mb-3">
 
-                            <label className="form-label fw-semibold">
+                            <label className="form-label">
                                 First Name
                             </label>
 
@@ -96,7 +94,7 @@ export const Signup = () => {
 
                         <div className="col-md-6 mb-3">
 
-                            <label className="form-label fw-semibold">
+                            <label className="form-label">
                                 Last Name
                             </label>
 
@@ -115,7 +113,7 @@ export const Signup = () => {
                     {/* EMAIL */}
                     <div className="mb-3">
 
-                        <label className="form-label fw-semibold">
+                        <label className="form-label">
                             Email
                         </label>
 
@@ -132,7 +130,7 @@ export const Signup = () => {
                     {/* PASSWORD */}
                     <div className="mb-3">
 
-                        <label className="form-label fw-semibold">
+                        <label className="form-label">
                             Password
                         </label>
 
@@ -149,7 +147,7 @@ export const Signup = () => {
                     {/* CONFIRM PASSWORD */}
                     <div className="mb-4">
 
-                        <label className="form-label fw-semibold">
+                        <label className="form-label">
                             Confirm Password
                         </label>
 
@@ -175,8 +173,8 @@ export const Signup = () => {
                             htmlFor="terms"
                         >
                             I agree to the{" "}
-                            <a href="#">
-                                terms and conditions
+                            <a href="/terms">
+                                Terms and Conditions
                             </a>
                         </label>
 
@@ -185,22 +183,22 @@ export const Signup = () => {
                     {/* BUTTON */}
                     <button
                         type="submit"
-                        className="btn btn-primary w-100 py-2 fw-semibold"
+                        className="auth-btn"
                     >
-                        Sign Up
+                        Create Account
                     </button>
 
                 </form>
 
-                <hr className="my-4" />
+                <div className="auth-divider"></div>
 
                 {/* SIGN IN */}
-                <p className="text-center text-secondary mb-0">
+                <p className="auth-footer">
 
                     Already have an account?{" "}
 
-                    <Link to="/signin">
-                        Sign in
+                    <Link to="/login">
+                        Sign In
                     </Link>
 
                 </p>
@@ -208,5 +206,7 @@ export const Signup = () => {
             </div>
 
         </div>
+
+    
     );
 };

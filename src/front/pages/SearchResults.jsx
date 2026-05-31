@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useSearchParams, Link } from "react-router-dom";
+import { FavoriteButton } from "../components/FavoriteButton";
 
 export const SearchResults = () => {
 
@@ -10,6 +11,8 @@ export const SearchResults = () => {
     const [products, setProducts] = useState([]);
 
     const [loading, setLoading] = useState(true);
+
+    const [favoriteIds, setFavoriteIds] = useState([]);
 
     useEffect(() => {
 
@@ -33,9 +36,72 @@ export const SearchResults = () => {
 
     }, [query]);
 
+    useEffect(() => {
+        const token = localStorage.getItem("token");
+
+        if (!token) return;
+
+        fetch(`${import.meta.env.VITE_BACKEND_URL}/api/favorites`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                const ids = data.map((favorite) => favorite.product_id);
+                setFavoriteIds(ids);
+            })
+            .catch((error) => console.error(error));
+    }, []);
+
+
     if (loading) {
         return <p className="text-white p-5">Loading...</p>;
     }
+
+
+    const handleFavorite = async (productId) => {
+        const token = localStorage.getItem("token");
+
+        if (!token) {
+            alert("You need to sign in first");
+            return;
+        }
+
+        const isAlreadyFavorite = favoriteIds.includes(productId);
+
+        try {
+            if (!isAlreadyFavorite) {
+                const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/favorites`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`
+                    },
+                    body: JSON.stringify({
+                        product_id: productId
+                    })
+                });
+
+                if (response.ok) {
+                    setFavoriteIds([...favoriteIds, productId]);
+                }
+            } else {
+                const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/favorites/${productId}`, {
+                    method: "DELETE",
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                });
+
+                if (response.ok) {
+                    setFavoriteIds(favoriteIds.filter((id) => id !== productId));
+                }
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    };
 
     return (
 
@@ -202,11 +268,11 @@ export const SearchResults = () => {
                                                     alt={product.name}
                                                 />
 
-                                                <button className="wishlist-search-btn">
-
-                                                    ♡
-
-                                                </button>
+                                                <FavoriteButton
+                                                    className="favorite-btn-card"
+                                                    isFavorite={favoriteIds.includes(product.id)}
+                                                    onClick={() => handleFavorite(product.id)}
+                                                />
 
                                             </div>
 

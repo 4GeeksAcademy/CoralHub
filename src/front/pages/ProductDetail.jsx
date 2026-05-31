@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
 import "../index.css";
+import { FavoriteButton } from "../components/FavoriteButton";
 
 export const ProductDetail = () => {
     const { id } = useParams();
@@ -12,6 +13,8 @@ export const ProductDetail = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [addingToCart, setAddingToCart] = useState(false);
+
+    const [isFavorite, setIsFavorite] = useState(false);
 
     // Reviews state
     const [reviews, setReviews] = useState([]);
@@ -40,6 +43,32 @@ export const ProductDetail = () => {
                 setLoading(false);
             });
     }, [id]);
+
+    useEffect(() => {
+
+        const token = localStorage.getItem("token");
+
+        if (!token) return;
+
+        fetch(`${backendUrl}/api/favorites`, {
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
+        })
+            .then(res => res.json())
+            .then(data => {
+
+                const favoriteExists = data.some(
+                    favorite => favorite.product_id === Number(id)
+                );
+
+                setIsFavorite(favoriteExists);
+
+            })
+            .catch(error => console.error(error));
+
+    }, [id]);
+
 
     // Cargar reviews
     useEffect(() => {
@@ -93,6 +122,61 @@ export const ProductDetail = () => {
 
         alert(`🎉 ¡${product.name} añadido al carrito con éxito! 🛒`);
         setAddingToCart(false);
+    };
+
+
+    const handleFavorite = async () => {
+
+        const token = localStorage.getItem("token");
+
+        if (!token) {
+            alert("You need to sign in first");
+            navigate("/login");
+            return;
+        }
+
+        try {
+
+            if (!isFavorite) {
+
+                const response = await fetch(
+                    `${backendUrl}/api/favorites`,
+                    {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Authorization": `Bearer ${token}`
+                        },
+                        body: JSON.stringify({
+                            product_id: product.id
+                        })
+                    }
+                );
+
+                if (response.ok) {
+                    setIsFavorite(true);
+                }
+
+            } else {
+
+                const response = await fetch(
+                    `${backendUrl}/api/favorites/${product.id}`,
+                    {
+                        method: "DELETE",
+                        headers: {
+                            "Authorization": `Bearer ${token}`
+                        }
+                    }
+                );
+
+                if (response.ok) {
+                    setIsFavorite(false);
+                }
+            }
+
+        } catch (error) {
+            console.error(error);
+        }
     };
 
     // Enviar reseña
@@ -215,6 +299,8 @@ export const ProductDetail = () => {
 
     if (!product) return null;
 
+    console.log(isFavorite);
+
     return (
         <div className="product-page">
             <div className="container py-5">
@@ -271,7 +357,10 @@ export const ProductDetail = () => {
                                 >
                                     {addingToCart ? "Adding..." : product.stock === 0 ? "Out of Stock" : "Add to Cart"}
                                 </button>
-                                <button className="btn product-wishlist-btn" aria-label="Add to wishlist">♡</button>
+                                <FavoriteButton
+                                    isFavorite={isFavorite}
+                                    onClick={handleFavorite}
+                                />
                             </div>
                         </div>
                     </div>

@@ -6,8 +6,10 @@ from flask_jwt_extended import jwt_required
 from flask_jwt_extended import get_jwt_identity
 from flask_jwt_extended import create_access_token
 from flask import Flask, request, jsonify, url_for, Blueprint
-from api.models import db, User, Product, Review, CartItem, Order, OrderItem, SupportTicket, Claim
+from api.models import db, User, Product, Review, CartItem, Order, OrderItem, SupportTicket, Claim, Favorite
 from api.utils import generate_sitemap, APIException
+from sqlalchemy import func
+
 from flask_cors import CORS
 
 import os
@@ -1197,3 +1199,116 @@ def get_products_by_category(category):
     return jsonify(
         [product.serialize() for product in products]
     ), 200
+
+
+# ============================================
+# FAVORITES
+# ============================================
+
+@api.route("/favorites", methods=["POST"])
+@jwt_required()
+def add_favorite():
+
+    current_user_id = int(get_jwt_identity())
+
+    body = request.get_json()
+
+    product_id = body.get("product_id")
+
+    if not product_id:
+        return jsonify({
+            "error": "product_id is required"
+        }), 400
+
+    product = Product.query.get(product_id)
+
+    if not product:
+        return jsonify({
+            "error": "Product not found"
+        }), 404
+
+    existing = Favorite.query.filter_by(
+        user_id=current_user_id,
+        product_id=product_id
+    ).first()
+
+    if existing:
+        return jsonify({
+            "msg": "Already in favorites"
+        }), 200
+
+    favorite = Favorite(
+        user_id=current_user_id,
+        product_id=product_id
+    )
+
+    db.session.add(favorite)
+    db.session.commit()
+
+    return jsonify(
+        favorite.serialize()
+    ), 201
+
+@api.route("/favorites", methods=["GET"])
+@jwt_required()
+def get_favorites():
+
+    current_user_id = int(get_jwt_identity())
+
+    favorites = Favorite.query.filter_by(
+        user_id=current_user_id
+    ).all()
+
+    return jsonify([
+        favorite.serialize()
+        for favorite in favorites
+    ]), 200
+
+@api.route("/favorites/<int:product_id>", methods=["DELETE"])
+@jwt_required()
+def remove_favorite(product_id):
+
+    current_user_id = int(get_jwt_identity())
+
+    favorite = Favorite.query.filter_by(
+        user_id=current_user_id,
+        product_id=product_id
+    ).first()
+
+    if not favorite:
+        return jsonify({
+            "error": "Favorite not found"
+        }), 404
+
+    db.session.delete(favorite)
+    db.session.commit()
+
+    return jsonify({
+        "msg": "Favorite removed"
+    }), 200
+
+
+@api.route("/favorites/top", methods=["GET"])
+def top_favorites():
+
+    results = db.session.query(
+        Product,
+        func.count(Favorite.id).label("favorites_count")
+    )\
+    .join(Favorite, Favorite.product_id == Product.id)\
+    .group_by(Product.id)\
+    .order_by(func.count(Favorite.id).desc())\
+    .limit(4)\
+    .all()
+
+    response = []
+
+    for product, favorites_count in results:
+
+        product_data = product.serialize()
+
+        product_data["favorites_count"] = favorites_count
+
+        response.append(product_data)
+
+    return jsonify(response), 200

@@ -1,234 +1,127 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { FavoriteButton } from "./FavoriteButton";
 
 export const Favorites = () => {
 
-    
+	// const [isFavorite, setIsFavorite] = useState(false);
+	const [topProducts, setTopProducts] = useState([]);
 
-    return (<section className="favorites-section py-5 position-relative overflow-hidden">
+	useEffect(() => {
 
-				<div className="container py-5">
+		fetch(`${import.meta.env.VITE_BACKEND_URL}/api/favorites/top`)
+			.then((response) => response.json())
+			.then((data) => setTopProducts(data))
+			.catch((error) => console.error(error));
 
-					{/* HEADER */}
+	}, []);
 
-					<div className="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-5">
+	const getCategoryClass = (category) => {
 
-						<div>
+		switch (category) {
 
-							<h2 className="favorites-title mb-2">
-								Most <span>favorited</span>
-							</h2>
+			case "Corals":
+				return "coral-tag";
 
-							<p className="favorites-subtitle mb-0">
-								The products reef keepers are loving the most.
-							</p>
+			case "Eqipment":
+				return "Equipment-tag";
 
-						</div>
+			case "Lights":
+				return "lights-tag";
 
-						<button className="favorites-view-btn">
-							View all →
-						</button>
+			case "Used":
+				return "used-tag";
 
-					</div>
+			default:
+				return "";
+		}
+	};
 
-					{/* CARDS */}
+	return (<section className="favorites-section py-5 position-relative overflow-hidden">
 
-					<div className="row g-4">
+		<div className="container py-5">
 
-						{/* CARD 1 */}
+			{/* HEADER */}
 
-						<div className="col-12 col-md-6 col-xl-3">
+			<div className="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-5">
 
-							<div className="favorite-card">
+				<div>
 
-								<div className="favorite-image-wrapper">
+					<h2 className="favorites-title mb-2">
+						Most <span>favorited</span>
+					</h2>
 
-									<img
-										src="https://images.unsplash.com/photo-1546026423-cc4642628d2b?q=80&w=1200&auto=format&fit=crop"
-										alt="Purple Acropora Coral"
-										className="favorite-image"
-									/>
-
-									<button className="favorite-like-btn">
-										♡
-									</button>
-
-								</div>
-
-								<div className="favorite-content">
-
-									<div className="favorite-tag coral-tag">
-										Corals
-									</div>
-
-									<h3 className="favorite-name">
-										Purple Acropora
-									</h3>
-
-									<p className="favorite-author">
-										by ReefMaster
-									</p>
-
-									<div className="favorite-stats">
-
-										<span>⭐ 4.9 (128)</span>
-
-										<span>❤ 2.4k favorites</span>
-
-									</div>
-
-								</div>
-
-							</div>
-
-						</div>
-
-						{/* CARD 2 */}
-
-						<div className="col-12 col-md-6 col-xl-3">
-
-							<div className="favorite-card">
-
-								<div className="favorite-image-wrapper">
-
-									<img
-										src="https://images.unsplash.com/photo-1520301255226-bf5f144451c1?q=80&w=1200&auto=format&fit=crop"
-										alt="Blood Parrot"
-										className="favorite-image"
-									/>
-
-									<button className="favorite-like-btn">
-										♡
-									</button>
-
-								</div>
-
-								<div className="favorite-content">
-
-									<div className="favorite-tag fish-tag">
-										Fish
-									</div>
-
-									<h3 className="favorite-name">
-										Blood Parrotfish
-									</h3>
-
-									<p className="favorite-author">
-										by AquaWorld
-									</p>
-
-									<div className="favorite-stats">
-
-										<span>⭐ 4.8 (97)</span>
-
-										<span>❤ 1.8k favorites</span>
-
-									</div>
-								</div>
-
-							</div>
-
-						</div>
-
-						{/* CARD 3 */}
-
-						<div className="col-12 col-md-6 col-xl-3">
-
-							<div className="favorite-card">
-
-								<div className="favorite-image-wrapper">
-
-									<img
-										src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQdmt8JkhK3EG47mL42uZk8ncxZlY7eFz6JBA&s"
-										alt="Red Sea Reefer"
-										className="favorite-image"
-									/>
-
-									<button className="favorite-like-btn">
-										♡
-									</button>
-
-								</div>
-
-								<div className="favorite-content">
-
-									<div className="favorite-tag equipment-tag">
-										Equipment
-									</div>
-
-									<h3 className="favorite-name">
-										Red Sea Reefer 250
-									</h3>
-
-									<p className="favorite-author">
-										by CoralTech
-									</p>
-
-									<div className="favorite-stats">
-
-										<span>⭐ 4.7 (62)</span>
-
-										<span>❤ 1.2k favorites</span>
-
-									</div>
-								</div>
-
-							</div>
-
-						</div>
-
-
-						{/* CARD 4 */}
-
-						<div className="col-12 col-md-6 col-xl-3">
-
-							<div className="favorite-card">
-
-								<div className="favorite-image-wrapper">
-
-									<img
-										src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Zebrasoma_flavescens_Luc_Viatour.jpg"
-										alt="Yellow Tang"
-										className="favorite-image"
-									/>
-
-									<button className="favorite-like-btn">
-										♡
-									</button>
-
-								</div>
-
-								<div className="favorite-content">
-
-									<div className="favorite-tag fish-tag">
-										Fish
-									</div>
-
-									<h3 className="favorite-name">
-										Yellow Tang
-									</h3>
-
-									<p className="favorite-author">
-										by AquaWorld
-									</p>
-
-									<div className="favorite-stats">
-
-										<span>⭐ 4.8 (97)</span>
-
-										<span>❤ 1.8k favorites</span>
-
-									</div>
-								</div>
-
-							</div>
-
-						</div>
-
-					</div>
+					<p className="favorites-subtitle mb-0">
+						The products reef keepers are loving the most.
+					</p>
 
 				</div>
 
-			</section>
+				<button className="favorites-view-btn">
+					View all →
+				</button>
 
-    );
+			</div>
+
+			{/* CARDS */}
+
+			<div className="row g-4">
+
+				{topProducts.map((product) => (
+
+					<div
+						key={product.id}
+						className="col-12 col-md-6 col-xl-3"
+					>
+
+						<div className="favorite-card">
+
+							<div className="favorite-image-wrapper">
+
+								<img
+									src={product.image_url}
+									alt={product.name}
+									className="favorite-image"
+								/>
+
+							</div>
+
+							<div className="favorite-content">
+
+								<div
+									className={`favorite-tag ${getCategoryClass(product.category)}`}
+								>
+									{product.category}
+								</div>
+
+								<h3 className="favorite-name">
+									{product.name}
+								</h3>
+
+								<p className="favorite-author">
+									by {product.seller_name}
+								</p>
+
+								<div className="favorite-stats">
+
+									<span>
+										❤️ {product.favorites_count} favorites
+									</span>
+
+								</div>
+
+							</div>
+
+						</div>
+
+					</div>
+
+				))}
+
+			</div>
+
+		</div>
+
+	</section>
+
+	);
 };

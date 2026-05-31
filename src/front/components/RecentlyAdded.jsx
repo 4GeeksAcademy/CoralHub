@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { FavoriteButton } from "./FavoriteButton";
 
 export const RecentlyAdded = () => {
 
 	const [products, setProducts] = useState([]);
+	const [favoriteIds, setFavoriteIds] = useState([]);
 
 	useEffect(() => {
 
@@ -22,6 +24,100 @@ export const RecentlyAdded = () => {
 			.catch((error) => console.error(error));
 
 	}, []);
+
+	useEffect(() => {
+
+		const token = localStorage.getItem("token");
+
+		if (!token) return;
+
+		fetch(`${import.meta.env.VITE_BACKEND_URL}/api/favorites`, {
+			headers: {
+				Authorization: `Bearer ${token}`
+			}
+		})
+			.then((response) => response.json())
+			.then((data) => {
+
+				const ids = data.map(
+					favorite => favorite.product_id
+				);
+
+				setFavoriteIds(ids);
+
+			})
+			.catch((error) => console.error(error));
+
+	}, []);
+
+	const handleFavorite = async (productId) => {
+
+		const token = localStorage.getItem("token");
+
+		if (!token) {
+
+			alert("You need to sign in first");
+
+			return;
+		}
+
+		const isAlreadyFavorite =
+			favoriteIds.includes(productId);
+
+		try {
+
+			if (!isAlreadyFavorite) {
+
+				const response = await fetch(
+					`${import.meta.env.VITE_BACKEND_URL}/api/favorites`,
+					{
+						method: "POST",
+						headers: {
+							"Content-Type": "application/json",
+							Authorization: `Bearer ${token}`
+						},
+						body: JSON.stringify({
+							product_id: productId
+						})
+					}
+				);
+
+				if (response.ok) {
+
+					setFavoriteIds([
+						...favoriteIds,
+						productId
+					]);
+				}
+
+			} else {
+
+				const response = await fetch(
+					`${import.meta.env.VITE_BACKEND_URL}/api/favorites/${productId}`,
+					{
+						method: "DELETE",
+						headers: {
+							Authorization: `Bearer ${token}`
+						}
+					}
+				);
+
+				if (response.ok) {
+
+					setFavoriteIds(
+						favoriteIds.filter(
+							id => id !== productId
+						)
+					);
+				}
+			}
+
+		} catch (error) {
+
+			console.error(error);
+
+		}
+	};
 
 	return (
 
@@ -104,10 +200,6 @@ export const RecentlyAdded = () => {
 								</div>
 
 								<div className="d-flex gap-2">
-
-									<button className="wishlist-btn">
-										♡
-									</button>
 
 									<Link
 										to={`/product/${product.id}`}

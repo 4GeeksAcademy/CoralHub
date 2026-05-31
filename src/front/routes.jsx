@@ -36,6 +36,7 @@ import { MyClaims } from "./pages/MyClaims";
 import { SellerClaims } from "./pages/SellerClaims";
 import { AdminDashboard } from "./pages/AdminDashboard";
 import { CategoryPage } from "./pages/CategoryPage";
+import { ProfilePage } from "./pages/ProfilePage";
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
@@ -82,6 +83,7 @@ export const router = createBrowserRouter(
       <Route path="/admin/dashboard" element={<AdminDashboard />} />
       <Route path="/admin/users" element={<AdminUsers />} />
       <Route path="/category/:category" element={<CategoryPage />} />
+      <Route path="/profile" element={<ProfilePage />} />
     </Route>
   )
 );

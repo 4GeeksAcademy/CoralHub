@@ -155,8 +155,6 @@ export const Navbar = () => {
                         {
                             token ? (
                                 <>
-                                    {/* DASHBOARD */}
-                                    <Link to="/dashboard" className="nav-link-custom">Dashboard</Link>
 
                                     {/* ADMIN */}
                                     {JSON.parse(localStorage.getItem("user"))?.role === "admin" && (
@@ -172,23 +170,21 @@ export const Navbar = () => {
                                         </Link>
                                     )}
 
-                                    {/* MY CLAIMS (buyer) */}
-                                    <Link to="/my-claims" className="nav-link-custom">My Claims</Link>
+                                    {/* DASHBOARD */}
 
-                                    {/* CLAIMS RECEIVED (seller) */}
-                                    <Link to="/seller-claims" className="nav-link-custom">Claims Received</Link>
+                                    <Link
+                                        to="/dashboard"
+                                        className="nav-link-custom"
+                                    >
+                                        My Dashboard
+                                    </Link>
 
-                                    {/* MY PRODUCTS */}
-                                    <Link to="/my-products" className="nav-link-custom">My Products</Link>
-
-                                    {/* CART */}
-                                    <Link to="/cart" className="cart-icon position-relative" aria-label="Shopping cart">
-                                        <i className="fa-solid fa-cart-shopping"></i>
-                                        {store.cart && store.cart.length > 0 && (
-                                            <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style={{ fontSize: "0.65rem" }}>
-                                                {store.cart.length}
-                                            </span>
-                                        )}
+                                    {/* MY PROFILE */}
+                                    <Link
+                                        to="/profile"
+                                        className="nav-link-custom"
+                                    >
+                                        My Profile
                                     </Link>
 
                                     {/* LOGOUT */}
@@ -265,19 +261,18 @@ export const Navbar = () => {
                                 <>
 
                                     <Link
-                                        to="/private"
+                                        to="/dashboard"
                                         className="mobile-nav-link"
                                     >
-                                        Dashboard
+                                        My Dashboard
                                     </Link>
 
                                     <Link
-                                        to="/my-products"
+                                        to="/profile"
                                         className="mobile-nav-link"
                                     >
-                                        My Products
+                                        My Profile
                                     </Link>
-
                                     <Link
                                         to="/cart"
                                         className="mobile-nav-link position-relative"

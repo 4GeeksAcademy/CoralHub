@@ -44,6 +44,32 @@ export const ProductDetail = () => {
             });
     }, [id]);
 
+    useEffect(() => {
+
+        const token = localStorage.getItem("token");
+
+        if (!token) return;
+
+        fetch(`${backendUrl}/api/favorites`, {
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
+        })
+            .then(res => res.json())
+            .then(data => {
+
+                const favoriteExists = data.some(
+                    favorite => favorite.product_id === Number(id)
+                );
+
+                setIsFavorite(favoriteExists);
+
+            })
+            .catch(error => console.error(error));
+
+    }, [id]);
+
+
     // Cargar reviews
     useEffect(() => {
         fetchReviews();
@@ -96,6 +122,61 @@ export const ProductDetail = () => {
 
         alert(`🎉 ¡${product.name} añadido al carrito con éxito! 🛒`);
         setAddingToCart(false);
+    };
+
+
+    const handleFavorite = async () => {
+
+        const token = localStorage.getItem("token");
+
+        if (!token) {
+            alert("You need to sign in first");
+            navigate("/login");
+            return;
+        }
+
+        try {
+
+            if (!isFavorite) {
+
+                const response = await fetch(
+                    `${backendUrl}/api/favorites`,
+                    {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Authorization": `Bearer ${token}`
+                        },
+                        body: JSON.stringify({
+                            product_id: product.id
+                        })
+                    }
+                );
+
+                if (response.ok) {
+                    setIsFavorite(true);
+                }
+
+            } else {
+
+                const response = await fetch(
+                    `${backendUrl}/api/favorites/${product.id}`,
+                    {
+                        method: "DELETE",
+                        headers: {
+                            "Authorization": `Bearer ${token}`
+                        }
+                    }
+                );
+
+                if (response.ok) {
+                    setIsFavorite(false);
+                }
+            }
+
+        } catch (error) {
+            console.error(error);
+        }
     };
 
     // Enviar reseña
@@ -218,6 +299,8 @@ export const ProductDetail = () => {
 
     if (!product) return null;
 
+    console.log(isFavorite);
+
     return (
         <div className="product-page">
             <div className="container py-5">
@@ -276,7 +359,7 @@ export const ProductDetail = () => {
                                 </button>
                                 <FavoriteButton
                                     isFavorite={isFavorite}
-                                    onClick={() => setIsFavorite(!isFavorite)}
+                                    onClick={handleFavorite}
                                 />
                             </div>
                         </div>

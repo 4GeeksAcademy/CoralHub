@@ -342,25 +342,15 @@ h3 {
     justify-content: center;
     align-items: center;
 
-    padding: 40px 20px;
+    padding:20px;
 
     background:
-        radial-gradient(
-            circle at top left,
-            rgba(255, 127, 80, 0.12),
-            transparent 30%
-        ),
-        radial-gradient(
-            circle at bottom right,
-            rgba(0, 188, 212, 0.12),
-            transparent 30%
-        ),
         #041937;
 }
 
 .auth-card {
     width: 100%;
-    max-width: 520px;
+    max-width: 500px;
 
     background: #ffffff;
 

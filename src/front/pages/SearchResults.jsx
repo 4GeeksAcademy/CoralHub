@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useSearchParams, Link } from "react-router-dom";
+import { FavoriteButton } from "../components/FavoriteButton";
 
 export const SearchResults = () => {
 
@@ -202,11 +203,11 @@ export const SearchResults = () => {
                                                     alt={product.name}
                                                 />
 
-                                                <button className="wishlist-search-btn">
-
-                                                    ♡
-
-                                                </button>
+                                                <FavoriteButton
+                                                    className="favorite-btn-card"
+                                                    isFavorite={false}
+                                                    onClick={() => { }}
+                                                />
 
                                             </div>
 

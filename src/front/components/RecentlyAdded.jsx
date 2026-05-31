@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { FavoriteButton } from "./FavoriteButton";
 
 export const RecentlyAdded = () => {
 
@@ -104,10 +105,6 @@ export const RecentlyAdded = () => {
 								</div>
 
 								<div className="d-flex gap-2">
-
-									<button className="wishlist-btn">
-										♡
-									</button>
 
 									<Link
 										to={`/product/${product.id}`}

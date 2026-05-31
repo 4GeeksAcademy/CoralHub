@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
 import "../index.css";
+import { FavoriteButton } from "../components/FavoriteButton";
 
 export const ProductDetail = () => {
     const { id } = useParams();
@@ -12,6 +13,8 @@ export const ProductDetail = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [addingToCart, setAddingToCart] = useState(false);
+
+    const [isFavorite, setIsFavorite] = useState(false);
 
     // Reviews state
     const [reviews, setReviews] = useState([]);
@@ -271,7 +274,10 @@ export const ProductDetail = () => {
                                 >
                                     {addingToCart ? "Adding..." : product.stock === 0 ? "Out of Stock" : "Add to Cart"}
                                 </button>
-                                <button className="btn product-wishlist-btn" aria-label="Add to wishlist">♡</button>
+                                <FavoriteButton
+                                    isFavorite={isFavorite}
+                                    onClick={() => setIsFavorite(!isFavorite)}
+                                />
                             </div>
                         </div>
                     </div>

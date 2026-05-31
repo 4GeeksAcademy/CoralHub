@@ -672,6 +672,24 @@ def get_profile():
 
     return jsonify(user.serialize()), 200
 
+@api.route("/profile", methods=["DELETE"])
+@jwt_required()
+def delete_profile():
+
+    user_id = get_jwt_identity()
+
+    user = User.query.get(user_id)
+
+    if not user:
+        return jsonify({"msg": "User not found"}), 404
+
+    db.session.delete(user)
+    db.session.commit()
+
+    return jsonify({
+        "msg": "Account deleted successfully"
+    }), 200
+
 # ============================================
 # REVIEWS (Reseñas de productos)
 # ============================================
@@ -1187,7 +1205,6 @@ def admin_delete_user(user_id):
 # CATEGORIES (Vistas de categorias)
 # ============================================
 
-from sqlalchemy import func
 
 @api.route("/products/category/<string:category>", methods=["GET"])
 def get_products_by_category(category):
@@ -1249,6 +1266,7 @@ def add_favorite():
         favorite.serialize()
     ), 201
 
+
 @api.route("/favorites", methods=["GET"])
 @jwt_required()
 def get_favorites():
@@ -1263,6 +1281,7 @@ def get_favorites():
         favorite.serialize()
         for favorite in favorites
     ]), 200
+
 
 @api.route("/favorites/<int:product_id>", methods=["DELETE"])
 @jwt_required()
@@ -1295,11 +1314,11 @@ def top_favorites():
         Product,
         func.count(Favorite.id).label("favorites_count")
     )\
-    .join(Favorite, Favorite.product_id == Product.id)\
-    .group_by(Product.id)\
-    .order_by(func.count(Favorite.id).desc())\
-    .limit(4)\
-    .all()
+        .join(Favorite, Favorite.product_id == Product.id)\
+        .group_by(Product.id)\
+        .order_by(func.count(Favorite.id).desc())\
+        .limit(4)\
+        .all()
 
     response = []
 

@@ -3595,6 +3595,34 @@ h3 {
   box-shadow: 0 0 0 3px rgba(78, 199, 193, 0.12);
 }
 
+/* Delete Account Button */
+
+.delete-account-btn {
+    background: transparent;
+    border: 1px solid #ff6b6b;
+    color: #ff6b6b;
+
+    padding: 0.55rem 1rem;
+    border-radius: 10px;
+
+    font-size: 0.85rem;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: all 0.25s ease;
+}
+
+.delete-account-btn:hover {
+    background: #ff6b6b;
+    color: white;
+
+    transform: translateY(-1px);
+}
+
+.delete-account-btn:active {
+    transform: translateY(0);
+}
 /* ========================================
    VIEW MORE BUTTON
 ======================================== */

@@ -1,10 +1,11 @@
-import React from "react";
+import { DashboardProfile } from "../components/dashboard/DashboardProfile";
+
+
 
 export const ProfilePage = () => {
     return (
         <div className="container py-5">
-            <h1>My Profile</h1>
-            <p>Profile page coming soon...</p>
+            <DashboardProfile />
         </div>
     );
 };

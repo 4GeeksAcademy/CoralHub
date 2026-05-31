@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 export const DashboardHeader = () => {
+    const user = JSON.parse(localStorage.getItem("user")) || {};
 
     return (
 
@@ -9,7 +10,7 @@ export const DashboardHeader = () => {
 
             <div>
                 <h1 className="dashboard-title">
-                    Welcome back, Ana!
+                    Welcome back, {user.first_name}!
                 </h1>
 
                 <p className="dashboard-subtitle">

@@ -2,7 +2,6 @@ import { Link, useNavigate, useLocation } from "react-router-dom"; // <-- Añadi
 import { useState, useEffect } from "react";
 import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
 
-
 export const Navbar = () => {
 
     const navigate = useNavigate();
@@ -182,29 +181,21 @@ export const Navbar = () => {
 
                                     {/* MY PROFILE */}
                                     <Link
-                                        to="/my-claims"
+                                        to="/profile"
                                         className="nav-link-custom"
                                     >
-                                        My Claims
+                                        My Profile
                                     </Link>
 
-                                    <Link
-                                        to="/my-tickets"
-                                        className="nav-link-custom"
-                                    >
-                                        My Tickets
-                                    </Link>
-
+                                    {/* CART (este era el que faltaba en la barra de escritorio) */}
                                     <Link
                                         to="/cart"
                                         className="nav-link-custom position-relative"
+                                        aria-label="Shopping cart"
                                     >
-                                        Cart
-
+                                        <i className="fa-solid fa-cart-shopping me-1"></i>Cart
                                         {store.cart && store.cart.length > 0 && (
-                                            <span
-                                                className="badge bg-danger ms-2"
-                                            >
+                                            <span className="badge bg-danger ms-1">
                                                 {store.cart.length}
                                             </span>
                                         )}

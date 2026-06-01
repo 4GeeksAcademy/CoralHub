@@ -134,7 +134,7 @@ export const Cart = () => {
 
     return (
         <div className="container mt-5 min-vh-100">
-            <h1 className="mb-4 fw-bold">Tu Carrito de Compras 🛒</h1>
+            <h2 className="mb-4 fw-bold">Tu Carrito de Compras 🛒</h2>
 
             {store.cart.length === 0 ? (
                 <div className="alert alert-warning text-center p-5">

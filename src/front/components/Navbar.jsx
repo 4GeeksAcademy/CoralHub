@@ -187,6 +187,20 @@ export const Navbar = () => {
                                         My Profile
                                     </Link>
 
+                                    {/* CART (este era el que faltaba en la barra de escritorio) */}
+                                    <Link
+                                        to="/cart"
+                                        className="nav-link-custom position-relative"
+                                        aria-label="Shopping cart"
+                                    >
+                                        <i className="fa-solid fa-cart-shopping me-1"></i>Cart
+                                        {store.cart && store.cart.length > 0 && (
+                                            <span className="badge bg-danger ms-1">
+                                                {store.cart.length}
+                                            </span>
+                                        )}
+                                    </Link>
+
                                     {/* LOGOUT */}
                                     <button onClick={handleLogout} className="signin-btn" aria-label="Log out">Logout</button>
                                 </>

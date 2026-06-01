@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import { DashboardSidebar } from "../components/dashboard/DashboardSidebar";
 import { DashboardHeader } from "../components/dashboard/DashboardHeader";
@@ -9,71 +9,96 @@ import { DashboardProfile } from "../components/dashboard/DashboardProfile";
 import { DashboardActivity } from "../components/dashboard/DashboardActivity";
 
 export const UserDashboard = () => {
-  return (
-    <div className="dashboard-layout">
 
-      <DashboardSidebar />
+    const [activeSection, setActiveSection] = useState("overview");
 
-      <main className="dashboard-main">
-        <div className="dashboard-container">
+    return (
 
-          <DashboardHeader />
+        <div className="dashboard-layout">
 
-          <div className="dashboard-content">
+            <DashboardSidebar
+                activeSection={activeSection}
+                setActiveSection={setActiveSection}
+            />
 
-            <section className="dashboard-stats-grid">
+            <main className="dashboard-main">
 
-              <DashboardStatsCard
-                title="Active Products"
-                value="12"
-                subtitle="2 new this week"
-              />
+                <div className="dashboard-container">
 
-              <DashboardStatsCard
-                title="Orders"
-                value="4"
-                subtitle="2 pending"
-              />
+                    <DashboardHeader />
 
-              <DashboardStatsCard
-                title="Revenue"
-                value="$1,240"
-                subtitle="+18% this month"
-              />
+                    <div className="dashboard-content">
 
-              <DashboardStatsCard
-                title="Favorites"
-                value="23"
-                subtitle="Saved products"
-              />
+                        {activeSection === "overview" && (
+                            <>
+                                <section className="dashboard-stats-grid">
 
-            </section>
+                                    <DashboardStatsCard
+                                        title="Active Products"
+                                        value="12"
+                                        subtitle="2 new this week"
+                                    />
 
-            <div className="dashboard-dual-grid">
+                                    <DashboardStatsCard
+                                        title="Orders"
+                                        value="4"
+                                        subtitle="2 pending"
+                                    />
 
-              <DashboardProducts />
+                                    <DashboardStatsCard
+                                        title="Revenue"
+                                        value="$1,240"
+                                        subtitle="+18% this month"
+                                    />
 
-              <DashboardOrders />
+                                    <DashboardStatsCard
+                                        title="Favorites"
+                                        value="23"
+                                        subtitle="Saved products"
+                                    />
 
-            </div>
-            
-            <div className="dashboard-bottom-grid">
+                                </section>
 
-              <DashboardActivity />
+                                <div className="dashboard-dual-grid">
 
-              <DashboardProfile />
+                                    <DashboardProducts
+                                        setActiveSection={setActiveSection}
+                                    />
 
-            </div>
+                                    <DashboardOrders />
 
-          </div>
+                                </div>
+
+                                <div className="dashboard-bottom-grid">
+
+                                    <DashboardActivity />
+
+                                </div>
+                            </>
+                        )}
+
+                        {activeSection === "profile" && (
+                            <DashboardProfile />
+                        )}
+
+                        {activeSection === "products" && (
+                            <DashboardProducts />
+                        )}
+
+                        {activeSection === "orders" && (
+                            <DashboardOrders />
+                        )}
+
+                        {activeSection === "activity" && (
+                            <DashboardActivity />
+                        )}
+
+                    </div>
+
+                </div>
+
+            </main>
+
         </div>
-      </main>
-
-    </div>
-  );
+    );
 };
-
-
-
-
-

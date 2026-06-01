@@ -282,11 +282,19 @@ export const Navbar = () => {
                                     </Link>
 
                                     <Link
-                                        to="/profile"
+                                        to="/my-claims"
                                         className="mobile-nav-link"
                                     >
-                                        My Profile
+                                        My Claims
                                     </Link>
+
+                                     <Link
+                                        to="/my-tickets"
+                                        className="mobile-nav-link"
+                                    >
+                                        My Tickets
+                                    </Link>
+
                                     <Link
                                         to="/cart"
                                         className="mobile-nav-link position-relative"

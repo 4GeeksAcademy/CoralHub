@@ -20,20 +20,20 @@ export const Cart = () => {
         phone: ""
     });
 
-    // Subtotal de los productos
+    // Subtotal of the products
     const calculateSubtotal = () => {
         return store.cart.reduce((total, item) => total + (item.price * item.quantity), 0);
     };
 
-    // Costo de envío segun el metodo elegido
+    // Shipping cost based on the chosen method
     const shippingFee = deliveryMethod === "shipping" ? SHIPPING_COST : 0;
 
-    // Total final (productos + envio)
+    // Final total (products + shipping)
     const calculateTotal = () => {
         return (calculateSubtotal() + shippingFee).toFixed(2);
     };
 
-    // Funciones de edición del carrito
+    // Cart edit functions
     const handleIncreaseQuantity = (item) => {
         dispatch({
             type: "update_quantity",
@@ -48,8 +48,8 @@ export const Cart = () => {
                 payload: { id: item.id, quantity: item.quantity - 1 }
             });
         } else {
-            // Si es 1 y presionan menos, le preguntamos si desea eliminarlo
-            if (confirm(`¿Deseas eliminar ${item.name} del carrito?`)) {
+            // If it's 1 and they press minus, ask if they want to remove it
+            if (confirm(`Do you want to remove ${item.name} from the cart?`)) {
                 handleRemoveItem(item.id);
             }
         }
@@ -62,40 +62,40 @@ export const Cart = () => {
         });
     };
 
-    // Actualiza un campo del formulario de direccion
+    // Updates a field in the address form
     const handleAddressChange = (field, value) => {
         setShippingAddress({ ...shippingAddress, [field]: value });
     };
 
-    // Valida que la direccion este completa si eligio shipping
+    // Validates that the address is complete if shipping was chosen
     const validateShippingForm = () => {
         if (deliveryMethod === "pickup") return true;
 
         const required = ["full_name", "street", "city", "state", "zip_code", "country"];
         for (const field of required) {
             if (!shippingAddress[field]?.trim()) {
-                alert(`Por favor completa: ${field.replace("_", " ")}`);
+                alert(`Please fill in: ${field.replace("_", " ")}`);
                 return false;
             }
         }
         return true;
     };
 
-    // Lógica para procesar la compra final
+    // Logic to process the final purchase
     const handleCheckout = async () => {
         const token = localStorage.getItem("token");
 
         if (!token) {
-            alert("Debes iniciar sesión para procesar tu compra.");
+            alert("You must log in to process your purchase.");
             navigate("/login");
             return;
         }
 
-        // Validamos la direccion antes de seguir
+        // Validate the address before continuing
         if (!validateShippingForm()) return;
 
         try {
-            // Sanitizamos la URL quitando barras diagonales al final si existen
+            // Sanitize the URL by removing trailing slashes if any
             const cleanUrl = import.meta.env.VITE_BACKEND_URL.replace(/\/$/, "");
 
             const response = await fetch(`${cleanUrl}/api/create-checkout-session`, {
@@ -113,52 +113,52 @@ export const Cart = () => {
             });
 
             if (response.ok) {
-                alert("🎉 ¡Compra realizada con éxito! Gracias por tu confianza.");
+                alert("🎉 Purchase completed successfully! Thank you for your trust.");
                 dispatch({ type: "clear_cart" });
                 navigate("/private");
             } else {
-                // Manejo de error seguro por si el backend no devuelve un JSON válido (ej: Error 405 HTML)
+                // Safe error handling in case the backend doesn't return valid JSON (e.g. 405 HTML error)
                 const responseText = await response.text();
                 try {
                     const data = JSON.parse(responseText);
-                    alert(data.msg || data.error || `Error del servidor: ${response.status}`);
+                    alert(data.msg || data.error || `Server error: ${response.status}`);
                 } catch (jsonErr) {
-                    alert(`El servidor respondió con un error (${response.status}). Verifica el método de la ruta en Flask.`);
+                    alert(`The server responded with an error (${response.status}). Check the route method in Flask.`);
                 }
             }
         } catch (error) {
             console.error(error);
-            alert("Error de conexión con el servidor.");
+            alert("Connection error with the server.");
         }
     };
 
     return (
         <div className="container mt-5 min-vh-100">
-            <h1 className="mb-4 fw-bold">Tu Carrito de Compras 🛒</h1>
+            <h1 className="mb-4 fw-bold">Your Shopping Cart 🛒</h1>
 
             {store.cart.length === 0 ? (
                 <div className="alert alert-warning text-center p-5">
-                    <h3>Tu carrito está vacío.</h3>
-                    <p>Explora nuestra tienda para añadir productos increíbles.</p>
-                    <Link to="/" className="btn btn-dark mt-3">Ir a la Tienda</Link>
+                    <h3>Your cart is empty.</h3>
+                    <p>Explore our store to add amazing products.</p>
+                    <Link to="/" className="btn btn-dark mt-3">Go to Store</Link>
                 </div>
             ) : (
                 <div className="row">
-                    {/* Lista de productos + Delivery Method */}
+                    {/* Product list + Delivery Method */}
                     <div className="col-lg-8">
                         {store.cart.map((item) => (
                             <div className="card mb-3 p-3 border-0 shadow-sm rounded-3 bg-light" key={item.id}>
                                 <div className="d-flex align-items-center gap-3 flex-wrap flex-md-nowrap">
-                                    {/* Imagen */}
+                                    {/* Image */}
                                     <img src={item.image_url} alt={item.name} style={{ width: "80px", height: "80px", objectFit: "cover", borderRadius: "10px" }} />
 
-                                    {/* Información del Producto */}
+                                    {/* Product Info */}
                                     <div className="flex-grow-1">
                                         <h5 className="fw-bold mb-1">{item.name}</h5>
-                                        <p className="text-secondary mb-0">Precio unitario: ${item.price}</p>
+                                        <p className="text-secondary mb-0">Unit price: ${item.price}</p>
                                     </div>
 
-                                    {/* Control de Cantidad (Edición) */}
+                                    {/* Quantity Control (Edit) */}
                                     <div className="d-flex align-items-center border rounded bg-white me-3">
                                         <button className="btn btn-sm px-3 py-1 border-0" onClick={() => handleDecreaseQuantity(item)}>-</button>
                                         <span className="px-2 fw-semibold" style={{ minWidth: "30px", textAlign: "center" }}>{item.quantity}</span>
@@ -170,11 +170,11 @@ export const Cart = () => {
                                         ${(item.price * item.quantity).toFixed(2)}
                                     </div>
 
-                                    {/* Botón Eliminar */}
+                                    {/* Remove Button */}
                                     <button
                                         className="btn btn-outline-danger btn-sm border-0 p-2"
                                         onClick={() => handleRemoveItem(item.id)}
-                                        title="Eliminar producto"
+                                        title="Remove product"
                                     >
                                         🗑️
                                     </button>
@@ -186,7 +186,7 @@ export const Cart = () => {
                         <div className="card mt-4 p-4 border-0 shadow-sm rounded-3 bg-light">
                             <h4 className="fw-bold mb-3">📦 Delivery Method</h4>
 
-                            {/* Opcion: Pickup */}
+                            {/* Option: Pickup */}
                             <div className="form-check mb-3">
                                 <input
                                     className="form-check-input"
@@ -201,14 +201,14 @@ export const Cart = () => {
                                     <div className="d-flex justify-content-between align-items-center">
                                         <div>
                                             <strong>📍 Local Pickup</strong>
-                                            <p className="text-secondary mb-0 small">Recoge tu pedido en nuestra ubicación en Miami, FL</p>
+                                            <p className="text-secondary mb-0 small">Pick up your order at our location in Miami, FL</p>
                                         </div>
                                         <span className="badge bg-success">FREE</span>
                                     </div>
                                 </label>
                             </div>
 
-                            {/* Opcion: Shipping */}
+                            {/* Option: Shipping */}
                             <div className="form-check mb-3">
                                 <input
                                     className="form-check-input"
@@ -223,14 +223,14 @@ export const Cart = () => {
                                     <div className="d-flex justify-content-between align-items-center">
                                         <div>
                                             <strong>🚚 Shipping to your address</strong>
-                                            <p className="text-secondary mb-0 small">Recibe tu pedido en tu domicilio (3-5 días hábiles)</p>
+                                            <p className="text-secondary mb-0 small">Get your order delivered to your home (3-5 business days)</p>
                                         </div>
-                                        <span className="badge bg-primary">${SHIPPING_COST.toFixed(2)}</span>
+                                        <span className="badge bg-primary">\${SHIPPING_COST.toFixed(2)}</span>
                                     </div>
                                 </label>
                             </div>
 
-                            {/* FORMULARIO DE DIRECCIÓN (solo si elige shipping) */}
+                            {/* ADDRESS FORM (only if shipping is selected) */}
                             {deliveryMethod === "shipping" && (
                                 <div className="mt-3 p-3 bg-white rounded-3">
                                     <h6 className="fw-bold mb-3">Shipping Address</h6>
@@ -305,14 +305,14 @@ export const Cart = () => {
                         </div>
                     </div>
 
-                    {/* Resumen del pedido */}
+                    {/* Order Summary */}
                     <div className="col-lg-4">
                         <div className="card p-4 border-0 shadow-sm rounded-4 bg-white">
-                            <h4 className="fw-bold mb-4">Resumen de Compra</h4>
+                            <h4 className="fw-bold mb-4">Order Summary</h4>
 
                             <div className="d-flex justify-content-between mb-2">
                                 <span className="text-secondary">Subtotal:</span>
-                                <span>${calculateSubtotal().toFixed(2)}</span>
+                                <span>\${calculateSubtotal().toFixed(2)}</span>
                             </div>
 
                             <div className="d-flex justify-content-between mb-2">
@@ -321,7 +321,7 @@ export const Cart = () => {
                                 </span>
                                 <span>
                                     {deliveryMethod === "shipping"
-                                        ? `$${shippingFee.toFixed(2)}`
+                                        ? `\$${shippingFee.toFixed(2)}`
                                         : <span className="text-success">FREE</span>
                                     }
                                 </span>
@@ -331,11 +331,11 @@ export const Cart = () => {
 
                             <div className="d-flex justify-content-between mb-3 fs-5">
                                 <span className="fw-bold">Total:</span>
-                                <span className="fw-bold text-success">${calculateTotal()}</span>
+                                <span className="fw-bold text-success">\${calculateTotal()}</span>
                             </div>
 
                             <button className="btn btn-dark w-100 py-3 fw-semibold rounded-3" onClick={handleCheckout}>
-                                Confirmar y Pagar
+                                Confirm and Pay
                             </button>
                         </div>
                     </div>

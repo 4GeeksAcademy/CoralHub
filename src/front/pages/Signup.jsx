@@ -11,11 +11,26 @@ export const Signup = () => {
     const [last_name, setLastName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [acceptedTerms, setAcceptedTerms] = useState(false);
+    const [termsError, setTermsError] = useState("");
+
 
     // FORM
     const handleSubmit = async (e) => {
 
         e.preventDefault();
+
+        if (!acceptedTerms) {
+
+            setTermsError(
+                "You must accept the Terms and Conditions."
+            );
+
+            return;
+        }
+
+
+        setTermsError("");
 
         try {
 
@@ -166,6 +181,8 @@ export const Signup = () => {
                             className="form-check-input"
                             type="checkbox"
                             id="terms"
+                            checked={acceptedTerms}
+                            onChange={(e) => setAcceptedTerms(e.target.checked)}
                         />
 
                         <label
@@ -179,6 +196,14 @@ export const Signup = () => {
                         </label>
 
                     </div>
+
+                    {termsError && (
+
+                        <p className="text-danger small mt-2 mb-4">
+                            {termsError}
+                        </p>
+
+                    )}
 
                     {/* BUTTON */}
                     <button
@@ -207,6 +232,6 @@ export const Signup = () => {
 
         </div>
 
-    
+
     );
 };

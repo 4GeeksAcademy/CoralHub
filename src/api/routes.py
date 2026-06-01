@@ -20,6 +20,9 @@ import cloudinary.uploader
 import stripe
 from datetime import datetime
 
+from flask_mail import Message
+from datetime import datetime, timedelta, timezone
+
 # Cargar el archivo .env desde la raíz del proyecto.
 # routes.py está en src/api/routes.py, por eso subimos 2 niveles.
 BASE_DIR = Path(__file__).resolve().parents[2]

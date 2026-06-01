@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+// 1. Añadimos Link a las importaciones
+import { useLocation, useNavigate, Link } from "react-router-dom";
 
 export const Login = () => {
 
@@ -9,18 +10,15 @@ export const Login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
-    
     const location = useLocation();
 
     const from = location.state?.from || "/";
 
     // LOGIN
     const handleSubmit = async (e) => {
-
         e.preventDefault();
 
         try {
-
             const response = await fetch(
                 import.meta.env.VITE_BACKEND_URL + "/api/login",
                 {
@@ -41,7 +39,6 @@ export const Login = () => {
 
             // SI LOGIN FUNCIONA
             if (response.ok) {
-
                 // guardar token
                 localStorage.setItem("token", data.token);
 
@@ -55,23 +52,17 @@ export const Login = () => {
 
                 // redirect
                 navigate(from);
-
             } else {
-
                 alert(data.msg);
-
             }
 
         } catch (error) {
-
             console.log(error);
             alert("Server error");
-
         }
     };
 
     return (
-
         <div className="container min-vh-100 d-flex justify-content-center align-items-center bg-light">
 
             <div
@@ -82,7 +73,6 @@ export const Login = () => {
                     borderRadius: "20px"
                 }}
             >
-
                 {/* TITLE */}
                 <h1 className="fw-bold mb-2">
                     Sign In
@@ -96,7 +86,6 @@ export const Login = () => {
 
                     {/* EMAIL */}
                     <div className="mb-4">
-
                         <label
                             htmlFor="email"
                             className="form-label fw-semibold"
@@ -114,12 +103,10 @@ export const Login = () => {
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                         />
-
                     </div>
 
                     {/* PASSWORD HEADER */}
                     <div className="d-flex justify-content-between align-items-center mb-2">
-
                         <label
                             htmlFor="password"
                             className="form-label fw-semibold mb-0"
@@ -127,18 +114,11 @@ export const Login = () => {
                             Password
                         </label>
 
-                        <a
-                            href="#"
-                            className="text-dark text-decoration-none small fw-medium"
-                        >
-                            Forgot your password?
-                        </a>
-
+                        
                     </div>
 
                     {/* PASSWORD INPUT */}
                     <div className="mb-4">
-
                         <input
                             id="password"
                             type="password"
@@ -149,25 +129,21 @@ export const Login = () => {
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                         />
-
                     </div>
 
                     {/* REMEMBER ME */}
                     <div className="form-check mb-4">
-
                         <input
                             className="form-check-input"
                             type="checkbox"
                             id="rememberMe"
                         />
-
                         <label
                             className="form-check-label"
                             htmlFor="rememberMe"
                         >
                             Remember me
                         </label>
-
                     </div>
 
                     {/* BUTTON */}
@@ -185,20 +161,25 @@ export const Login = () => {
 
                 {/* SIGN UP */}
                 <p className="text-center text-secondary mt-4 mb-0">
-
                     Don’t have an account?{" "}
-
-                    <a
-                        href="/signup"
+                    <Link
+                        to="/signup"
                         className="text-dark fw-semibold text-decoration-none"
                     >
                         Sign Up
-                    </a>
-
+                    </Link>
+                        <br />
+                        <br />
+                    {/* 2. Enlace cambiado a Link con la ruta /forgot-password */}
+                        <Link
+                            to="/forgot-password"
+                            className="text-dark text-decoration-none small fw-medium"
+                        >
+                            ¿Olvidaste tu contraseña?
+                        </Link>
                 </p>
 
             </div>
-
         </div>
     );
 };

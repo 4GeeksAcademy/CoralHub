@@ -152,6 +152,11 @@ export const DashboardProfile = () => {
 
                 setUser(data.user);
 
+                localStorage.setItem(
+                    "user",
+                    JSON.stringify(data.user)
+                );
+
                 setIsEditing(false);
             })
 

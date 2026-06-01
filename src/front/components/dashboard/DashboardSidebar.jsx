@@ -5,6 +5,15 @@ export const DashboardSidebar = ({
     setActiveSection
 }) => {
 
+    const user = JSON.parse(localStorage.getItem("user") || "{}");
+
+    const firstName = user.first_name || "";
+    const lastName = user.last_name || "";
+
+    const fullName = `${firstName} ${lastName}`.trim();
+
+    const initials = `${firstName.charAt(0)}${lastName.charAt(0)}`.toUpperCase();
+
     return (
 
         <aside className="dashboard-sidebar">
@@ -12,12 +21,16 @@ export const DashboardSidebar = ({
             <div className="dashboard-user">
 
                 <div className="dashboard-avatar">
-                    AM
+                    {initials || "U"}
                 </div>
 
-                <h3>Ana Martinez</h3>
+                <h3>
+                    {fullName || "User"}
+                </h3>
 
-                <p>☆ Pro Seller</p>
+                <p>
+                    {user.email || "No email available"}
+                </p>
 
             </div>
 
@@ -68,6 +81,5 @@ export const DashboardSidebar = ({
             </nav>
 
         </aside>
-
     );
 };

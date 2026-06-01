@@ -2,6 +2,7 @@ import { Link, useNavigate, useLocation } from "react-router-dom"; // <-- Añadi
 import { useState, useEffect } from "react";
 import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
 
+
 export const Navbar = () => {
 
     const navigate = useNavigate();
@@ -192,6 +193,21 @@ export const Navbar = () => {
                                         className="nav-link-custom"
                                     >
                                         My Tickets
+                                    </Link>
+
+                                    <Link
+                                        to="/cart"
+                                        className="nav-link-custom position-relative"
+                                    >
+                                        Cart
+
+                                        {store.cart && store.cart.length > 0 && (
+                                            <span
+                                                className="badge bg-danger ms-2"
+                                            >
+                                                {store.cart.length}
+                                            </span>
+                                        )}
                                     </Link>
 
                                     {/* LOGOUT */}

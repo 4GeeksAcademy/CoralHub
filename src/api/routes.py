@@ -151,13 +151,48 @@ def create_product():
 
 @api.route('/signup', methods=['POST'])
 def signup():
+
     body = request.get_json()
+
+    # VALIDATE BODY
+    if not body:
+        return jsonify({
+            "message": "Request body is required"
+        }), 400
 
     first_name = body.get("first_name")
     last_name = body.get("last_name")
     email = body.get("email")
     password = body.get("password")
 
+    # REQUIRED FIELDS
+    if not first_name:
+        return jsonify({
+            "message": "First name is required"
+        }), 400
+
+    if not last_name:
+        return jsonify({
+            "message": "Last name is required"
+        }), 400
+
+    if not email:
+        return jsonify({
+            "message": "Email is required"
+        }), 400
+
+    if not password:
+        return jsonify({
+            "message": "Password is required"
+        }), 400
+
+    # PASSWORD VALIDATION
+    if len(password) < 8:
+        return jsonify({
+            "message": "Password must be at least 8 characters"
+        }), 400
+
+    # CHECK IF USER EXISTS
     existing_user = User.query.filter_by(email=email).first()
 
     if existing_user:
@@ -165,6 +200,7 @@ def signup():
             "message": "User already exists"
         }), 400
 
+    # CREATE USER
     hashed_password = generate_password_hash(password)
 
     new_user = User(
@@ -671,6 +707,7 @@ def get_profile():
         }), 404
 
     return jsonify(user.serialize()), 200
+
 
 @api.route("/profile", methods=["DELETE"])
 @jwt_required()

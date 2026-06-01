@@ -3178,6 +3178,18 @@ h3 {
   font-weight: 500;
 
   transition: all 0.3s ease;
+  
+  width: 100%;
+
+  border: none;
+
+  background: transparent;
+
+  text-align: left;
+
+  cursor: pointer;
+
+  font-family: inherit;
 }
 
 .dashboard-link:hover {
@@ -3247,7 +3259,7 @@ h3 {
 .dashboard-title {
   color: white;
 
-  font-size: clamp(2rem, 4vw, 38px);
+  font-size: clamp(1.5rem, 3vw, 30px);
 
   font-weight: 700;
 
@@ -3317,13 +3329,15 @@ h3 {
 .stats-title {
   color: rgba(255, 255, 255, 0.7);
 
+  font-size: 1.5rem;
+
   margin-bottom: 1rem;
 }
 
 .stats-value {
   color: white;
 
-  font-size: 2rem;
+  font-size: 1.5rem;
 
   font-weight: 700;
 
@@ -3376,7 +3390,7 @@ h3 {
 }
 
 .dashboard-section .section-header h2 {
-  font-size: 2rem;
+  font-size: 1.5rem;
 
   font-weight: 800;
 

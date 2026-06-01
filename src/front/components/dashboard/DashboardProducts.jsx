@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-export const DashboardProducts = () => {
+export const DashboardProducts = ({ setActiveSection }) => {
 
     const [products, setProducts] = useState([]);
 
@@ -9,7 +9,7 @@ export const DashboardProducts = () => {
 
     const [error, setError] = useState(null);
 
-    const [visibleCount, setVisibleCount] = useState(5);
+    const [visibleCount, setVisibleCount] = useState(3);
 
     useEffect(() => {
 
@@ -93,6 +93,8 @@ export const DashboardProducts = () => {
         );
     }
 
+    const isOverviewPreview = !!setActiveSection;
+
     return (
 
         <section className="dashboard-section">
@@ -141,7 +143,7 @@ export const DashboardProducts = () => {
 
                                         <div>
 
-                                            <h3>{product.name}</h3>
+                                            <h5>{product.name}</h5>
 
                                             <p>${product.price}</p>
 
@@ -168,29 +170,16 @@ export const DashboardProducts = () => {
 
                     </div>
 
-                    <button
-                        className="dashboard-load-more"
-                        onClick={() => {
+                    {isOverviewPreview && (
 
-                            if (visibleCount >= products.length) {
+                        <button
+                            className="dashboard-load-more"
+                            onClick={() => setActiveSection("products")}
+                        >
+                            View All Products
+                        </button>
 
-                                setVisibleCount(5);
-
-                            } else {
-
-                                setVisibleCount(prev => prev + 5);
-                            }
-                        }}
-                    >
-
-                        {visibleCount >= products.length
-
-                            ? "View Less"
-
-                            : "View More"}
-
-                    </button>
-
+                    )}
                 </>
 
             )}

@@ -1,15 +1,13 @@
 import React from "react";
-import { Link } from "react-router-dom";
 
-export const DashboardSidebar = () => {
+export const DashboardSidebar = ({
+    activeSection,
+    setActiveSection
+}) => {
 
     return (
 
         <aside className="dashboard-sidebar">
-
-            {/* <div className="dashboard-logo">
-                Coral<span>Hub</span>
-            </div> */}
 
             <div className="dashboard-user">
 
@@ -25,29 +23,47 @@ export const DashboardSidebar = () => {
 
             <nav className="dashboard-nav">
 
-                <Link to="/profile" className="dashboard-link active">
+                <button
+                    className={`dashboard-link ${activeSection === "overview" ? "active" : ""}`}
+                    onClick={() => setActiveSection("overview")}
+                >
+                    Overview
+                </button>
+
+                <button
+                    className={`dashboard-link ${activeSection === "profile" ? "active" : ""}`}
+                    onClick={() => setActiveSection("profile")}
+                >
                     Profile
-                </Link>
+                </button>
 
-                <Link to="/products" className="dashboard-link">
+                <button
+                    className={`dashboard-link ${activeSection === "products" ? "active" : ""}`}
+                    onClick={() => setActiveSection("products")}
+                >
                     My Products
-                </Link>
+                </button>
 
-                <Link to="/orders" className="dashboard-link">
+                <button
+                    className={`dashboard-link ${activeSection === "orders" ? "active" : ""}`}
+                    onClick={() => setActiveSection("orders")}
+                >
                     My Orders
-                </Link>
+                </button>
 
-                <Link to="/messages" className="dashboard-link">
-                    Messages
-                </Link>
-
-                <Link to="/favorites" className="dashboard-link">
+                <button
+                    className={`dashboard-link ${activeSection === "favorites" ? "active" : ""}`}
+                    onClick={() => setActiveSection("favorites")}
+                >
                     Favorites
-                </Link>
+                </button>
 
-                {/* <Link to="/settings" className="dashboard-link">
-                    Settings
-                </Link> */}
+                <button
+                    className={`dashboard-link ${activeSection === "activity" ? "active" : ""}`}
+                    onClick={() => setActiveSection("activity")}
+                >
+                    Recent Activity
+                </button>
 
             </nav>
 

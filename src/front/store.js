@@ -6,6 +6,7 @@ export const initialStore = () => {
       { id: 2, title: "Do my homework", background: null }
     ],
     cart: [] // Carrito de compras vacío al inicio
+  
   }
 }
 

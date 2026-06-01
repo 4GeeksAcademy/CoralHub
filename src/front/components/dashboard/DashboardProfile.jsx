@@ -224,13 +224,6 @@ export const DashboardProfile = () => {
 
                     )}
 
-                    <button
-                        className="delete-account-btn"
-                        onClick={handleDelete}
-                    >
-                        Delete Account
-                    </button>
-
                 </div>
 
             </div>
@@ -336,6 +329,28 @@ export const DashboardProfile = () => {
                     </div>
 
                 </div>
+
+            </div>
+
+            {/* Danger Zone */}
+
+            <div className="danger-zone">
+
+                <h2 className="dashboard-title-section">
+                    Danger Zone
+                </h2>
+
+                <p className="danger-zone-text">
+                    Permanently delete your account and all associated data.
+                    This action cannot be undone.
+                </p>
+
+                <button
+                    className="delete-account-btn"
+                    onClick={handleDelete}
+                >
+                    Delete Account
+                </button>
 
             </div>
 

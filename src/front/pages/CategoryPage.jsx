@@ -178,6 +178,13 @@ export const CategoryPage = () => {
 
 
                 <div className="row g-4">
+                    
+                {/* EMPTY STATES */}
+                {products.length === 0 && (
+                    <div className="alert alert-info text-center">
+                        No products available yet.
+                    </div>
+                )}
 
                     {products.map((product) => (
 

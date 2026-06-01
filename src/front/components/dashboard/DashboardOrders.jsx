@@ -43,7 +43,7 @@ export const DashboardOrders = () => {
 
                         <div>
 
-                            <h3>{order.customer}</h3>
+                            <h5>{order.customer}</h5>
 
                             <p>{order.total}</p>
 

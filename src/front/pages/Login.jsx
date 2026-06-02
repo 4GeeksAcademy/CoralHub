@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 // 1. Añadimos Link a las importaciones
 import { useLocation, useNavigate, Link } from "react-router-dom";
+// Al principio de Login.jsx (si no está importado aún):
+
 
 export const Login = () => {
 
@@ -114,7 +116,7 @@ export const Login = () => {
                             Password
                         </label>
 
-                        
+
                     </div>
 
                     {/* PASSWORD INPUT */}
@@ -168,15 +170,14 @@ export const Login = () => {
                     >
                         Sign Up
                     </Link>
-                        <br />
-                        <br />
+                    <br />
+                    <br />
                     {/* 2. Enlace cambiado a Link con la ruta /forgot-password */}
-                        <Link
-                            to="/forgot-password"
-                            className="text-dark text-decoration-none small fw-medium"
-                        >
+                    <div className="mt-2 text-end">
+                        <Link to="/forgot-password" style={{ fontSize: "14px" }}>
                             ¿Olvidaste tu contraseña?
                         </Link>
+                    </div>
                 </p>
 
             </div>

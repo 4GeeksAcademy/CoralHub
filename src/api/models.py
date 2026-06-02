@@ -1,5 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
-from datetime import datetime
+from datetime import datetime, timedelta
 
 db = SQLAlchemy()
 
@@ -17,6 +17,9 @@ class User(db.Model):
     role = db.Column(db.String(20), default="buyer")  # buyer / seller / admin
     is_active = db.Column(db.Boolean(), default=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+    reset_code = db.Column(db.String(6), nullable=True)
+    reset_code_expires = db.Column(db.DateTime, nullable=True)
 
     # 🚀 RELACIONES CON BORRADO EN CASCADA AGREGADO 🚀
     # Al eliminar al usuario, se eliminan automáticamente todos sus registros dependientes

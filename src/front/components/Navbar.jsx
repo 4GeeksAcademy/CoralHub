@@ -179,12 +179,20 @@ export const Navbar = () => {
                                         My Dashboard
                                     </Link>
 
-                                    {/* MY PROFILE */}
+                                    {/*  My Tickets */}
                                     <Link
-                                        to="/profile"
+                                        to="/my-tickets"
                                         className="nav-link-custom"
                                     >
-                                        My Profile
+                                        My Tickets
+                                    </Link>
+
+                                    {/* My Claims */}
+                                     <Link
+                                        to="/my-claims"
+                                        className="nav-link-custom"
+                                    >
+                                        My Claims
                                     </Link>
 
                                     {/* CART (este era el que faltaba en la barra de escritorio) */}

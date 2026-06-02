@@ -387,9 +387,6 @@ def create_checkout_session():
     current_user_id = get_jwt_identity()
     body = request.get_json() or {}
 
-    # Asegura que Stripe lea la secret key desde el .env
-    stripe.api_key = os.getenv("STRIPE_SECRET_KEY")
-
     if not stripe.api_key:
         return jsonify({
             "error": f"Stripe secret key is missing. Looking for .env here: {BASE_DIR / '.env'}"

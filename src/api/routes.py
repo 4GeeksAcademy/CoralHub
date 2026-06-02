@@ -186,9 +186,9 @@ def signup():
         }), 400
 
     # PASSWORD VALIDATION
-    if len(password) < 6:
+    if len(password) < 8:
         return jsonify({
-            "message": "Password must be at least 6 characters"
+            "message": "Password must be at least 8 characters"
         }), 400
 
     # CHECK IF USER EXISTS

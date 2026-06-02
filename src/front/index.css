@@ -3929,6 +3929,68 @@ h3 {
   color: #ff8787;
 }
 
+.favorite-actions {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.favorite-view-btn {
+  background: rgba(78, 199, 193, 0.12);
+
+  border: 1px solid rgba(78, 199, 193, 0.25);
+
+  color: #4ec7c1;
+
+  padding: 0.7rem 1rem;
+
+  border-radius: 12px;
+
+  font-size: 0.9rem;
+
+  font-weight: 600;
+
+  text-decoration: none;
+
+  transition: all 0.3s ease;
+}
+
+.favorite-view-btn:hover {
+  background: rgba(78, 199, 193, 0.2);
+
+  color: white;
+
+  transform: translateY(-2px);
+}
+
+.favorite-remove-btn {
+  background: rgba(255, 107, 107, 0.12);
+
+  border: 1px solid rgba(255, 107, 107, 0.25);
+
+  color: #ff6b6b;
+
+  padding: 0.7rem 1rem;
+
+  border-radius: 12px;
+
+  font-size: 0.9rem;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: all 0.3s ease;
+}
+
+.favorite-remove-btn:hover {
+  background: rgba(255, 107, 107, 0.2);
+
+  color: white;
+
+  transform: translateY(-2px);
+}
+
   /* ========================================
    13. FOOTER
 ======================================== */

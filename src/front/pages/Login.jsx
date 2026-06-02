@@ -55,7 +55,7 @@ export const Login = () => {
                 alert("Login successful");
 
                 // redirect
-                navigate(from);
+                navigate("/welcome");
 
             } else {
 

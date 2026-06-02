@@ -5,8 +5,9 @@ export const initialStore = () => {
       { id: 1, title: "Make the bed", background: null },
       { id: 2, title: "Do my homework", background: null }
     ],
-    cart: [] // Carrito de compras vacío al inicio
-  
+    cart: [],// Carrito de compras vacío al inicio
+   
+
   }
 }
 
@@ -30,8 +31,8 @@ export default function storeReducer(store, action = {}) {
         return {
           ...store,
           cart: store.cart.map(item =>
-            item.id === action.payload.id 
-              ? { ...item, quantity: (item.quantity || 1) + 1 } 
+            item.id === action.payload.id
+              ? { ...item, quantity: (item.quantity || 1) + 1 }
               : item
           )
         };
@@ -44,9 +45,9 @@ export default function storeReducer(store, action = {}) {
     case 'update_quantity':
       return {
         ...store,
-        cart: store.cart.map(item => 
-          item.id === action.payload.id 
-            ? { ...item, quantity: action.payload.quantity } 
+        cart: store.cart.map(item =>
+          item.id === action.payload.id
+            ? { ...item, quantity: action.payload.quantity }
             : item
         ).filter(item => item.quantity > 0)
       };
@@ -62,7 +63,7 @@ export default function storeReducer(store, action = {}) {
         ...store,
         cart: []
       };
-      
+
     case 'add_task':
       const { id, color } = action.payload
       return {
@@ -70,7 +71,8 @@ export default function storeReducer(store, action = {}) {
         todos: store.todos.map((todo) => (todo.id === id ? { ...todo, background: color } : todo))
       };
 
+
     default:
       return store; // 👈 Cambiado aquí para evitar la pantalla azul/blanca
-  }    
+  }
 }

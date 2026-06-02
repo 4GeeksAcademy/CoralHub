@@ -12,6 +12,7 @@ export const Login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
+
     const location = useLocation();
 
     const from = location.state?.from || "/";
@@ -53,7 +54,8 @@ export const Login = () => {
                 alert("Login successful");
 
                 // redirect
-                navigate(from);
+                navigate("/welcome");
+
             } else {
                 alert(data.msg);
             }
@@ -65,32 +67,28 @@ export const Login = () => {
     };
 
     return (
-        <div className="container min-vh-100 d-flex justify-content-center align-items-center bg-light">
 
-            <div
-                className="card shadow-sm p-4 border-0"
-                style={{
-                    maxWidth: "450px",
-                    width: "100%",
-                    borderRadius: "20px"
-                }}
-            >
+        <div className="auth-page">
+
+            <div className="auth-card">
+
                 {/* TITLE */}
-                <h1 className="fw-bold mb-2">
-                    Sign In
-                </h1>
+                <h2 className="auth-title">
+                    Welcome Back
+                </h2>
 
-                <p className="text-secondary mb-4">
-                    Enter your credentials to access your account
+                <p className="auth-subtitle">
+                    Sign in to access your CoralHub account.
                 </p>
 
                 <form onSubmit={handleSubmit}>
 
                     {/* EMAIL */}
-                    <div className="mb-4">
+                    <div className="mb-3">
+
                         <label
                             htmlFor="email"
-                            className="form-label fw-semibold"
+                            className="form-label"
                         >
                             Email
                         </label>
@@ -98,7 +96,7 @@ export const Login = () => {
                         <input
                             id="email"
                             type="email"
-                            className="form-control py-3 border-0 bg-light"
+                            className="form-control"
                             placeholder="you@example.com"
                             autoComplete="email"
                             required
@@ -111,20 +109,28 @@ export const Login = () => {
                     <div className="d-flex justify-content-between align-items-center mb-2">
                         <label
                             htmlFor="password"
-                            className="form-label fw-semibold mb-0"
+                            className="form-label mb-0"
                         >
                             Password
                         </label>
 
+                        <Link
+                            to="/forgot-password"
+                            className="small text-decoration-none"
+                            style={{ color: "#ff7f50" }}
+                        >
+                            Forgot password?
+                        </Link>
 
                     </div>
 
                     {/* PASSWORD INPUT */}
-                    <div className="mb-4">
+                    <div className="mb-3">
+
                         <input
                             id="password"
                             type="password"
-                            className="form-control py-3 border-0 bg-light"
+                            className="form-control"
                             placeholder="••••••••"
                             autoComplete="current-password"
                             required
@@ -151,15 +157,14 @@ export const Login = () => {
                     {/* BUTTON */}
                     <button
                         type="submit"
-                        className="btn btn-dark w-100 py-3 fw-semibold"
-                        style={{
-                            borderRadius: "12px"
-                        }}
+                        className="auth-btn"
                     >
                         Sign In
                     </button>
 
                 </form>
+
+                <div className="auth-divider"></div>
 
                 {/* SIGN UP */}
                 <p className="text-center text-secondary mt-4 mb-0">
@@ -170,17 +175,10 @@ export const Login = () => {
                     >
                         Sign Up
                     </Link>
-                    <br />
-                    <br />
-                    {/* 2. Enlace cambiado a Link con la ruta /forgot-password */}
-                    <div className="mt-2 text-end">
-                        <Link to="/forgot-password" style={{ fontSize: "14px" }}>
-                            ¿Olvidaste tu contraseña?
-                        </Link>
-                    </div>
                 </p>
 
             </div>
         </div>
+
     );
 };

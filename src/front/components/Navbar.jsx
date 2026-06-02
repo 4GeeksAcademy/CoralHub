@@ -155,8 +155,6 @@ export const Navbar = () => {
                         {
                             token ? (
                                 <>
-                                    {/* DASHBOARD */}
-                                    <Link to="/dashboard" className="nav-link-custom">Dashboard</Link>
 
                                     {/* ADMIN */}
                                     {JSON.parse(localStorage.getItem("user"))?.role === "admin" && (
@@ -172,20 +170,32 @@ export const Navbar = () => {
                                         </Link>
                                     )}
 
-                                    {/* MY CLAIMS (buyer) */}
-                                    <Link to="/my-claims" className="nav-link-custom">My Claims</Link>
+                                    {/* DASHBOARD */}
 
-                                    {/* CLAIMS RECEIVED (seller) */}
-                                    <Link to="/seller-claims" className="nav-link-custom">Claims Received</Link>
+                                    <Link
+                                        to="/dashboard"
+                                        className="nav-link-custom"
+                                    >
+                                        My Dashboard
+                                    </Link>
 
-                                    {/* MY PRODUCTS */}
-                                    <Link to="/my-products" className="nav-link-custom">My Products</Link>
+                                    {/* MY PROFILE */}
+                                    <Link
+                                        to="/profile"
+                                        className="nav-link-custom"
+                                    >
+                                        My Profile
+                                    </Link>
 
-                                    {/* CART */}
-                                    <Link to="/cart" className="cart-icon position-relative" aria-label="Shopping cart">
-                                        <i className="fa-solid fa-cart-shopping"></i>
+                                    {/* CART (este era el que faltaba en la barra de escritorio) */}
+                                    <Link
+                                        to="/cart"
+                                        className="nav-link-custom position-relative"
+                                        aria-label="Shopping cart"
+                                    >
+                                        <i className="fa-solid fa-cart-shopping me-1"></i>Cart
                                         {store.cart && store.cart.length > 0 && (
-                                            <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style={{ fontSize: "0.65rem" }}>
+                                            <span className="badge bg-danger ms-1">
                                                 {store.cart.length}
                                             </span>
                                         )}
@@ -265,17 +275,24 @@ export const Navbar = () => {
                                 <>
 
                                     <Link
-                                        to="/private"
+                                        to="/dashboard"
                                         className="mobile-nav-link"
                                     >
-                                        Dashboard
+                                        My Dashboard
                                     </Link>
 
                                     <Link
-                                        to="/my-products"
+                                        to="/my-claims"
                                         className="mobile-nav-link"
                                     >
-                                        My Products
+                                        My Claims
+                                    </Link>
+
+                                     <Link
+                                        to="/my-tickets"
+                                        className="mobile-nav-link"
+                                    >
+                                        My Tickets
                                     </Link>
 
                                     <Link

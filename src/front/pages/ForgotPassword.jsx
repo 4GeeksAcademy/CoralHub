@@ -27,7 +27,7 @@ export const ForgotPassword = () => {
             {!emailSent ? (
                 // FORMULARIO DE ENVÍO
                 <form onSubmit={handleSubmit}>
-                    <h2>Recuperar Contraseña</h2>
+                    <h2>Password Recovery</h2>
                     <input type="email" onChange={(e) => setEmail(e.target.value)} className="form-control" placeholder="Introduce tu email" required />
                     <button type="submit" className="btn btn-primary mt-3">Send code</button>
                 </form>
@@ -37,7 +37,7 @@ export const ForgotPassword = () => {
                     <p>{message}</p>
                     <p>If you have code, continue here:</p>
                     <Link to="/reset-password" className="btn btn-success">
-                        Go to reset password
+                        Go to reset passwordd
                     </Link>
                 </div>
             )}

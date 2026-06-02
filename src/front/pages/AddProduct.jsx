@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export const AddProduct = () => {
 
@@ -10,7 +11,8 @@ export const AddProduct = () => {
         image_url: "",
         category: ""
     });
-
+    
+    const navigate = useNavigate();
     const [error, setError] = useState("");
     const [success, setSuccess] = useState("");
     const [image, setImage] = useState(null);
@@ -145,7 +147,11 @@ export const AddProduct = () => {
                 return;
             }
 
-            setSuccess("Product added successfully!");
+            if (response.ok) {
+
+                navigate(`/product/${data.id}`);
+
+            }
 
             setFormData({
                 name: "",
@@ -440,8 +446,8 @@ export const AddProduct = () => {
                                             Light
                                         </option>
 
-                                        <option value="Hardware">
-                                            Hardware
+                                        <option value="Equipment">
+                                            Equipment
                                         </option>
 
                                         <option value="Tanks">

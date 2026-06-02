@@ -34,7 +34,6 @@ from datetime import datetime, timedelta, timezone
 BASE_DIR = Path(__file__).resolve().parents[2]
 load_dotenv(BASE_DIR / ".env", override=True)
 
-
 api = Blueprint('api', __name__)
 
 # Allow CORS requests to this API
@@ -160,13 +159,48 @@ def create_product():
 
 @api.route('/signup', methods=['POST'])
 def signup():
+
     body = request.get_json()
+
+    # VALIDATE BODY
+    if not body:
+        return jsonify({
+            "message": "Request body is required"
+        }), 400
 
     first_name = body.get("first_name")
     last_name = body.get("last_name")
     email = body.get("email")
     password = body.get("password")
 
+    # REQUIRED FIELDS
+    if not first_name:
+        return jsonify({
+            "message": "First name is required"
+        }), 400
+
+    if not last_name:
+        return jsonify({
+            "message": "Last name is required"
+        }), 400
+
+    if not email:
+        return jsonify({
+            "message": "Email is required"
+        }), 400
+
+    if not password:
+        return jsonify({
+            "message": "Password is required"
+        }), 400
+
+    # PASSWORD VALIDATION
+    if len(password) < 8:
+        return jsonify({
+            "message": "Password must be at least 8 characters"
+        }), 400
+
+    # CHECK IF USER EXISTS
     existing_user = User.query.filter_by(email=email).first()
 
     if existing_user:
@@ -174,6 +208,7 @@ def signup():
             "message": "User already exists"
         }), 400
 
+    # CREATE USER
     hashed_password = generate_password_hash(password)
 
     new_user = User(
@@ -202,7 +237,8 @@ def login():
     access_token = create_access_token(identity=str(user.id))
     return jsonify({
         "token": access_token,
-        "user": user.serialize()}), 200
+        "user": user.serialize()
+    }), 200
 
 
 @api.route("/private", methods=["GET"])
@@ -360,9 +396,6 @@ def create_checkout_session():
     current_user_id = get_jwt_identity()
     body = request.get_json() or {}
 
-    # Asegura que Stripe lea la secret key desde el .env
-    stripe.api_key = os.getenv("STRIPE_SECRET_KEY")
-
     if not stripe.api_key:
         return jsonify({
             "error": f"Stripe secret key is missing. Looking for .env here: {BASE_DIR / '.env'}"
@@ -386,63 +419,102 @@ def create_checkout_session():
             if not shipping_address.get(field):
                 return jsonify({"error": f"Missing shipping field: {field}"}), 400
 
-    # 1. Obtener los items del carrito del usuario
-    cart_items = CartItem.query.filter_by(user_id=current_user_id).all()
+    # =====================================================
+    # CAMBIO IMPORTANTE:
+    # Primero intentamos usar el carrito que viene desde React
+    # =====================================================
+    frontend_cart = body.get("cart") or body.get(
+        "items") or body.get("cartItems") or []
 
-    if not cart_items:
+    line_items = []
+
+    # Si React mandó el carrito, usamos ese carrito
+    if frontend_cart:
+        for item in frontend_cart:
+            name = item.get("name") or item.get("title") or "Product"
+            description = item.get("description") or "Marine aquarium product"
+            price = float(item.get("price", 0))
+            quantity = int(item.get("quantity", 1))
+            image_url = item.get("image_url") or item.get("image")
+
+            if price <= 0:
+                continue
+
+            product_data = {
+                "name": name,
+                "description": description
+            }
+
+            if image_url:
+                product_data["images"] = [image_url]
+
+            line_items.append({
+                "price_data": {
+                    "currency": "usd",
+                    "product_data": product_data,
+                    "unit_amount": int(price * 100),
+                },
+                "quantity": quantity,
+            })
+
+    # Si React NO mandó carrito, entonces usamos el carrito guardado en la base de datos
+    else:
+        cart_items = CartItem.query.filter_by(user_id=current_user_id).all()
+
+        if not cart_items:
+            return jsonify({"error": "Cart is empty"}), 400
+
+        for item in cart_items:
+            if not item.product:
+                continue
+
+            # Validar stock antes de proceder
+            if item.product.stock < item.quantity:
+                return jsonify({
+                    "error": f"Not enough stock for {item.product.name}. Available: {item.product.stock}"
+                }), 400
+
+            line_items.append({
+                "price_data": {
+                    "currency": "usd",
+                    "product_data": {
+                        "name": item.product.name,
+                        "description": item.product.description or "Marine aquarium product",
+                        "images": [item.product.image_url] if item.product.image_url else [],
+                    },
+                    "unit_amount": int(item.product.price * 100),
+                },
+                "quantity": item.quantity,
+            })
+
+    # Si por alguna razón no hay productos válidos
+    if not line_items:
         return jsonify({"error": "Cart is empty"}), 400
 
-    # 2. Construir line_items de los productos
-    line_items = []
-    for item in cart_items:
-        if not item.product:
-            continue
-
-        # Validar stock antes de proceder
-        if item.product.stock < item.quantity:
-            return jsonify({
-                "error": f"Not enough stock for {item.product.name}. Available: {item.product.stock}"
-            }), 400
-
-        line_items.append({
-            "price_data": {
-                "currency": "usd",
-                "product_data": {
-                    "name": item.product.name,
-                    "description": item.product.description or "Marine aquarium product",
-                    "images": [item.product.image_url] if item.product.image_url else [],
-                },
-                "unit_amount": int(item.product.price * 100),
-            },
-            "quantity": item.quantity,
-        })
-
-    # 3. Si es shipping, agregar línea adicional de $10
+    # Si es shipping, agregar línea adicional de $10
     if delivery_method == "shipping":
         line_items.append({
             "price_data": {
                 "currency": "usd",
                 "product_data": {
                     "name": "Shipping",
-                    "description": "Standard shipping (3-5 business days)",
+                    "description": "Standard shipping 3-5 business days",
                 },
-                "unit_amount": 1000,  # $10.00 en centavos
+                "unit_amount": 1000,
             },
             "quantity": 1,
         })
 
-    # 4. Crear sesión de Stripe
     try:
-        frontend_url = os.getenv("FRONTEND_URL", "http://localhost:3000")
+        frontend_url = os.getenv(
+            "FRONTEND_URL", "http://localhost:3000").rstrip("/")
 
-        # Preparar metadata (incluye dirección si aplica)
         metadata = {
             "user_id": str(current_user_id),
             "delivery_method": delivery_method
         }
 
         if delivery_method == "shipping" and shipping_address:
-            # Stripe limita cada metadata value a 500 chars
             metadata["shipping_full_name"] = shipping_address.get("full_name", "")[
                 :500]
             metadata["shipping_street"] = shipping_address.get("street", "")[
@@ -473,6 +545,7 @@ def create_checkout_session():
 
     except stripe.error.StripeError as e:
         return jsonify({"error": str(e)}), 500
+
     except Exception as e:
         return jsonify({"error": f"Server error: {str(e)}"}), 500
 
@@ -603,15 +676,14 @@ def get_my_orders():
 
     return jsonify([order.serialize() for order in orders]), 200
 
+
 # ============================================
 # MIS PRODUCTOS (Historial del usuario)
 # ============================================
 
-
 @api.route("/my-products", methods=["GET"])
 @jwt_required()
 def get_my_products():
-
     current_user_id = get_jwt_identity()
 
     products = Product.query.filter_by(
@@ -623,15 +695,14 @@ def get_my_products():
         for product in products
     ]), 200
 
+
 # ============================================
 # USER DASHBOARD PROFILE
 # ============================================
 
-
 @api.route("/profile", methods=["PUT"])
 @jwt_required()
 def update_profile():
-
     current_user_id = get_jwt_identity()
 
     user = User.query.get(current_user_id)
@@ -669,7 +740,6 @@ def update_profile():
 @api.route("/profile", methods=["GET"])
 @jwt_required()
 def get_profile():
-
     current_user_id = get_jwt_identity()
 
     user = User.query.get(current_user_id)
@@ -681,10 +751,28 @@ def get_profile():
 
     return jsonify(user.serialize()), 200
 
+
+@api.route("/profile", methods=["DELETE"])
+@jwt_required()
+def delete_profile():
+    user_id = get_jwt_identity()
+
+    user = User.query.get(user_id)
+
+    if not user:
+        return jsonify({"msg": "User not found"}), 404
+
+    db.session.delete(user)
+    db.session.commit()
+
+    return jsonify({
+        "msg": "Account deleted successfully"
+    }), 200
+
+
 # ============================================
 # REVIEWS (Reseñas de productos)
 # ============================================
-
 
 @api.route('/products/<int:product_id>/reviews', methods=['GET'])
 def get_product_reviews(product_id):
@@ -698,7 +786,6 @@ def get_product_reviews(product_id):
     reviews = Review.query.filter_by(product_id=product_id).order_by(
         Review.created_at.desc()).all()
 
-    # Serializar incluyendo el nombre del usuario
     reviews_data = []
     for review in reviews:
         user = User.query.get(review.user_id)
@@ -728,12 +815,10 @@ def create_review(product_id):
     current_user_id = get_jwt_identity()
     body = request.get_json() or {}
 
-    # Validar producto existe
     product = Product.query.get(product_id)
     if not product:
         return jsonify({"error": "Product not found"}), 404
 
-    # Validar campos
     rating = body.get('rating')
     comment = body.get('comment', '').strip()
 
@@ -754,7 +839,6 @@ def create_review(product_id):
     if len(comment) > 500:
         return jsonify({"error": "Comment must be 500 characters or less"}), 400
 
-    # Validar que el usuario haya comprado el producto
     has_purchased = db.session.query(OrderItem).join(Order).filter(
         Order.buyer_id == current_user_id,
         OrderItem.product_id == product_id,
@@ -764,7 +848,6 @@ def create_review(product_id):
     if not has_purchased:
         return jsonify({"error": "You can only review products you have purchased"}), 403
 
-    # Validar que no haya reseñado antes
     existing = Review.query.filter_by(
         user_id=current_user_id,
         product_id=product_id
@@ -773,7 +856,6 @@ def create_review(product_id):
     if existing:
         return jsonify({"error": "You have already reviewed this product"}), 409
 
-    # Crear la reseña
     new_review = Review(
         user_id=current_user_id,
         product_id=product_id,
@@ -784,7 +866,6 @@ def create_review(product_id):
     db.session.add(new_review)
     db.session.commit()
 
-    # Devolver con info del usuario
     user = User.query.get(current_user_id)
     return jsonify({
         "id": new_review.id,
@@ -834,9 +915,8 @@ def create_support_ticket():
 
     subject = body.get('subject', '').strip()
     message = body.get('message', '').strip()
-    order_id = body.get('order_id')  # opcional
+    order_id = body.get('order_id')
 
-    # Validar campos
     if not subject:
         return jsonify({"error": "Subject is required"}), 400
     if len(subject) > 200:
@@ -846,7 +926,6 @@ def create_support_ticket():
     if len(message) > 1000:
         return jsonify({"error": "Message must be 1000 characters or less"}), 400
 
-    # Si viene order_id, validar que la orden exista y sea del usuario
     if order_id:
         order = Order.query.get(order_id)
         if not order:
@@ -898,7 +977,6 @@ def get_all_support_tickets():
     tickets = SupportTicket.query.order_by(
         SupportTicket.created_at.desc()).all()
 
-    # Incluir el nombre y email del usuario que creó cada ticket
     result = []
     for ticket in tickets:
         ticket_data = ticket.serialize()
@@ -932,18 +1010,15 @@ def respond_support_ticket(ticket_id):
     admin_response = body.get('admin_response', '').strip()
     status = body.get('status')
 
-    # Si viene respuesta, guardarla
     if admin_response:
         if len(admin_response) > 1000:
             return jsonify({"error": "Response must be 1000 characters or less"}), 400
         ticket.admin_response = admin_response
         ticket.responded_at = datetime.utcnow()
         ticket.responded_by = current_user_id
-        # Si responde y no cambió status manualmente, lo marca como closed
         if not status:
             ticket.status = "closed"
 
-    # Si viene un cambio de estado explícito, aplicarlo
     if status:
         if status not in ["open", "in_progress", "closed"]:
             return jsonify({"error": "Invalid status"}), 400
@@ -963,10 +1038,6 @@ def respond_support_ticket(ticket_id):
 def create_claim():
     """
     El buyer crea un reclamo sobre un producto que compró (un OrderItem).
-    Reglas:
-    - El usuario debe estar logueado.
-    - El OrderItem debe pertenecer a una orden del buyer.
-    - El seller se saca automáticamente del producto.
     """
     current_user_id = int(get_jwt_identity())
     body = request.get_json() or {}
@@ -975,7 +1046,6 @@ def create_claim():
     subject = body.get('subject', '').strip()
     message = body.get('message', '').strip()
 
-    # Validar campos
     if not order_item_id:
         return jsonify({"error": "order_item_id is required"}), 400
     if not subject:
@@ -987,23 +1057,20 @@ def create_claim():
     if len(message) > 1000:
         return jsonify({"error": "Message must be 1000 characters or less"}), 400
 
-    # Validar que el OrderItem exista
     order_item = OrderItem.query.get(order_item_id)
     if not order_item:
         return jsonify({"error": "Order item not found"}), 404
 
-    # Validar que esa compra sea del buyer logueado
     order = Order.query.get(order_item.order_id)
     if not order or order.buyer_id != current_user_id:
         return jsonify({"error": "This purchase does not belong to you"}), 403
 
-    # Sacar el seller del producto
     product = order_item.product
     if not product:
         return jsonify({"error": "Product not found for this item"}), 404
+
     seller_id = product.seller_id
 
-    # Evitar que un buyer se reclame a sí mismo (si compró su propio producto)
     if seller_id == current_user_id:
         return jsonify({"error": "You cannot file a claim on your own product"}), 400
 
@@ -1025,9 +1092,6 @@ def create_claim():
 @api.route('/claims/buyer', methods=['GET'])
 @jwt_required()
 def get_buyer_claims():
-    """
-    Devuelve los reclamos que el usuario logueado hizo como buyer.
-    """
     current_user_id = int(get_jwt_identity())
     claims = Claim.query.filter_by(buyer_id=current_user_id).order_by(
         Claim.created_at.desc()).all()
@@ -1038,9 +1102,6 @@ def get_buyer_claims():
 @api.route('/claims/seller', methods=['GET'])
 @jwt_required()
 def get_seller_claims():
-    """
-    Devuelve los reclamos que le llegaron al usuario logueado como seller.
-    """
     current_user_id = int(get_jwt_identity())
     claims = Claim.query.filter_by(seller_id=current_user_id).order_by(
         Claim.created_at.desc()).all()
@@ -1051,17 +1112,12 @@ def get_seller_claims():
 @api.route('/claims/<int:claim_id>', methods=['PUT'])
 @jwt_required()
 def respond_claim(claim_id):
-    """
-    El seller responde un reclamo y/o cambia su estado.
-    Solo el seller dueño del reclamo puede responder.
-    """
     current_user_id = int(get_jwt_identity())
 
     claim = Claim.query.get(claim_id)
     if not claim:
         return jsonify({"error": "Claim not found"}), 404
 
-    # Solo el seller al que va dirigido el reclamo puede responder
     if claim.seller_id != current_user_id:
         return jsonify({"error": "Access denied. This claim is not addressed to you."}), 403
 
@@ -1069,17 +1125,14 @@ def respond_claim(claim_id):
     seller_response = body.get('seller_response', '').strip()
     status = body.get('status')
 
-    # Si viene respuesta, guardarla
     if seller_response:
         if len(seller_response) > 1000:
             return jsonify({"error": "Response must be 1000 characters or less"}), 400
         claim.seller_response = seller_response
         claim.responded_at = datetime.utcnow()
-        # Si responde y no cambió status manualmente, lo marca como responded
         if not status:
             claim.status = "responded"
 
-    # Si viene un cambio de estado explícito, aplicarlo
     if status:
         if status not in ["open", "responded", "resolved"]:
             return jsonify({"error": "Invalid status"}), 400
@@ -1089,29 +1142,23 @@ def respond_claim(claim_id):
 
     return jsonify(claim.serialize()), 200
 
+
 # =====================================================================
 # ENDPOINTS PARA EL ADMINISTRADOR
 # =====================================================================
 
-
 @api.route('/admin/dashboard-stats', methods=['GET'])
 @jwt_required()
 def get_admin_stats():
-    """
-    Devuelve métricas globales para el dashboard de administrador.
-    """
     current_user_id = int(get_jwt_identity())
-    # Verificar si el usuario actual es administrador
+
     user = User.query.get(current_user_id)
     if not user or user.role != 'admin':
         return jsonify({"error": "Access denied. Admins only."}), 403
 
-    # Obtener conteos totales de tus modelos
     total_users = User.query.count()
     total_products = Product.query.count()
-    # Si tienes un modelo de Órdenes/Orders, descomenta y ajusta la siguiente línea:
-    # total_orders = Order.query.count()
-    total_orders = 0  # Temporal si no tienes el modelo mapeado aún
+    total_orders = 0
 
     return jsonify({
         "users_count": total_users,
@@ -1123,11 +1170,9 @@ def get_admin_stats():
 @api.route('/admin/users', methods=['GET'])
 @jwt_required()
 def admin_get_all_users():
-    """
-    Devuelve la lista de todos los usuarios para poder gestionar sus roles.
-    """
     current_user_id = int(get_jwt_identity())
     user = User.query.get(current_user_id)
+
     if not user or user.role != 'admin':
         return jsonify({"error": "Access denied. Admins only."}), 403
 
@@ -1138,11 +1183,9 @@ def admin_get_all_users():
 @api.route('/admin/users/<int:user_id>/role', methods=['PUT'])
 @jwt_required()
 def admin_update_user_role(user_id):
-    """
-    Modifica el rol de un usuario específico (ej: cambiar de 'buyer' o 'seller' a 'admin').
-    """
     current_user_id = int(get_jwt_identity())
     admin_user = User.query.get(current_user_id)
+
     if not admin_user or admin_user.role != 'admin':
         return jsonify({"error": "Access denied. Admins only."}), 403
 
@@ -1159,25 +1202,21 @@ def admin_update_user_role(user_id):
     user_to_modify.role = new_role
     db.session.commit()
 
-    return jsonify({"message": f"User {user_to_modify.id} role updated to {new_role}", "user": user_to_modify.serialize()}), 200
-
-# DELETE USER
+    return jsonify({
+        "message": f"User {user_to_modify.id} role updated to {new_role}",
+        "user": user_to_modify.serialize()
+    }), 200
 
 
 @api.route('/admin/users/<int:user_id>', methods=['DELETE'])
 @jwt_required()
 def admin_delete_user(user_id):
-    """
-    Elimina un usuario de la base de datos de forma permanente.
-    """
     current_user_id = int(get_jwt_identity())
     admin_user = User.query.get(current_user_id)
 
-    # 1. Verificar si es administrador
     if not admin_user or admin_user.role != 'admin':
         return jsonify({"error": "Access denied. Admins only."}), 403
 
-    # 2. Evitar que se elimine a sí mismo
     if current_user_id == user_id:
         return jsonify({"error": "You cannot delete your own admin account."}), 400
 
@@ -1191,15 +1230,17 @@ def admin_delete_user(user_id):
         return jsonify({"message": f"User {user_id} deleted successfully"}), 200
     except Exception as e:
         db.session.rollback()
-        return jsonify({"error": f"Could not delete user. It might be linked to other data. Error: {str(e)}"}), 500
+        return jsonify({
+            "error": f"Could not delete user. It might be linked to other data. Error: {str(e)}"
+        }), 500
+
+
 # ============================================
 # CATEGORIES (Vistas de categorias)
 # ============================================
 
-
 @api.route("/products/category/<string:category>", methods=["GET"])
 def get_products_by_category(category):
-
     products = Product.query.filter(
         func.lower(Product.category) == category.lower()
     ).all()
@@ -1216,7 +1257,6 @@ def get_products_by_category(category):
 @api.route("/favorites", methods=["POST"])
 @jwt_required()
 def add_favorite():
-
     current_user_id = int(get_jwt_identity())
 
     body = request.get_json()
@@ -1261,7 +1301,6 @@ def add_favorite():
 @api.route("/favorites", methods=["GET"])
 @jwt_required()
 def get_favorites():
-
     current_user_id = int(get_jwt_identity())
 
     favorites = Favorite.query.filter_by(
@@ -1277,7 +1316,6 @@ def get_favorites():
 @api.route("/favorites/<int:product_id>", methods=["DELETE"])
 @jwt_required()
 def remove_favorite(product_id):
-
     current_user_id = int(get_jwt_identity())
 
     favorite = Favorite.query.filter_by(
@@ -1300,7 +1338,6 @@ def remove_favorite(product_id):
 
 @api.route("/favorites/top", methods=["GET"])
 def top_favorites():
-
     results = db.session.query(
         Product,
         func.count(Favorite.id).label("favorites_count")
@@ -1314,11 +1351,8 @@ def top_favorites():
     response = []
 
     for product, favorites_count in results:
-
         product_data = product.serialize()
-
         product_data["favorites_count"] = favorites_count
-
         response.append(product_data)
 
     return jsonify(response), 200

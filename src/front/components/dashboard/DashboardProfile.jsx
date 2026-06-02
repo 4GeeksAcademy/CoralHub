@@ -76,6 +76,50 @@ export const DashboardProfile = () => {
         });
     };
 
+    const handleDelete = async () => {
+
+        const confirmed = window.confirm(
+            "Are you sure you want to permanently delete your account?"
+        );
+
+        if (!confirmed) return;
+
+        const token = localStorage.getItem("token");
+
+        try {
+
+            const response = await fetch(
+                `${import.meta.env.VITE_BACKEND_URL}/api/profile`,
+                {
+                    method: "DELETE",
+                    headers: {
+                        "Authorization": `Bearer ${token}`
+                    }
+                }
+            );
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.msg);
+            }
+
+            localStorage.removeItem("token");
+            localStorage.removeItem("user");
+
+            alert("Account deleted successfully");
+
+            window.location.href = "/";
+
+        } catch (error) {
+
+            console.error(error);
+
+            alert("Could not delete account");
+
+        }
+    };
+
     const handleSave = () => {
 
         const token = localStorage.getItem("token");
@@ -158,25 +202,36 @@ export const DashboardProfile = () => {
 
                 <h2>Personal Information</h2>
 
-                {!isEditing ? (
+                <div className="d-flex gap-2">
+
+                    {!isEditing ? (
+
+                        <button
+                            className="section-btn"
+                            onClick={() => setIsEditing(true)}
+                        >
+                            Edit Profile
+                        </button>
+
+                    ) : (
+
+                        <button
+                            className="section-btn"
+                            onClick={handleSave}
+                        >
+                            Save Changes
+                        </button>
+
+                    )}
 
                     <button
-                        className="section-btn"
-                        onClick={() => setIsEditing(true)}
+                        className="delete-account-btn"
+                        onClick={handleDelete}
                     >
-                        Edit Profile
+                        Delete Account
                     </button>
 
-                ) : (
-
-                    <button
-                        className="section-btn"
-                        onClick={handleSave}
-                    >
-                        Save Changes
-                    </button>
-
-                )}
+                </div>
 
             </div>
 

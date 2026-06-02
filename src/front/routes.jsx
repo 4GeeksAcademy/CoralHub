@@ -38,6 +38,8 @@ import { AdminDashboard } from "./pages/AdminDashboard";
 import { CategoryPage } from "./pages/CategoryPage";
 import { ForgotPassword } from "./pages/ForgotPassword.jsx";
 import { ResetPassword } from "./pages/ResetPassword.jsx";
+import { ProfilePage } from "./pages/ProfilePage";
+import { Welcome } from "./pages/Welcome";
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
@@ -87,6 +89,8 @@ export const router = createBrowserRouter(
       <Route path="/forgot-password" element={<ForgotPassword />} />
       <Route path="/reset-password" element={<ResetPassword />} />
 
+      <Route path="/profile" element={<ProfilePage />} />
+      <Route path="/welcome" element={<Welcome />} />
     </Route>
   )
 );

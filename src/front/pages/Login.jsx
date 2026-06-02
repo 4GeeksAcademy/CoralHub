@@ -1,5 +1,7 @@
 import React, { useState } from "react";
+// 1. Añadimos Link a las importaciones
 import { useLocation, useNavigate, Link } from "react-router-dom";
+// Al principio de Login.jsx (si no está importado aún):
 
 
 export const Login = () => {
@@ -17,11 +19,9 @@ export const Login = () => {
 
     // LOGIN
     const handleSubmit = async (e) => {
-
         e.preventDefault();
 
         try {
-
             const response = await fetch(
                 import.meta.env.VITE_BACKEND_URL + "/api/login",
                 {
@@ -42,7 +42,6 @@ export const Login = () => {
 
             // SI LOGIN FUNCIONA
             if (response.ok) {
-
                 // guardar token
                 localStorage.setItem("token", data.token);
 
@@ -58,16 +57,12 @@ export const Login = () => {
                 navigate("/welcome");
 
             } else {
-
                 alert(data.msg);
-
             }
 
         } catch (error) {
-
             console.log(error);
             alert("Server error");
-
         }
     };
 
@@ -108,12 +103,10 @@ export const Login = () => {
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                         />
-
                     </div>
 
                     {/* PASSWORD HEADER */}
                     <div className="d-flex justify-content-between align-items-center mb-2">
-
                         <label
                             htmlFor="password"
                             className="form-label mb-0"
@@ -144,25 +137,21 @@ export const Login = () => {
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                         />
-
                     </div>
 
                     {/* REMEMBER ME */}
                     <div className="form-check mb-4">
-
                         <input
                             className="form-check-input"
                             type="checkbox"
                             id="rememberMe"
                         />
-
                         <label
                             className="form-check-label"
                             htmlFor="rememberMe"
                         >
                             Remember me
                         </label>
-
                     </div>
 
                     {/* BUTTON */}
@@ -178,18 +167,17 @@ export const Login = () => {
                 <div className="auth-divider"></div>
 
                 {/* SIGN UP */}
-                <p className="auth-footer">
-
-                    Don't have an account?{" "}
-
-                    <Link to="/signup">
+                <p className="text-center text-secondary mt-4 mb-0">
+                    Don’t have an account?{" "}
+                    <Link
+                        to="/signup"
+                        className="text-dark fw-semibold text-decoration-none"
+                    >
                         Sign Up
                     </Link>
-
                 </p>
 
             </div>
-
         </div>
 
     );

@@ -1350,3 +1350,23 @@ def top_favorites():
         response.append(product_data)
 
     return jsonify(response), 200
+
+@api.route("/favorites/all", methods=["GET"])
+def all_favorites():
+    results = db.session.query(
+        Product,
+        func.count(Favorite.id).label("favorites_count")
+    )\
+        .join(Favorite, Favorite.product_id == Product.id)\
+        .group_by(Product.id)\
+        .order_by(func.count(Favorite.id).desc())\
+        .all()
+
+    response = []
+
+    for product, favorites_count in results:
+        product_data = product.serialize()
+        product_data["favorites_count"] = favorites_count
+        response.append(product_data)
+
+    return jsonify(response), 200

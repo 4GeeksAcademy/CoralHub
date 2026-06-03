@@ -57,9 +57,12 @@ export const Favorites = () => {
 
 				</div>
 
-				<button className="favorites-view-btn">
-					View all →
-				</button>
+				<Link
+					to="/favorites"
+					className="favorites-view-btn"
+				>
+					View All →
+				</Link>
 
 			</div>
 
@@ -107,8 +110,8 @@ export const Favorites = () => {
 									<span>
 										❤️ {product.favorites_count} favorites
 									</span>
-								</div>git add .
-								
+								</div>
+
 								<div>
 									<Link
 										to={`/product/${product.id}`}

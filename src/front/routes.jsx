@@ -38,6 +38,7 @@ import { AdminDashboard } from "./pages/AdminDashboard";
 import { CategoryPage } from "./pages/CategoryPage";
 import { ProfilePage } from "./pages/ProfilePage";
 import { Welcome } from "./pages/Welcome";
+import { FavoritesPage } from "./pages/FavoritesPage";
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
@@ -86,6 +87,7 @@ export const router = createBrowserRouter(
       <Route path="/category/:category" element={<CategoryPage />} />
       <Route path="/profile" element={<ProfilePage />} />
       <Route path="/welcome" element={<Welcome />} />
+      <Route path="/favorites" element={<FavoritesPage />} />
     </Route>
   )
 );

@@ -41,6 +41,7 @@ import { ResetPassword } from "./pages/ResetPassword.jsx";
 import { ProfilePage } from "./pages/ProfilePage";
 import { Welcome } from "./pages/Welcome";
 import { FavoritesPage } from "./pages/FavoritesPage";
+import { Rewards } from "./pages/Rewards.jsx";
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
@@ -89,10 +90,10 @@ export const router = createBrowserRouter(
       <Route path="/category/:category" element={<CategoryPage />} />
       <Route path="/forgot-password" element={<ForgotPassword />} />
       <Route path="/reset-password" element={<ResetPassword />} />
-
       <Route path="/profile" element={<ProfilePage />} />
       <Route path="/welcome" element={<Welcome />} />
       <Route path="/favorites" element={<FavoritesPage />} />
+      <Route path="/rewards" element={<Rewards />} />
     </Route>
   )
 );

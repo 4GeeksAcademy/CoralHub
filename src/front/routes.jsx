@@ -38,9 +38,10 @@ import { AdminDashboard } from "./pages/AdminDashboard";
 import { CategoryPage } from "./pages/CategoryPage";
 import { ForgotPassword } from "./pages/ForgotPassword.jsx";
 import { ResetPassword } from "./pages/ResetPassword.jsx";
-import { ProfilePage } from "./pages/ProfilePage";
-import { Welcome } from "./pages/Welcome";
-import { FavoritesPage } from "./pages/FavoritesPage";
+import { ProfilePage } from "./pages/ProfilePage.jsx";
+import { Welcome } from "./pages/Welcome.jsx";
+import { FavoritesPage } from "./pages/FavoritesPage.jsx";
+import { EditProduct } from "./pages/EditProduct.jsx";
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
@@ -89,7 +90,7 @@ export const router = createBrowserRouter(
       <Route path="/category/:category" element={<CategoryPage />} />
       <Route path="/forgot-password" element={<ForgotPassword />} />
       <Route path="/reset-password" element={<ResetPassword />} />
-
+      <Route path="/edit-product/:id" element={<EditProduct />} />
       <Route path="/profile" element={<ProfilePage />} />
       <Route path="/welcome" element={<Welcome />} />
       <Route path="/favorites" element={<FavoritesPage />} />

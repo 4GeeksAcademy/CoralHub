@@ -337,169 +337,158 @@ h3 {
 ================================================== */
 
 .auth-page {
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
-    padding:20px;
+  padding: 20px;
 
-    background:
-        #041937;
+  background: #041937;
 }
 
 .auth-card {
-    width: 100%;
-    max-width: 500px;
+  width: 100%;
+  max-width: 500px;
 
-    background: #ffffff;
+  background: #ffffff;
 
-    padding: 40px;
+  padding: 40px;
 
-    border-radius: 24px;
+  border-radius: 24px;
 
-    border: 1px solid #eef1f4;
+  border: 1px solid #eef1f4;
 
-    box-shadow:
-        0 15px 40px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
 }
 
-
 .auth-title {
-    font-size: clamp(2rem, 4vw, 38px);
-    font-weight: 700;
+  font-size: clamp(2rem, 4vw, 38px);
+  font-weight: 700;
 
-    color: #1b2430;
+  color: #1b2430;
 
-    text-align: center;
+  text-align: center;
 
-    margin-bottom: 10px;
+  margin-bottom: 10px;
 }
 
 .auth-subtitle {
-    text-align: center;
+  text-align: center;
 
-    color: #6b7280;
+  color: #6b7280;
 
-    margin-bottom: 35px;
+  margin-bottom: 35px;
 
-    line-height: 1.6;
+  line-height: 1.6;
 }
 
 .auth-card .form-label {
-    font-weight: 600;
-    color: #1b2430;
-    margin-bottom: 8px;
+  font-weight: 600;
+  color: #1b2430;
+  margin-bottom: 8px;
 }
 
 .auth-card .form-control {
-    height: 52px;
+  height: 52px;
 
-    border-radius: 12px;
+  border-radius: 12px;
 
-    border: 1px solid #dbe3ea;
+  border: 1px solid #dbe3ea;
 
-    transition: all 0.25s ease;
+  transition: all 0.25s ease;
 }
 
 .auth-card .form-control:focus {
-    border-color: #ff7f50;
+  border-color: #ff7f50;
 
-    box-shadow:
-        0 0 0 4px rgba(255, 127, 80, 0.15);
+  box-shadow: 0 0 0 4px rgba(255, 127, 80, 0.15);
 
-    outline: none;
+  outline: none;
 }
 
 .auth-card .form-check-input:checked {
-    background-color: #ff7f50;
-    border-color: #ff7f50;
+  background-color: #ff7f50;
+  border-color: #ff7f50;
 }
 
 .auth-card .form-check-label {
-    color: #6b7280;
-    font-size: 0.95rem;
+  color: #6b7280;
+  font-size: 0.95rem;
 }
 
 .auth-card .form-check-label a {
-    color: #ff7f50;
-    text-decoration: none;
-    font-weight: 600;
+  color: #ff7f50;
+  text-decoration: none;
+  font-weight: 600;
 }
 
 .auth-card .form-check-label a:hover {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
 .auth-btn {
-    width: 100%;
+  width: 100%;
 
-    border: none;
+  border: none;
 
-    background: linear-gradient(
-        135deg,
-        #ff7f50,
-        #ff9966
-    );
+  background: linear-gradient(135deg, #ff7f50, #ff9966);
 
-    color: white;
+  color: white;
 
-    padding: 14px;
+  padding: 14px;
 
-    border-radius: 12px;
+  border-radius: 12px;
 
-    font-weight: 600;
+  font-weight: 600;
 
-    transition: all 0.25s ease;
+  transition: all 0.25s ease;
 }
 
 .auth-btn:hover {
-    transform: translateY(-2px);
+  transform: translateY(-2px);
 
-    box-shadow:
-        0 10px 25px rgba(255, 127, 80, 0.3);
+  box-shadow: 0 10px 25px rgba(255, 127, 80, 0.3);
 }
 
 .auth-divider {
-    height: 1px;
+  height: 1px;
 
-    background: #e5e7eb;
+  background: #e5e7eb;
 
-    margin: 30px 0;
+  margin: 30px 0;
 }
 
 .auth-footer {
-    text-align: center;
+  text-align: center;
 
-    margin: 0;
+  margin: 0;
 
-    color: #6b7280;
+  color: #6b7280;
 }
 
 .auth-footer a {
-    color: #ff7f50;
+  color: #ff7f50;
 
-    font-weight: 600;
+  font-weight: 600;
 
-    text-decoration: none;
+  text-decoration: none;
 }
 
 .auth-footer a:hover {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
 /* RESPONSIVE */
 
 @media (max-width: 576px) {
+  .auth-card {
+    padding: 30px 20px;
+  }
 
-    .auth-card {
-        padding: 30px 20px;
-    }
-
-    .auth-title {
-        font-size: 32px;
-    }
-
+  .auth-title {
+    font-size: 32px;
+  }
 }
 
 /* CATEGORY BUTTON */
@@ -1392,7 +1381,6 @@ h3 {
   gap: 1.5rem;
 
   flex: 1;
-
 }
 
 /* IMAGE */
@@ -2740,8 +2728,6 @@ h3 {
   .add-cart-btn {
     width: 100%;
   }
-
-
 }
 
 /* ========================================
@@ -3178,7 +3164,7 @@ h3 {
   font-weight: 500;
 
   transition: all 0.3s ease;
-  
+
   width: 100%;
 
   border: none;
@@ -3747,30 +3733,30 @@ h3 {
 /* Delete Account Button */
 
 .delete-account-btn {
-    background: transparent;
-    border: 1px solid #ff6b6b;
-    color: #ff6b6b;
+  background: transparent;
+  border: 1px solid #ff6b6b;
+  color: #ff6b6b;
 
-    padding: 0.55rem 1rem;
-    border-radius: 10px;
+  padding: 0.55rem 1rem;
+  border-radius: 10px;
 
-    font-size: 0.85rem;
-    font-weight: 600;
+  font-size: 0.85rem;
+  font-weight: 600;
 
-    cursor: pointer;
+  cursor: pointer;
 
-    transition: all 0.25s ease;
+  transition: all 0.25s ease;
 }
 
 .delete-account-btn:hover {
-    background: #ff6b6b;
-    color: white;
+  background: #ff6b6b;
+  color: white;
 
-    transform: translateY(-1px);
+  transform: translateY(-1px);
 }
 
 .delete-account-btn:active {
-    transform: translateY(0);
+  transform: translateY(0);
 }
 
 /* ========================================
@@ -3844,8 +3830,6 @@ h3 {
 .dashboard-load-more:active {
   transform: scale(0.98);
 }
-
-
 
 /* ========================================
    DASHBOARD FAVORITES
@@ -3991,10 +3975,9 @@ h3 {
   transform: translateY(-2px);
 }
 
-  /* ========================================
+/* ========================================
    13. FOOTER
 ======================================== */
-
 
 /* ========================================
    FOOTER - CoralHub
@@ -5170,11 +5153,9 @@ h3 {
   }
 }
 
-
 /* FAVORITE BUTTON */
 
 .favorite-btn {
-
   width: 54px;
   height: 54px;
 
@@ -5191,8 +5172,6 @@ h3 {
   cursor: pointer;
 
   transition: all 0.3s ease;
-
-  
 }
 
 .favorite-btn i {
@@ -5238,4 +5217,135 @@ h3 {
   top: 14px;
   right: 14px;
   z-index: 10;
+}
+
+/* ===========================================
+   WELCOME SCREEN
+   =========================================== */
+
+/* Animacion de entrada*/
+@keyframes welcomeFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Saludo: entra primero */
+.welcome-greet {
+  animation: welcomeFadeUp 0.7s ease both;
+}
+
+.welcome-title {
+  color: #ffffff;
+  font-size: 2.4rem;
+}
+
+.welcome-subtitle {
+  color: rgba(255, 255, 255, 0.55);
+}
+
+/* Cards premium con efecto vidrio */
+.welcome-card {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 2rem 1.25rem;
+  height: 100%;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition:
+    transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1),
+    box-shadow 0.35s ease,
+    border-color 0.35s ease,
+    background 0.35s ease;
+  cursor: pointer;
+  animation: welcomeFadeUp 0.7s ease both;
+}
+
+/* Hover: la card se levanta y brilla */
+.welcome-card:hover {
+  transform: translateY(-10px);
+  background: rgba(255, 255, 255, 0.07);
+  border-color: rgba(45, 212, 191, 0.5);
+  box-shadow: 0 18px 40px -12px rgba(45, 212, 191, 0.35);
+}
+
+/* Entrada escalonada de las cards (una tras otra) */
+.welcome-card-1 {
+  animation-delay: 0.15s;
+}
+.welcome-card-2 {
+  animation-delay: 0.3s;
+}
+.welcome-card-3 {
+  animation-delay: 0.45s;
+}
+
+/* Iconos circulares */
+.welcome-icon {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 1rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  transition: transform 0.35s ease;
+}
+
+/* El icono se anima al hacer hover en la card */
+.welcome-card:hover .welcome-icon {
+  transform: scale(1.12) rotate(-6deg);
+}
+
+.welcome-icon-blue {
+  background: rgba(56, 138, 221, 0.15);
+}
+.welcome-icon-teal {
+  background: rgba(45, 212, 191, 0.15);
+}
+.welcome-icon-purple {
+  background: rgba(127, 119, 221, 0.15);
+}
+
+.welcome-card-title {
+  color: #ffffff;
+  font-size: 1.1rem;
+  margin-bottom: 0.4rem;
+}
+
+.welcome-card-text {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.85rem;
+}
+
+/* Boton principal con gradiente */
+.welcome-btn {
+  display: inline-block;
+  margin-top: 2.5rem;
+  padding: 0.9rem 2.5rem;
+  background: linear-gradient(135deg, #2dd4bf, #0ea5a4);
+  color: #04342c;
+  font-weight: 600;
+  border-radius: 12px;
+  border: none;
+  font-size: 1rem;
+  text-decoration: none;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+  animation: welcomeFadeUp 0.7s ease both;
+  animation-delay: 0.6s;
+}
+
+.welcome-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 14px 30px -8px rgba(45, 212, 191, 0.6);
+  color: #04342c;
 }

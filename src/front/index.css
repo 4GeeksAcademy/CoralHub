@@ -2677,6 +2677,55 @@ h3 {
   font-size: 2rem;
 }
 
+
+.product-action-btn {
+  width: 40px;
+
+  height: 40px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border-radius: 10px;
+
+  border: none;
+
+  cursor: pointer;
+
+  transition: all 0.3s ease;
+}
+
+.product-edit-btn {
+  background: rgba(78, 199, 193, 0.12);
+
+  color: #4ec7c1;
+
+  border: 1px solid rgba(78, 199, 193, 0.25);
+}
+
+.product-edit-btn:hover {
+  background: rgba(78, 199, 193, 0.2);
+
+  transform: translateY(-2px);
+}
+
+.product-delete-btn {
+  background: rgba(255, 107, 107, 0.12);
+
+  color: #ff6b6b;
+
+  border: 1px solid rgba(255, 107, 107, 0.25);
+}
+
+.product-delete-btn:hover {
+  background: rgba(255, 107, 107, 0.2);
+
+  transform: translateY(-2px);
+}
+
 .seller-name,
 .review-user {
   font-weight: 700;
@@ -3457,6 +3506,8 @@ h3 {
   font-size: 0.85rem;
 
   font-weight: 600;
+
+  text-decoration: none;
 }
 
 .product-status.active {

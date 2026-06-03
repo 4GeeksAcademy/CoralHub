@@ -21,17 +21,17 @@ users = [
     ),
 
     User(
-        first_name="Sarah",
-        last_name="Corals",
-        email="sarah@coralhub.com",
+        first_name="Juan",
+        last_name="Masis",
+        email="juan@coralhub.com",
         password=generate_password_hash("12345678"),
         role="seller"
     ),
 
     User(
-        first_name="Mike",
-        last_name="Aquatics",
-        email="mike@coralhub.com",
+        first_name="Pedro",
+        last_name="Chavez",
+        email="pedro@coralhub.com",
         password=generate_password_hash("12345678"),
         role="seller"
     ),

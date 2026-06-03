@@ -11,7 +11,7 @@ export const AddProduct = () => {
         image_url: "",
         category: ""
     });
-    
+
     const navigate = useNavigate();
     const [error, setError] = useState("");
     const [success, setSuccess] = useState("");
@@ -438,25 +438,15 @@ export const AddProduct = () => {
                                             Select a category
                                         </option>
 
-                                        <option value="Coral">
-                                            Coral
-                                        </option>
+                                        <option value="Corals">Corals</option>
 
-                                        <option value="Light">
-                                            Light
-                                        </option>
+                                        <option value="Lighting">Lighting</option>
 
-                                        <option value="Equipment">
-                                            Equipment
-                                        </option>
+                                        <option value="Equipment">Equipment</option>
 
-                                        <option value="Tanks">
-                                            Tanks
-                                        </option>
+                                        <option value="Aquariums">Aquariums</option>
 
-                                        <option value="Used Equipment">
-                                            Used Equipment
-                                        </option>
+                                        <option value="Used">Used</option>
 
                                     </select>
 

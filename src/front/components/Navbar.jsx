@@ -103,14 +103,14 @@ export const Navbar = () => {
                                     {/* ADMIN */}
                                     {JSON.parse(localStorage.getItem("user"))?.role === "admin" && (
                                         <Link to="/admin/dashboard" className="nav-link-custom admin-link">
-                                            <i className="fa-solid fa-users-gear me-1"></i>Admin Dashboard
+                                           Admin Dashboard
                                         </Link>
                                     )}
 
                                     {/* SUPPORT TICKETS (ADMIN) */}
                                     {JSON.parse(localStorage.getItem("user"))?.role === "admin" && (
                                         <Link to="/admin/tickets" className="nav-link-custom admin-link">
-                                            <i className="fa-solid fa-ticket me-1"></i>Tickets
+                                           Tickets
                                         </Link>
                                     )}
 

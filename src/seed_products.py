@@ -1,6 +1,6 @@
 
 from app import app
-from api.models import db, Product
+from api.models import db, Product, Favorite
 
 
 products = [
@@ -523,6 +523,9 @@ products = [
 ]
 
 with app.app_context():
+
+    Favorite.query.delete()
+    db.session.commit()
 
     Product.query.delete()
     db.session.commit()

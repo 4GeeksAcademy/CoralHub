@@ -134,21 +134,23 @@ export const DashboardFavorites = () => {
 
                                         <div className="d-flex gap-2">
 
-                                            <Link
-                                                to={`/product/${product.id}`}
-                                                className="section-btn"
-                                            >
-                                                View Product
-                                            </Link>
+                                            <div className="favorite-actions">
 
-                                            <button
-                                                className="section-btn danger"
-                                                onClick={() =>
-                                                    removeFavorite(product.id)
-                                                }
-                                            >
-                                                Remove
-                                            </button>
+                                                <Link
+                                                    to={`/product/${product.id}`}
+                                                    className="favorite-view-btn"
+                                                >
+                                                    View Product
+                                                </Link>
+
+                                                <button
+                                                    className="favorite-remove-btn"
+                                                    onClick={() => removeFavorite(product.id)}
+                                                >
+                                                    Remove
+                                                </button>
+
+                                            </div>
 
                                         </div>
 

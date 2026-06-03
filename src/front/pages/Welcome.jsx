@@ -36,52 +36,54 @@ export const Welcome = () => {
     const firstName = user?.first_name || "there";
 
     return (
-        <div className="container mt-5 min-vh-100">
+        <div className="container welcome-screen min-vh-100 d-flex flex-column justify-content-center">
             <div className="row justify-content-center">
-                <div className="col-lg-8 text-center">
+                <div className="col-lg-9 text-center">
 
                     {/* Greeting */}
-                    <h1 className="fw-bold mb-3">
-                        {isReturning
-                            ? `Welcome back, ${firstName}! 👋`
-                            : `Welcome, ${firstName}! 🎉`}
-                    </h1>
+                    <div className="welcome-greet">
+                        <h1 className="fw-bold mb-3 welcome-title">
+                            {isReturning
+                                ? `Welcome back, ${firstName}! 👋`
+                                : `Welcome, ${firstName}! 🎉`}
+                        </h1>
 
-                    <p className="text-secondary fs-5 mb-5">
-                        {isReturning
-                            ? "Great to see you again at CoralHub."
-                            : "We're glad you're here. Explore the marketplace and find your next coral."}
-                    </p>
+                        <p className="welcome-subtitle fs-5 mb-5">
+                            {isReturning
+                                ? "Great to see you again at CoralHub."
+                                : "We're glad you're here. Explore the marketplace and find your next coral."}
+                        </p>
+                    </div>
 
                     {/* Quick access cards */}
-                    <div className="row g-4">
+                    <div className="row g-4 justify-content-center">
 
                         <div className="col-md-4">
                             <Link to="/" className="text-decoration-none">
-                                <div className="card h-100 p-4 border-0 shadow-sm rounded-4">
-                                    <div className="fs-1 mb-2">🐠</div>
-                                    <h5 className="fw-bold">Browse Products</h5>
-                                    <p className="text-secondary mb-0 small">Discover corals, fish, lights and more</p>
+                                <div className="welcome-card welcome-card-1">
+                                    <div className="welcome-icon welcome-icon-blue">🐠</div>
+                                    <h5 className="fw-bold welcome-card-title">Browse Products</h5>
+                                    <p className="welcome-card-text mb-0">Discover corals, fish, lights and more</p>
                                 </div>
                             </Link>
                         </div>
 
                         <div className="col-md-4">
                             <Link to="/cart" className="text-decoration-none">
-                                <div className="card h-100 p-4 border-0 shadow-sm rounded-4">
-                                    <div className="fs-1 mb-2">🛒</div>
-                                    <h5 className="fw-bold">My Cart</h5>
-                                    <p className="text-secondary mb-0 small">Review the items you've added</p>
+                                <div className="welcome-card welcome-card-2">
+                                    <div className="welcome-icon welcome-icon-teal">🛒</div>
+                                    <h5 className="fw-bold welcome-card-title">My Cart</h5>
+                                    <p className="welcome-card-text mb-0">Review the items you've added</p>
                                 </div>
                             </Link>
                         </div>
 
                         <div className="col-md-4">
                             <Link to="/profile" className="text-decoration-none">
-                                <div className="card h-100 p-4 border-0 shadow-sm rounded-4">
-                                    <div className="fs-1 mb-2">👤</div>
-                                    <h5 className="fw-bold">My Profile</h5>
-                                    <p className="text-secondary mb-0 small">Manage your account details</p>
+                                <div className="welcome-card welcome-card-3">
+                                    <div className="welcome-icon welcome-icon-purple">👤</div>
+                                    <h5 className="fw-bold welcome-card-title">My Profile</h5>
+                                    <p className="welcome-card-text mb-0">Manage your account details</p>
                                 </div>
                             </Link>
                         </div>
@@ -89,9 +91,11 @@ export const Welcome = () => {
                     </div>
 
                     {/* Main call to action */}
-                    <Link to="/" className="btn btn-dark btn-lg px-5 py-3 mt-5 rounded-3 fw-semibold">
-                        Start Shopping
-                    </Link>
+                    <div>
+                        <Link to="/" className="welcome-btn">
+                            Start Shopping
+                        </Link>
+                    </div>
 
                 </div>
             </div>

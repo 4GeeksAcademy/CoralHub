@@ -150,7 +150,7 @@ def create_product():
         return jsonify({"error": f"Invalid data type: {str(e)}"}), 400
     except Exception as e:
         db.session.rollback()
-        return jsonify({"error": f"Error creating product: {str(e)}"}), 
+        return jsonify({"error": f"Error creating product: {str(e)}"}), 500
 
 @api.route('/products/<int:product_id>', methods=['PUT'])
 @jwt_required()

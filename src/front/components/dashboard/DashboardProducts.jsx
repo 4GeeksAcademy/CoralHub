@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { Pencil, Trash2 } from "lucide-react";
 
 export const DashboardProducts = ({ setActiveSection }) => {
 
     const [products, setProducts] = useState([]);
-
     const [loading, setLoading] = useState(true);
-
     const [error, setError] = useState(null);
-
     const [visibleCount, setVisibleCount] = useState(3);
 
     useEffect(() => {
@@ -95,6 +93,43 @@ export const DashboardProducts = ({ setActiveSection }) => {
 
     const isOverviewPreview = !!setActiveSection;
 
+
+
+    const handleDelete = async (productId) => {
+
+        const confirmed = window.confirm(
+            "Are you sure you want to delete this product?"
+        );
+
+        if (!confirmed) return;
+
+        try {
+
+            const token = localStorage.getItem("token");
+
+            const response = await fetch(
+                `${import.meta.env.VITE_BACKEND_URL}/api/products/${productId}`,
+                {
+                    method: "DELETE",
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                }
+            );
+
+            if (!response.ok) {
+                throw new Error("Could not delete product");
+            }
+
+            setProducts(products.filter(product => product.id !== productId));
+
+        } catch (error) {
+
+            console.error(error);
+        }
+    };
+
+
     return (
 
         <section className="dashboard-section">
@@ -123,6 +158,8 @@ export const DashboardProducts = ({ setActiveSection }) => {
                 <>
 
                     <div className="products-table">
+
+
 
                         {products
                             .slice(0, visibleCount)
@@ -156,17 +193,60 @@ export const DashboardProducts = ({ setActiveSection }) => {
                                         Stock: {product.stock}
 
                                     </div>
+                                    <div className="product-actions">
 
-                                    <Link
-                                        to={`/product/${product.id}`}
-                                        className="product-status active"
-                                    >
-                                        View
-                                    </Link>
+                                        <Link
+                                            to={`/product/${product.id}`}
+                                            className="product-status active"
+                                        >
+                                            View
+                                        </Link>
+
+                                        <Link
+                                            to={`/edit-product/${product.id}`}
+                                            className="product-action-btn product-edit-btn text-decoration-none"
+                                        >
+                                            <Pencil size={16} />
+                                        </Link>
+
+                                        <button
+                                            className="product-action-btn product-delete-btn"
+                                            onClick={() => handleDelete(product.id)}
+                                            title="Delete Product"
+                                        >
+                                            <Trash2 size={16} />
+                                        </button>
+
+                                    </div>
 
                                 </div>
 
                             ))}
+
+                    </div>
+                    <div className="text-center mt-4">
+
+                        {visibleCount < products.length && (
+
+                            <button
+                                className="dashboard-load-more"
+                                onClick={() => setVisibleCount(prev => prev + 3)}
+                            >
+                                View More
+                            </button>
+
+                        )}
+
+                        {visibleCount >= products.length && products.length > 3 && (
+
+                            <button
+                                className="dashboard-load-more"
+                                onClick={() => setVisibleCount(3)}
+                            >
+                                View Less
+                            </button>
+
+                        )}
 
                     </div>
 

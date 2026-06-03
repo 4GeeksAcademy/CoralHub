@@ -152,6 +152,53 @@ def create_product():
         db.session.rollback()
         return jsonify({"error": f"Error creating product: {str(e)}"}), 500
 
+@api.route('/products/<int:product_id>', methods=['PUT'])
+@jwt_required()
+def update_product(product_id):
+    current_user_id = int(get_jwt_identity())
+
+    product = Product.query.get(product_id)
+
+    if not product:
+        return jsonify({"error": "Product not found"}), 404
+
+    if product.seller_id != current_user_id:
+        return jsonify({"error": "Unauthorized"}), 403
+
+    body = request.get_json()
+
+    product.name = body.get("name", product.name)
+    product.description = body.get("description", product.description)
+    product.price = float(body.get("price", product.price))
+    product.stock = int(body.get("stock", product.stock))
+    product.image_url = body.get("image_url", product.image_url)
+    product.category = body.get("category", product.category)
+
+    db.session.commit()
+
+    return jsonify(product.serialize()), 200
+
+@api.route('/products/<int:product_id>', methods=['DELETE'])
+@jwt_required()
+def delete_product(product_id):
+
+    current_user_id = int(get_jwt_identity())
+
+    product = Product.query.get(product_id)
+
+    if not product:
+        return jsonify({"error": "Product not found"}), 404
+
+    if product.seller_id != current_user_id:
+        return jsonify({"error": "Unauthorized"}), 403
+
+    db.session.delete(product)
+    db.session.commit()
+
+    return jsonify({
+        "message": "Product deleted successfully"
+    }), 200
+
 
 # ============================================
 # AUTENTICACIÓN

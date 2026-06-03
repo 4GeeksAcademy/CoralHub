@@ -99,12 +99,12 @@ export const AdminDashboard = () => {
     return (
         <div className="container-fluid p-0">
             <div className="row g-0">
-                
+
                 {/* =========================================================
                     📌 MENÚ DE LA PARTE IZQUIERDA (DISEÑO PERSONALIZADO OSCURO)
                    ========================================================= */}
                 <div className="col-md-3 col-lg-2 p-3 min-vh-100">
-                    <div 
+                    <div
                         className="d-flex flex-column p-4 h-100 shadow-lg"
                         style={{
                             backgroundColor: "#031525", // Azul marino oscuro idéntico a tu interfaz
@@ -114,7 +114,7 @@ export const AdminDashboard = () => {
                     >
                         {/* SECCIÓN PERFIL DEL USUARIO (AVATAR) */}
                         <div className="text-center mb-4 pt-2">
-                            <div 
+                            <div
                                 className="d-flex align-items-center justify-content-center mx-auto mb-3 fw-bold"
                                 style={{
                                     width: "85px",
@@ -135,11 +135,11 @@ export const AdminDashboard = () => {
                         </div>
 
                         <hr style={{ borderColor: "rgba(255,255,255,0.1)", margin: "15px 0" }} />
-                        
+
                         {/* LISTA DE ENLACES (ESTILO COPIADO DE TU CAPTURA) */}
                         <ul className="nav nav-pills flex-column gap-2 mb-auto">
                             <li className="nav-item">
-                                <button 
+                                <button
                                     onClick={() => setCurrentView("overview")}
                                     className="nav-link w-100 text-start d-flex align-items-center gap-3 py-2.5 px-3 border-0 transition-all"
                                     style={currentView === "overview" ? {
@@ -154,12 +154,12 @@ export const AdminDashboard = () => {
                                         borderRadius: "12px"
                                     }}
                                 >
-                                    <i className="fa-solid fa-chart-pie" style={{ color: currentView === "overview" ? "#14a39a" : "inherit" }}></i> 
+                                    <i className="fa-solid fa-chart-pie" style={{ color: currentView === "overview" ? "#14a39a" : "inherit" }}></i>
                                     Overview
                                 </button>
                             </li>
                             <li className="nav-item">
-                                <button 
+                                <button
                                     onClick={() => navigate("/admin/tickets")}
                                     className="nav-link w-100 text-start d-flex align-items-center gap-3 py-2.5 px-3 border-0"
                                     style={{ backgroundColor: "transparent", color: "#b0c1d1", borderRadius: "12px" }}
@@ -168,8 +168,8 @@ export const AdminDashboard = () => {
                                 </button>
                             </li>
                             <li className="nav-item">
-                                <button 
-                                    onClick={() => navigate("/admin/claims")}
+                                <button
+                                    onClick={() => navigate("/my-claims")}
                                     className="nav-link w-100 text-start d-flex align-items-center gap-3 py-2.5 px-3 border-0"
                                     style={{ backgroundColor: "transparent", color: "#b0c1d1", borderRadius: "12px" }}
                                 >
@@ -177,7 +177,7 @@ export const AdminDashboard = () => {
                                 </button>
                             </li>
                             <li className="nav-item">
-                                <button 
+                                <button
                                     onClick={() => setCurrentView("overview")}
                                     className="nav-link w-100 text-start d-flex align-items-center gap-3 py-2.5 px-3 border-0"
                                     style={{ backgroundColor: "transparent", color: "#b0c1d1", borderRadius: "12px" }}
@@ -200,7 +200,7 @@ export const AdminDashboard = () => {
                     📌 CONTENIDO DE LA PÁGINA (PARTE DERECHA)
                    ========================================================= */}
                 <div className="col-md-9 col-lg-10 p-4 p-md-5">
-                    
+
                     {/* TÍTULO PRINCIPAL */}
                     <div className="d-flex justify-content-between align-items-center mb-4">
                         <h2 className="m-0 fw-bold">

@@ -38,7 +38,6 @@ export const Navbar = () => {
                                 src="/src/front/assets/img/CoralHub_logo.png"
                                 alt="CoralHub"
                                 className="coralhub-logo-img"
-                                style={isAdminPage ? { maxHeight: "32px", width: "auto", filter: "brightness(0) invert(1)" } : {}}
                             />
                         </Link>
 
@@ -87,14 +86,11 @@ export const Navbar = () => {
                         {isAdminPage ? (
                             // 👇 ENLACES EXCLUSIVOS PARA CUANDO ESTÁ EN EL DASHBOARD DE ADMIN
                             <>
-                                <Link to="/admin/dashboard" className="text-white text-decoration-none fw-bold px-2">
+                                <Link to="/admin/dashboard" className="text-white-50 text-decoration-none px-2 hover-white">
                                     Admin Dashboard
                                 </Link>
-                                <Link to="/admin/tickets" className="text-white-50 text-decoration-none px-2 hover-white">
-                                    My Tickets
-                                </Link>
-                                <Link to="/admin/claims" className="text-white-50 text-decoration-none px-2 hover-white">
-                                    My Claims
+                                <Link to="/profile" className="text-white-50 text-decoration-none px-2 hover-white">
+                                    My Profile
                                 </Link>
                                 <button onClick={() => navigate("/")} className="btn btn-sm btn-outline-light ms-3">
                                     Exit View
@@ -104,19 +100,39 @@ export const Navbar = () => {
                             // 👇 ENLACES DEL NAVBAR COMERCIAL NORMAL
                             token ? (
                                 <>
+                                    {/* ADMIN */}
                                     {JSON.parse(localStorage.getItem("user"))?.role === "admin" && (
                                         <Link to="/admin/dashboard" className="nav-link-custom admin-link">
                                             <i className="fa-solid fa-users-gear me-1"></i>Admin Dashboard
                                         </Link>
                                     )}
-                                    <Link to="/dashboard" className="nav-link-custom">My Dashboard</Link>
+
+                                    {/* SUPPORT TICKETS (ADMIN) */}
+                                    {JSON.parse(localStorage.getItem("user"))?.role === "admin" && (
+                                        <Link to="/admin/tickets" className="nav-link-custom admin-link">
+                                            <i className="fa-solid fa-ticket me-1"></i>Tickets
+                                        </Link>
+                                    )}
+
+                                    {/* USER DASHBOARD */}
+                                    {JSON.parse(localStorage.getItem("user"))?.role === "user" && (
+                                        <Link to="/userdashboard" className="nav-link-custom admin-link">
+                                            <i className="fa-solid fa-users-gear me-1"></i>Dashboard
+                                        </Link>
+                                    )}
+                                    
                                     <Link to="/profile" className="nav-link-custom">My Profile</Link>
-                                    <Link to="/cart" className="nav-link-custom position-relative" aria-label="Shopping cart">
-                                        <i className="fa-solid fa-cart-shopping me-1"></i>Cart
-                                        {store.cart && store.cart.length > 0 && (
-                                            <span className="badge bg-danger ms-1">{store.cart.length}</span>
-                                        )}
-                                    </Link>
+                                    
+                                    {/* CART - Oculto si el usuario es Admin */}
+                                    {JSON.parse(localStorage.getItem("user"))?.role !== "admin" && (
+                                        <Link to="/cart" className="nav-link-custom position-relative" aria-label="Shopping cart">
+                                            <i className="fa-solid fa-cart-shopping me-1"></i>Cart
+                                            {store.cart && store.cart.length > 0 && (
+                                                <span className="badge bg-danger ms-1">{store.cart.length}</span>
+                                            )}
+                                        </Link>
+                                    )}
+
                                     <button onClick={handleLogout} className="signin-btn" aria-label="Log out">Logout</button>
                                 </>
                             ) : (

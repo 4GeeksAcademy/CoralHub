@@ -36,6 +36,8 @@ import { MyClaims } from "./pages/MyClaims";
 import { SellerClaims } from "./pages/SellerClaims";
 import { AdminDashboard } from "./pages/AdminDashboard";
 import { CategoryPage } from "./pages/CategoryPage";
+import { ForgotPassword } from "./pages/ForgotPassword.jsx";
+import { ResetPassword } from "./pages/ResetPassword.jsx";
 import { ProfilePage } from "./pages/ProfilePage";
 import { Welcome } from "./pages/Welcome";
 import { FavoritesPage } from "./pages/FavoritesPage";
@@ -85,6 +87,9 @@ export const router = createBrowserRouter(
       <Route path="/admin/dashboard" element={<AdminDashboard />} />
       <Route path="/admin/users" element={<AdminUsers />} />
       <Route path="/category/:category" element={<CategoryPage />} />
+      <Route path="/forgot-password" element={<ForgotPassword />} />
+      <Route path="/reset-password" element={<ResetPassword />} />
+
       <Route path="/profile" element={<ProfilePage />} />
       <Route path="/welcome" element={<Welcome />} />
       <Route path="/favorites" element={<FavoritesPage />} />

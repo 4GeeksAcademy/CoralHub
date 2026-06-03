@@ -18,7 +18,16 @@ from dotenv import load_dotenv
 import cloudinary
 import cloudinary.uploader
 import stripe
+import random
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+from datetime import datetime, timedelta
+from werkzeug.security import generate_password_hash
 from datetime import datetime
+
+
+from datetime import datetime, timedelta, timezone
 
 # Cargar el archivo .env desde la raíz del proyecto.
 # routes.py está en src/api/routes.py, por eso subimos 2 niveles.
@@ -386,9 +395,6 @@ def clear_cart():
 def create_checkout_session():
     current_user_id = get_jwt_identity()
     body = request.get_json() or {}
-
-    # Asegura que Stripe lea la secret key desde el .env
-    stripe.api_key = os.getenv("STRIPE_SECRET_KEY")
 
     if not stripe.api_key:
         return jsonify({
@@ -1370,3 +1376,103 @@ def all_favorites():
         response.append(product_data)
 
     return jsonify(response), 200
+# =================================================================
+# ENDPOINT: SOLICITAR CÓDIGO DE RECUPERACIÓN
+# =================================================================
+
+
+@api.route('/forgot-password', methods=['POST'])
+def forgot_password():
+    body = request.get_json()
+    email = body.get("email")
+
+    if not email:
+        return jsonify({"message": "El email es requerido"}), 400
+
+    user = User.query.filter_by(email=email).first()
+
+    # Por seguridad, si el email no existe, devolvemos el mismo mensaje de éxito.
+    # Así evitamos que atacantes comprueben qué correos están registrados.
+    if not user:
+        return jsonify({"message": "Si el correo existe, hemos enviado un código a tu correo."}), 200
+
+    # Generar un código de 6 dígitos aleatorio
+    code = f"{random.randint(100000, 999999)}"
+
+    # Guardar en base de datos con expiración de 15 minutos
+    user.reset_code = code
+    user.reset_code_expires = datetime.utcnow() + timedelta(minutes=15)
+    db.session.commit()
+
+    # Configuración de Mailtrap desde variables de entorno
+    smtp_server = os.environ.get("MAILTRAP_SMTP_SERVER")
+    smtp_port = os.environ.get("MAILTRAP_SMTP_PORT")
+    smtp_user = os.environ.get("MAILTRAP_SMTP_USER")
+    smtp_password = os.environ.get("MAILTRAP_SMTP_PASSWORD")
+
+    # Crear el mensaje de correo electrónico
+    msg = MIMEMultipart()
+    msg['From'] = 'no-reply@coralhub.com'
+    msg['To'] = user.email
+    msg['Subject'] = 'Código de Recuperación de Contraseña - CoralHub'
+
+    html_content = f"""
+    <html>
+        <body>
+            <h2>Restablece tu contraseña de CoralHub</h2>
+            <p>Hola, {user.first_name}. Has solicitado restablecer tu contraseña.</p>
+            <p>Tu código de verificación de 6 dígitos es el siguiente:</p>
+            <h1 style="color: #4CAF50; letter-spacing: 5px;">{code}</h1>
+            <p>Este código vencerá en 15 minutos.</p>
+            <p>Si no solicitaste este cambio, puedes ignorar este correo de manera segura.</p>
+        </body>
+    </html>
+    """
+    msg.attach(MIMEText(html_content, 'html'))
+
+    # Enviar el correo usando SMTP
+    try:
+        with smtplib.SMTP(smtp_server, int(smtp_port)) as server:
+            server.starttls()
+            server.login(smtp_user, smtp_password)
+            server.sendmail(msg['From'], msg['To'], msg.as_string())
+    except Exception as e:
+        return jsonify({"message": "Error al enviar el correo electrónico.", "error": str(e)}), 500
+
+    return jsonify({"message": "Hemos enviado un código a tu correo."}), 200
+
+
+# =================================================================
+# ENDPOINT: RESTABLECER LA CONTRASEÑA CON EL CÓDIGO
+# =================================================================
+@api.route('/reset-password', methods=['POST'])
+def reset_password():
+    body = request.get_json()
+    email = body.get("email")
+    code = body.get("code")
+    new_password = body.get("password")  # El frontend lo manda como 'password'
+
+    if not email or not code or not new_password:
+        return jsonify({"message": "Todos los campos son obligatorios"}), 400
+
+    # Buscar usuario que coincida con el email y el código, y cuya expiración sea mayor al tiempo actual
+    user = User.query.filter_by(email=email, reset_code=code).first()
+
+    if not user:
+        return jsonify({"message": "Código o email inválido."}), 400
+
+    if user.reset_code_expires < datetime.utcnow():
+        return jsonify({"message": "El código ha expirado. Solicita uno nuevo."}), 400
+
+    # IMPORTANTE: Asegúrate de que este método de hash sea el mismo que usas al registrar usuarios
+    # Si usas bcrypt: user.password = bcrypt.generate_password_hash(new_password).decode('utf-8')
+    # Si usas werkzeug (por defecto en plantillas de 4Geeks):
+    user.password = generate_password_hash(new_password)
+
+    # Limpiar los campos del código de recuperación para que no vuelvan a ser utilizados
+    user.reset_code = None
+    user.reset_code_expires = None
+
+    db.session.commit()
+
+    return jsonify({"message": "Contraseña cambiada con éxito. Redirigiendo al login..."}), 200

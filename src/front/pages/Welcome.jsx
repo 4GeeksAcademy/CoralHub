@@ -76,6 +76,7 @@ export const Welcome = () => {
 
                         <div className="welcome-stat-card">
                             <div className="stat-icon purple">🛒</div>
+
                             <div>
                                 <h3>1</h3>
                                 <p>Items in cart</p>
@@ -85,6 +86,7 @@ export const Welcome = () => {
 
                         <div className="welcome-stat-card">
                             <div className="stat-icon green">🎟️</div>
+
                             <div>
                                 <h3>3</h3>
                                 <p>My Tickets</p>
@@ -94,6 +96,7 @@ export const Welcome = () => {
 
                         <div className="welcome-stat-card">
                             <div className="stat-icon orange">🛡️</div>
+
                             <div>
                                 <h3>2</h3>
                                 <p>My Claims</p>
@@ -101,16 +104,22 @@ export const Welcome = () => {
                             </div>
                         </div>
 
-                        <div className="welcome-stat-card member-card">
+                        {/* Gold Aquarist Card */}
+                        <Link to="/rewards" className="welcome-stat-card member-card gold-aquarist-card">
                             <div className="stat-icon gold">👑</div>
-                            <div>
-                                <h3>Gold</h3>
-                                <p>Member Level</p>
+
+                            <div className="gold-aquarist-content">
+                                <h3>Gold Aquarist</h3>
+                                <p>65% to Platinum</p>
+
                                 <div className="level-bar">
                                     <div></div>
                                 </div>
+
+                                <span className="rewards-text">🎁 2 Rewards Available</span>
+                                <span className="view-rewards">View Rewards →</span>
                             </div>
-                        </div>
+                        </Link>
 
                     </div>
                 </div>

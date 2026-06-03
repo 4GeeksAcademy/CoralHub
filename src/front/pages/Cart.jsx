@@ -154,7 +154,8 @@ export const Cart = () => {
 
     return (
         <div className="container mt-5 min-vh-100">
-            <h1 className="mb-4 fw-bold">Your Shopping Cart 🛒</h1>
+
+            <h2 className="mb-4 fw-bold">Your Shopping Cart 🛒</h2>
 
             {cartItems.length === 0 ? (
                 <div className="alert alert-warning text-center p-5">

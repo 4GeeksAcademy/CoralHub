@@ -29,7 +29,7 @@ export const Navbar = () => {
         <nav className={`coralhub-navbar ${isAdminPage ? "admin-navbar-compact py-1 bg-dark text-white shadow" : ""}`}>
             <div className="container">
                 <div className={`coralhub-navbar-wrapper ${isAdminPage ? "admin-wrapper-compact" : ""}`}>
-                    
+
                     {/* LEFT SIDE */}
                     <div className="d-flex align-items-center gap-4">
                         {/* LOGO */}
@@ -103,26 +103,34 @@ export const Navbar = () => {
                                     {/* ADMIN */}
                                     {JSON.parse(localStorage.getItem("user"))?.role === "admin" && (
                                         <Link to="/admin/dashboard" className="nav-link-custom admin-link">
-                                            <i className="fa-solid fa-users-gear me-1"></i>Admin Dashboard
+                                           Admin Dashboard
                                         </Link>
                                     )}
 
                                     {/* SUPPORT TICKETS (ADMIN) */}
                                     {JSON.parse(localStorage.getItem("user"))?.role === "admin" && (
                                         <Link to="/admin/tickets" className="nav-link-custom admin-link">
-                                            <i className="fa-solid fa-ticket me-1"></i>Tickets
+                                           Tickets
                                         </Link>
                                     )}
 
                                     {/* USER DASHBOARD */}
-                                    {JSON.parse(localStorage.getItem("user"))?.role === "user" && (
-                                        <Link to="/userdashboard" className="nav-link-custom admin-link">
-                                            <i className="fa-solid fa-users-gear me-1"></i>Dashboard
-                                        </Link>
+                                    {JSON.parse(localStorage.getItem("user"))?.role !== "admin" && (
+                                        <>
+                                            <Link to="/dashboard" className="nav-link-custom">
+                                               My Dashboard
+                                            </Link>
+
+                                            <Link to="/my-tickets" className="nav-link-custom">
+                                               My Tickets
+                                            </Link>
+
+                                            <Link to="/my-claims" className="nav-link-custom">
+                                                My Claims
+                                            </Link>
+                                        </>
                                     )}
-                                    
-                                    <Link to="/profile" className="nav-link-custom">My Profile</Link>
-                                    
+
                                     {/* CART - Oculto si el usuario es Admin */}
                                     {JSON.parse(localStorage.getItem("user"))?.role !== "admin" && (
                                         <Link to="/cart" className="nav-link-custom position-relative" aria-label="Shopping cart">

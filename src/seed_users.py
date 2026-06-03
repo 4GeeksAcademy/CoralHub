@@ -8,7 +8,7 @@ users = [
         first_name="Ana",
         last_name="Lopez",
         email="ana@coralhub.com",
-        password=generate_password_hash("123456"),
+        password=generate_password_hash("12345678"),
         role="seller"
     ),
 
@@ -16,23 +16,23 @@ users = [
         first_name="John",
         last_name="Reefer",
         email="john@coralhub.com",
-        password=generate_password_hash("123456"),
+        password=generate_password_hash("12345678"),
         role="seller"
     ),
 
     User(
-        first_name="Sarah",
-        last_name="Corals",
-        email="sarah@coralhub.com",
-        password=generate_password_hash("123456"),
+        first_name="Juan",
+        last_name="Masis",
+        email="juan@coralhub.com",
+        password=generate_password_hash("12345678"),
         role="seller"
     ),
 
     User(
-        first_name="Mike",
-        last_name="Aquatics",
-        email="mike@coralhub.com",
-        password=generate_password_hash("123456"),
+        first_name="Pedro",
+        last_name="Chavez",
+        email="pedro@coralhub.com",
+        password=generate_password_hash("12345678"),
         role="seller"
     ),
 
@@ -40,7 +40,7 @@ users = [
         first_name="David",
         last_name="ReefMaster",
         email="david@coralhub.com",
-        password=generate_password_hash("123456"),
+        password=generate_password_hash("12345678"),
         role="seller"
     )
 

@@ -85,7 +85,7 @@ export const Categories = () => {
                     <div className="col-6 col-md-4 col-lg">
 
                         <Link
-                            to="/category/Aquariums"
+                            to="/category/Aquarium"
                             className="category-card aquarium-category"
                         >
 

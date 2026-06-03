@@ -184,7 +184,7 @@ export const Catalog = () => {
             console.error(error);
 
         }
-    
+
     };
 
     return (
@@ -292,6 +292,9 @@ export const Catalog = () => {
                                             <h5>
                                                 {product.name}
                                             </h5>
+                                            <small style={{ color: "red" }}>
+                                                Category: {product.category}
+                                            </small>
 
                                             <p>
                                                 {product.description?.substring(0, 70)}

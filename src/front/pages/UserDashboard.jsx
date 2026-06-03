@@ -7,6 +7,7 @@ import { DashboardProducts } from "../components/dashboard/DashboardProducts";
 import { DashboardOrders } from "../components/dashboard/DashboardOrders";
 import { DashboardProfile } from "../components/dashboard/DashboardProfile";
 import { DashboardActivity } from "../components/dashboard/DashboardActivity";
+import { DashboardFavorites } from "../components/dashboard/DashboardFavorites";
 
 export const UserDashboard = () => {
 
@@ -93,6 +94,9 @@ export const UserDashboard = () => {
                             <DashboardActivity />
                         )}
 
+                        {activeSection === "favorites" && (
+                            <DashboardFavorites />
+                        )}
                     </div>
 
                 </div>

@@ -40,6 +40,7 @@ import { ForgotPassword } from "./pages/ForgotPassword.jsx";
 import { ResetPassword } from "./pages/ResetPassword.jsx";
 import { ProfilePage } from "./pages/ProfilePage";
 import { Welcome } from "./pages/Welcome";
+import { FavoritesPage } from "./pages/FavoritesPage";
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
@@ -91,6 +92,7 @@ export const router = createBrowserRouter(
 
       <Route path="/profile" element={<ProfilePage />} />
       <Route path="/welcome" element={<Welcome />} />
+      <Route path="/favorites" element={<FavoritesPage />} />
     </Route>
   )
 );

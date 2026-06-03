@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { FavoriteButton } from "./FavoriteButton";
+import { Link } from "react-router-dom";
 
 export const Favorites = () => {
 
@@ -56,9 +57,12 @@ export const Favorites = () => {
 
 				</div>
 
-				<button className="favorites-view-btn">
-					View all →
-				</button>
+				<Link
+					to="/favorites"
+					className="favorites-view-btn"
+				>
+					View All →
+				</Link>
 
 			</div>
 
@@ -106,7 +110,15 @@ export const Favorites = () => {
 									<span>
 										❤️ {product.favorites_count} favorites
 									</span>
+								</div>
 
+								<div>
+									<Link
+										to={`/product/${product.id}`}
+										className="view-product-btn"
+									>
+										View Product
+									</Link>
 								</div>
 
 							</div>

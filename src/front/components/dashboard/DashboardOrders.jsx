@@ -109,37 +109,31 @@ export const DashboardOrders = () => {
 
                     {orders.map(order => (
 
-                        <div
-                            key={order.id}
-                            className="order-row"
-                        >
+                        <div className="order-products">
+                            {order.items?.map(item => (
+                                <div
+                                    key={item.id}
+                                    className="order-product"
+                                >
+                                    <img
+                                        src={item.product.image_url}
+                                        alt={item.product.name}
+                                        className="order-product-image"
+                                    />
 
-                            <div>
+                                    <div className="order-product-info">
+                                        <h6>{item.product.name}</h6>
 
-                                <h5>
-                                    Order #{order.id}
-                                </h5>
+                                        <p>
+                                            Qty: {item.quantity}
+                                        </p>
 
-                                <p>
-                                    ${order.total}
-                                </p>
-
-                                <p>
-                                    {order.items?.length || 0} item(s)
-                                </p>
-
-                                <small>
-                                    {new Date(order.created_at).toLocaleDateString()}
-                                </small>
-
-                            </div>
-
-                            <div
-                                className={`product-status ${order.order_status}`}
-                            >
-                                {order.order_status}
-                            </div>
-
+                                        <p>
+                                            ${item.unit_price}
+                                        </p>
+                                    </div>
+                                </div>
+                            ))}
                         </div>
 
                     ))}

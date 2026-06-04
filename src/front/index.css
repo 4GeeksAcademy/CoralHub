@@ -5445,3 +5445,1242 @@ h3 {
 
   color: rgba(255,255,255,0.7);
 }
+/* ================================
+   PREMIUM WELCOME PAGE
+================================ */
+
+.premium-welcome-page {
+  position: relative;
+  min-height: 100vh;
+  padding: 130px 7% 70px;
+  overflow: hidden;
+  color: #ffffff;
+  background:
+    radial-gradient(
+      circle at 75% 20%,
+      rgba(160, 42, 255, 0.35),
+      transparent 28%
+    ),
+    radial-gradient(circle at 25% 35%, rgba(0, 229, 255, 0.2), transparent 30%),
+    linear-gradient(135deg, #020817 0%, #06152b 45%, #09051d 100%);
+}
+
+.premium-welcome-page::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(rgba(4, 10, 28, 0.2), rgba(4, 10, 28, 0.72)),
+    url("https://images.unsplash.com/photo-1546026423-cc4642628d2b?auto=format&fit=crop&w=2400&q=80");
+  background-size: cover;
+  background-position: center;
+  opacity: 0.5;
+  z-index: 0;
+}
+
+.premium-welcome-page::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(
+      90deg,
+      rgba(0, 0, 0, 0.45),
+      transparent 50%,
+      rgba(5, 0, 30, 0.45)
+    ),
+    radial-gradient(
+      circle at 50% 100%,
+      rgba(0, 255, 255, 0.08),
+      transparent 40%
+    );
+  z-index: 1;
+}
+
+.welcome-hero,
+.premium-actions,
+.premium-cta-wrapper {
+  position: relative;
+  z-index: 3;
+}
+
+.welcome-hero {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  align-items: center;
+  gap: 40px;
+  min-height: 430px;
+}
+
+.welcome-left {
+  max-width: 850px;
+}
+
+.welcome-badge {
+  width: 76px;
+  height: 76px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 18px;
+  border-radius: 50%;
+  background: linear-gradient(
+    145deg,
+    rgba(0, 255, 255, 0.12),
+    rgba(165, 49, 255, 0.25)
+  );
+  border: 1px solid rgba(0, 238, 255, 0.35);
+  box-shadow:
+    0 0 30px rgba(0, 238, 255, 0.25),
+    inset 0 0 30px rgba(255, 255, 255, 0.08);
+}
+
+.welcome-wave {
+  font-size: 2.5rem;
+}
+
+.premium-welcome-title {
+  margin: 0;
+  font-size: clamp(3rem, 7vw, 6.5rem);
+  line-height: 0.93;
+  font-weight: 900;
+  letter-spacing: -3px;
+  color: #ffffff;
+}
+
+.premium-welcome-title span {
+  display: block;
+  margin-top: 8px;
+  font-size: clamp(4.7rem, 10vw, 8.6rem);
+  background: linear-gradient(90deg, #00f5ff, #637cff, #d83cff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 0 25px rgba(118, 82, 255, 0.55));
+}
+
+.premium-welcome-subtitle {
+  margin-top: 22px;
+  margin-bottom: 28px;
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 1.15rem;
+  line-height: 1.7;
+}
+
+.premium-welcome-subtitle strong {
+  color: #57fff1;
+  font-weight: 800;
+}
+
+.welcome-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(150px, 1fr));
+  gap: 18px;
+  max-width: 950px;
+}
+
+.welcome-stat-card {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 18px 20px;
+  border-radius: 24px;
+  background: rgba(8, 18, 46, 0.62);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(18px);
+  box-shadow:
+    0 18px 50px rgba(0, 0, 0, 0.3),
+    inset 0 0 25px rgba(255, 255, 255, 0.03);
+  transition: 0.25s ease;
+}
+
+.welcome-stat-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(0, 255, 255, 0.35);
+  box-shadow: 0 0 35px rgba(0, 238, 255, 0.18);
+}
+
+.stat-icon {
+  min-width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 1.55rem;
+}
+
+.stat-icon.purple {
+  background: rgba(139, 74, 255, 0.2);
+  box-shadow: 0 0 25px rgba(139, 74, 255, 0.35);
+}
+
+.stat-icon.green {
+  background: rgba(0, 255, 163, 0.16);
+  box-shadow: 0 0 25px rgba(0, 255, 163, 0.25);
+}
+
+.stat-icon.orange {
+  background: rgba(255, 160, 35, 0.17);
+  box-shadow: 0 0 25px rgba(255, 160, 35, 0.25);
+}
+
+.stat-icon.gold {
+  background: rgba(219, 67, 255, 0.18);
+  box-shadow: 0 0 25px rgba(219, 67, 255, 0.28);
+}
+
+.welcome-stat-card h3 {
+  margin: 0;
+  font-size: 1.65rem;
+  font-weight: 900;
+}
+
+.welcome-stat-card p {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 0.92rem;
+}
+
+.welcome-stat-card span {
+  color: #49ffe3;
+  font-size: 0.92rem;
+  font-weight: 800;
+}
+
+.orange-text {
+  color: #ffb23f !important;
+}
+
+.level-bar {
+  width: 100px;
+  height: 8px;
+  margin-top: 9px;
+  border-radius: 99px;
+  background: rgba(255, 255, 255, 0.15);
+  overflow: hidden;
+}
+
+.level-bar div {
+  width: 55%;
+  height: 100%;
+  border-radius: 99px;
+  background: linear-gradient(90deg, #a63cff, #ff5cff);
+  box-shadow: 0 0 15px rgba(216, 60, 255, 0.8);
+}
+
+.welcome-visual {
+  position: relative;
+  min-height: 390px;
+}
+
+.welcome-visual::before {
+  content: "";
+  position: absolute;
+  right: 5%;
+  top: 8%;
+  width: 430px;
+  height: 300px;
+  border-radius: 45%;
+  background:
+    radial-gradient(circle at 70% 25%, #ff61e6, transparent 18%),
+    radial-gradient(circle at 40% 60%, #6cff47, transparent 18%),
+    radial-gradient(circle at 55% 75%, #8d3cff, transparent 22%),
+    radial-gradient(circle at 20% 30%, #00d9ff, transparent 20%);
+  filter: blur(22px);
+  opacity: 0.75;
+}
+
+.fish {
+  position: absolute;
+  z-index: 4;
+  font-size: 5.5rem;
+  filter: drop-shadow(0 0 25px rgba(255, 111, 0, 0.55));
+  animation: floatFish 4s ease-in-out infinite;
+}
+
+.fish-one {
+  right: 28%;
+  top: 12%;
+}
+
+.fish-two {
+  right: 73%;
+  bottom: 18%;
+  font-size: 3.6rem;
+  animation-delay: 1s;
+}
+
+.coral {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(2px);
+  opacity: 0.95;
+}
+
+.coral-one {
+  right: 9%;
+  top: 14%;
+  width: 210px;
+  height: 170px;
+  background: radial-gradient(circle, rgba(255, 63, 239, 0.9), transparent 62%);
+}
+
+.coral-two {
+  right: 28%;
+  bottom: 19%;
+  width: 200px;
+  height: 150px;
+  background: radial-gradient(circle, rgba(77, 255, 70, 0.82), transparent 62%);
+}
+
+.coral-three {
+  right: 0;
+  bottom: 8%;
+  width: 280px;
+  height: 180px;
+  background: radial-gradient(
+    circle,
+    rgba(126, 55, 255, 0.95),
+    transparent 65%
+  );
+}
+
+.premium-actions {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 26px;
+  margin-top: 15px;
+}
+
+.premium-action-card {
+  position: relative;
+  min-height: 210px;
+  padding: 34px 36px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  border-radius: 30px;
+  overflow: hidden;
+  text-decoration: none;
+  color: #ffffff;
+  background: rgba(5, 16, 43, 0.62);
+  border: 1px solid rgba(0, 245, 255, 0.2);
+  backdrop-filter: blur(18px);
+  box-shadow:
+    0 22px 70px rgba(0, 0, 0, 0.36),
+    inset 0 0 35px rgba(255, 255, 255, 0.04);
+  transition: 0.28s ease;
+}
+
+.premium-action-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0.72;
+  background-size: cover;
+  background-position: center;
+  transition: 0.3s ease;
+}
+
+.browse-card::before {
+  background-image:
+    linear-gradient(90deg, rgba(6, 18, 46, 0.78), rgba(6, 18, 46, 0.35)),
+    url("https://images.unsplash.com/photo-1583212292454-1fe6229603b7?auto=format&fit=crop&w=1200&q=80");
+}
+
+.cart-card::before {
+  background-image:
+    linear-gradient(90deg, rgba(6, 18, 46, 0.82), rgba(6, 18, 46, 0.32)),
+    url("https://images.unsplash.com/photo-1524704654690-b56c05c78a00?auto=format&fit=crop&w=1200&q=80");
+}
+
+.profile-card::before {
+  background-image:
+    linear-gradient(90deg, rgba(23, 8, 49, 0.82), rgba(8, 20, 49, 0.25)),
+    url("https://images.unsplash.com/photo-1545671913-b89ac1b4ac10?auto=format&fit=crop&w=1200&q=80");
+}
+
+.premium-action-card > * {
+  position: relative;
+  z-index: 2;
+}
+
+.premium-action-card:hover {
+  transform: translateY(-8px) scale(1.01);
+  border-color: rgba(0, 255, 255, 0.6);
+  box-shadow:
+    0 0 35px rgba(0, 238, 255, 0.24),
+    0 28px 80px rgba(0, 0, 0, 0.45);
+}
+
+.action-icon {
+  width: 72px;
+  height: 72px;
+  display: grid;
+  place-items: center;
+  margin-bottom: 22px;
+  border-radius: 50%;
+  font-size: 2rem;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.action-icon.blue {
+  background: rgba(0, 122, 255, 0.22);
+  box-shadow: 0 0 28px rgba(0, 122, 255, 0.42);
+}
+
+.action-icon.teal {
+  background: rgba(0, 255, 220, 0.18);
+  box-shadow: 0 0 28px rgba(0, 255, 220, 0.35);
+}
+
+.action-icon.violet {
+  background: rgba(181, 55, 255, 0.22);
+  box-shadow: 0 0 28px rgba(181, 55, 255, 0.35);
+}
+
+.premium-action-card h2 {
+  margin: 0 0 8px;
+  font-size: 1.75rem;
+  font-weight: 900;
+}
+
+.premium-action-card p {
+  max-width: 270px;
+  margin: 0;
+  color: rgba(255, 255, 255, 0.8);
+  line-height: 1.5;
+}
+
+.action-arrow {
+  width: 50px;
+  height: 50px;
+  display: grid;
+  place-items: center;
+  margin-top: 24px;
+  border-radius: 50%;
+  font-size: 1.9rem;
+  color: #ffffff;
+  background: linear-gradient(135deg, #00eaff, #713cff);
+  box-shadow: 0 0 25px rgba(0, 238, 255, 0.5);
+}
+
+.premium-cta-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 36px;
+}
+
+.premium-start-btn {
+  min-width: 360px;
+  padding: 18px 34px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  border-radius: 999px;
+  text-decoration: none;
+  color: #ffffff;
+  font-size: 1.3rem;
+  font-weight: 900;
+  background: linear-gradient(90deg, #02e8ff, #2de6bd, #6d63ff);
+  box-shadow:
+    0 0 35px rgba(0, 238, 255, 0.45),
+    0 18px 50px rgba(0, 0, 0, 0.35);
+  transition: 0.25s ease;
+}
+
+.premium-start-btn:hover {
+  transform: translateY(-4px) scale(1.03);
+  color: #ffffff;
+  box-shadow:
+    0 0 55px rgba(0, 238, 255, 0.7),
+    0 20px 65px rgba(0, 0, 0, 0.45);
+}
+
+.ocean-glow {
+  position: absolute;
+  z-index: 2;
+  border-radius: 50%;
+  filter: blur(70px);
+  opacity: 0.55;
+}
+
+.ocean-glow-one {
+  width: 260px;
+  height: 260px;
+  left: 3%;
+  top: 35%;
+  background: #00eaff;
+}
+
+.ocean-glow-two {
+  width: 340px;
+  height: 340px;
+  right: 13%;
+  top: 15%;
+  background: #9c33ff;
+}
+
+.ocean-glow-three {
+  width: 260px;
+  height: 260px;
+  right: 36%;
+  bottom: 5%;
+  background: #00ffc8;
+}
+
+.floating-bubble {
+  position: absolute;
+  z-index: 2;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 30% 30%,
+    #ffffff,
+    #42f6ff 30%,
+    transparent 70%
+  );
+  opacity: 0.42;
+  animation: bubbleFloat 6s ease-in-out infinite;
+}
+
+.bubble-one {
+  left: 58%;
+  top: 20%;
+}
+
+.bubble-two {
+  left: 51%;
+  top: 33%;
+  width: 42px;
+  height: 42px;
+  animation-delay: 1.5s;
+}
+
+.bubble-three {
+  left: 7%;
+  top: 58%;
+  width: 34px;
+  height: 34px;
+  animation-delay: 2.5s;
+}
+
+.bubble-four {
+  right: 10%;
+  top: 28%;
+  width: 30px;
+  height: 30px;
+  animation-delay: 0.8s;
+}
+
+@keyframes bubbleFloat {
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.35;
+  }
+
+  50% {
+    transform: translateY(-28px);
+    opacity: 0.75;
+  }
+}
+
+@keyframes floatFish {
+  0%,
+  100% {
+    transform: translateY(0) translateX(0);
+  }
+
+  50% {
+    transform: translateY(-18px) translateX(18px);
+  }
+}
+
+@media (max-width: 1200px) {
+  .welcome-hero {
+    grid-template-columns: 1fr;
+  }
+
+  .welcome-visual {
+    display: none;
+  }
+
+  .welcome-stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .premium-actions {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .premium-welcome-page {
+    padding: 110px 20px 50px;
+  }
+
+  .premium-welcome-title {
+    letter-spacing: -1px;
+  }
+
+  .welcome-stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .premium-action-card {
+    min-height: 230px;
+    padding: 28px;
+  }
+
+  .premium-start-btn {
+    min-width: 100%;
+  }
+}
+
+/* ================================
+   FIX SIZE - PREMIUM WELCOME PAGE
+   Smaller / cleaner version
+================================ */
+
+.premium-welcome-page {
+  min-height: calc(100vh - 90px);
+  padding: 55px 7% 45px !important;
+}
+
+.welcome-hero {
+  min-height: 330px !important;
+  gap: 20px !important;
+}
+
+.welcome-badge {
+  width: 54px !important;
+  height: 54px !important;
+  margin-bottom: 12px !important;
+}
+
+.welcome-wave {
+  font-size: 1.8rem !important;
+}
+
+.premium-welcome-title {
+  font-size: clamp(2.4rem, 4.5vw, 4.8rem) !important;
+  line-height: 0.95 !important;
+  letter-spacing: -2px !important;
+}
+
+.premium-welcome-title span {
+  font-size: clamp(3.5rem, 6vw, 6rem) !important;
+  margin-top: 4px !important;
+}
+
+.premium-welcome-subtitle {
+  font-size: 0.98rem !important;
+  margin-top: 14px !important;
+  margin-bottom: 22px !important;
+  line-height: 1.45 !important;
+}
+
+.welcome-stats-grid {
+  grid-template-columns: repeat(4, minmax(125px, 1fr)) !important;
+  gap: 12px !important;
+  max-width: 760px !important;
+}
+
+.welcome-stat-card {
+  padding: 13px 15px !important;
+  border-radius: 18px !important;
+  gap: 10px !important;
+}
+
+.stat-icon {
+  min-width: 44px !important;
+  width: 44px !important;
+  height: 44px !important;
+  font-size: 1.15rem !important;
+}
+
+.welcome-stat-card h3 {
+  font-size: 1.25rem !important;
+}
+
+.welcome-stat-card p,
+.welcome-stat-card span {
+  font-size: 0.78rem !important;
+}
+
+.level-bar {
+  width: 72px !important;
+  height: 6px !important;
+}
+
+.welcome-visual {
+  min-height: 300px !important;
+}
+
+.welcome-visual::before {
+  width: 330px !important;
+  height: 230px !important;
+}
+
+.fish {
+  font-size: 4rem !important;
+}
+
+.fish-two {
+  font-size: 2.7rem !important;
+}
+
+.coral-one {
+  width: 160px !important;
+  height: 130px !important;
+}
+
+.coral-two {
+  width: 155px !important;
+  height: 115px !important;
+}
+
+.coral-three {
+  width: 210px !important;
+  height: 140px !important;
+}
+
+.premium-actions {
+  gap: 18px !important;
+  margin-top: 5px !important;
+}
+
+.premium-action-card {
+  min-height: 165px !important;
+  padding: 24px 28px !important;
+  border-radius: 22px !important;
+}
+
+.action-icon {
+  width: 52px !important;
+  height: 52px !important;
+  font-size: 1.45rem !important;
+  margin-bottom: 14px !important;
+}
+
+.premium-action-card h2 {
+  font-size: 1.35rem !important;
+  margin-bottom: 5px !important;
+}
+
+.premium-action-card p {
+  font-size: 0.88rem !important;
+  line-height: 1.35 !important;
+}
+
+.action-arrow {
+  width: 38px !important;
+  height: 38px !important;
+  font-size: 1.45rem !important;
+  margin-top: 16px !important;
+}
+
+.premium-cta-wrapper {
+  margin-top: 22px !important;
+}
+
+.premium-start-btn {
+  min-width: 280px !important;
+  padding: 13px 28px !important;
+  font-size: 1rem !important;
+}
+
+.ocean-glow {
+  filter: blur(55px) !important;
+  opacity: 0.45 !important;
+}
+
+/* ================================
+   EXTRA SMALL PREMIUM WELCOME
+   Put this at the END of index.css
+================================ */
+
+.premium-welcome-page {
+  min-height: calc(100vh - 90px) !important;
+  padding: 35px 6% 35px !important;
+}
+
+.welcome-hero {
+  min-height: 250px !important;
+  gap: 15px !important;
+  align-items: center !important;
+}
+
+.welcome-badge {
+  width: 42px !important;
+  height: 42px !important;
+  margin-bottom: 8px !important;
+}
+
+.welcome-wave {
+  font-size: 1.4rem !important;
+}
+
+.premium-welcome-title {
+  font-size: clamp(2rem, 3.4vw, 3.6rem) !important;
+  line-height: 0.95 !important;
+  letter-spacing: -1px !important;
+}
+
+.premium-welcome-title span {
+  font-size: clamp(2.8rem, 4.8vw, 4.8rem) !important;
+  margin-top: 2px !important;
+}
+
+.premium-welcome-subtitle {
+  font-size: 0.85rem !important;
+  margin-top: 10px !important;
+  margin-bottom: 16px !important;
+  line-height: 1.35 !important;
+}
+
+.welcome-stats-grid {
+  grid-template-columns: repeat(4, 1fr) !important;
+  gap: 10px !important;
+  max-width: 650px !important;
+}
+
+.welcome-stat-card {
+  padding: 10px 12px !important;
+  border-radius: 14px !important;
+  gap: 8px !important;
+}
+
+.stat-icon {
+  min-width: 36px !important;
+  width: 36px !important;
+  height: 36px !important;
+  font-size: 0.95rem !important;
+}
+
+.welcome-stat-card h3 {
+  font-size: 1rem !important;
+}
+
+.welcome-stat-card p,
+.welcome-stat-card span {
+  font-size: 0.68rem !important;
+}
+
+.level-bar {
+  width: 58px !important;
+  height: 5px !important;
+}
+
+.welcome-visual {
+  min-height: 230px !important;
+}
+
+.welcome-visual::before {
+  width: 250px !important;
+  height: 170px !important;
+  filter: blur(18px) !important;
+}
+
+.fish {
+  font-size: 3rem !important;
+}
+
+.fish-two {
+  font-size: 2rem !important;
+}
+
+.coral-one {
+  width: 120px !important;
+  height: 95px !important;
+}
+
+.coral-two {
+  width: 120px !important;
+  height: 90px !important;
+}
+
+.coral-three {
+  width: 160px !important;
+  height: 105px !important;
+}
+
+.premium-actions {
+  grid-template-columns: repeat(3, 1fr) !important;
+  gap: 15px !important;
+  margin-top: 0 !important;
+}
+
+.premium-action-card {
+  min-height: 130px !important;
+  padding: 18px 22px !important;
+  border-radius: 18px !important;
+}
+
+.action-icon {
+  width: 42px !important;
+  height: 42px !important;
+  font-size: 1.15rem !important;
+  margin-bottom: 10px !important;
+}
+
+.premium-action-card h2 {
+  font-size: 1.05rem !important;
+  margin-bottom: 4px !important;
+}
+
+.premium-action-card p {
+  font-size: 0.75rem !important;
+  line-height: 1.3 !important;
+}
+
+.action-arrow {
+  width: 32px !important;
+  height: 32px !important;
+  font-size: 1.15rem !important;
+  margin-top: 12px !important;
+}
+
+.premium-cta-wrapper {
+  margin-top: 18px !important;
+}
+
+.premium-start-btn {
+  min-width: 230px !important;
+  padding: 10px 22px !important;
+  font-size: 0.9rem !important;
+}
+
+.ocean-glow {
+  filter: blur(45px) !important;
+  opacity: 0.38 !important;
+}
+
+/* ================================
+   WELCOME + FOOTER UNIFORM COLORS
+================================ */
+
+/* Fondo general */
+body,
+#root {
+  background-color: #0a2342 !important;
+}
+
+/* Welcome */
+.premium-welcome-page {
+  background-color: #0a2342 !important;
+  padding-top: 35px !important;
+  padding-bottom: 20px !important;
+  margin-bottom: 0 !important;
+}
+
+/* Quita espacio extra debajo del botón */
+.premium-cta-wrapper {
+  margin-bottom: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+/* Si hay una sección debajo del welcome */
+.welcome-hero,
+.premium-actions {
+  margin-bottom: 0 !important;
+}
+
+/* Footer */
+footer,
+.footer {
+  background-color: #0a2342 !important;
+  margin-top: 0 !important;
+  padding-top: 40px !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+/* Si el contenedor del footer tiene otro color */
+footer .container,
+.footer .container {
+  background-color: transparent !important;
+}
+
+/* Navbar / parte superior para que combine mejor */
+.navbar,
+.navbar-custom,
+header {
+  background-color: #0a2342 !important;
+}
+
+/* Si el nav tiene un wrapper interno redondeado */
+.navbar .container,
+.navbar-custom .container {
+  background-color: rgba(18, 46, 82, 0.92) !important;
+  border-radius: 40px;
+}
+
+
+/* ================================
+   MEMBERSHIP LEVELS / REWARDS PAGE
+================================ */
+
+.rewards-page {
+    min-height: 100vh;
+    padding: 120px 7% 70px;
+    color: #ffffff;
+    background:
+        radial-gradient(circle at 75% 20%, rgba(170, 55, 255, 0.25), transparent 30%),
+        radial-gradient(circle at 20% 30%, rgba(0, 238, 255, 0.15), transparent 35%),
+        linear-gradient(135deg, #07172e 0%, #081d3a 45%, #0b1028 100%);
+}
+
+.rewards-hero {
+    display: grid;
+    grid-template-columns: 1.3fr 0.7fr;
+    gap: 28px;
+    align-items: center;
+    margin-bottom: 30px;
+    padding: 32px;
+    border-radius: 28px;
+    background: rgba(7, 22, 48, 0.82);
+    border: 1px solid rgba(0, 238, 255, 0.16);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.28);
+}
+
+.rewards-badge {
+    display: inline-flex;
+    padding: 9px 16px;
+    margin-bottom: 16px;
+    border-radius: 999px;
+    color: #ffd76a;
+    font-weight: 900;
+    background: rgba(255, 215, 106, 0.12);
+    border: 1px solid rgba(255, 215, 106, 0.22);
+}
+
+.rewards-hero h1 {
+    font-size: clamp(2.2rem, 4vw, 3.8rem);
+    font-weight: 900;
+    margin-bottom: 12px;
+}
+
+.rewards-hero p {
+    max-width: 720px;
+    color: rgba(255, 255, 255, 0.74);
+    font-size: 1rem;
+    line-height: 1.6;
+}
+
+.rewards-level-card {
+    padding: 26px;
+    border-radius: 24px;
+    background: linear-gradient(135deg, rgba(31, 14, 67, 0.9), rgba(9, 24, 60, 0.9));
+    border: 1px solid rgba(214, 84, 255, 0.35);
+    box-shadow: 0 0 35px rgba(214, 84, 255, 0.18);
+}
+
+.rewards-level-card h2 {
+    font-size: 3rem;
+    font-weight: 900;
+    margin: 0;
+    background: linear-gradient(90deg, #00f5ff, #ff5cf4);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.rewards-progress {
+    width: 100%;
+    height: 9px;
+    overflow: hidden;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.14);
+    margin: 12px 0;
+}
+
+.rewards-progress div {
+    width: 65%;
+    height: 100%;
+    border-radius: 999px;
+    background: linear-gradient(90deg, #00eaff, #ff5cf4);
+    box-shadow: 0 0 15px rgba(255, 92, 244, 0.75);
+}
+
+.rewards-level-card span {
+    color: #ffd76a;
+    font-weight: 800;
+}
+
+.membership-levels-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 22px;
+    margin-bottom: 36px;
+}
+
+.membership-card {
+    position: relative;
+    padding: 28px;
+    border-radius: 26px;
+    background: rgba(9, 27, 61, 0.78);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 18px 50px rgba(0, 0, 0, 0.24);
+    transition: 0.25s ease;
+}
+
+.membership-card:hover {
+    transform: translateY(-6px);
+}
+
+.membership-icon {
+    width: 58px;
+    height: 58px;
+    display: grid;
+    place-items: center;
+    margin-bottom: 16px;
+    border-radius: 18px;
+    font-size: 1.8rem;
+}
+
+.silver-level .membership-icon {
+    background: rgba(192, 192, 192, 0.14);
+    box-shadow: 0 0 22px rgba(192, 192, 192, 0.18);
+}
+
+.gold-level {
+    border-color: rgba(255, 215, 106, 0.45);
+    box-shadow: 0 0 35px rgba(255, 215, 106, 0.14);
+}
+
+.gold-level .membership-icon {
+    background: rgba(255, 215, 106, 0.16);
+    box-shadow: 0 0 24px rgba(255, 215, 106, 0.24);
+}
+
+.platinum-level .membership-icon {
+    background: rgba(0, 238, 255, 0.14);
+    box-shadow: 0 0 24px rgba(0, 238, 255, 0.24);
+}
+
+.current-badge {
+    position: absolute;
+    top: 18px;
+    right: 18px;
+    padding: 6px 12px;
+    border-radius: 999px;
+    color: #07172e;
+    font-size: 0.72rem;
+    font-weight: 900;
+    background: linear-gradient(90deg, #ffd76a, #ff9f43);
+}
+
+.membership-card h3 {
+    font-size: 1.45rem;
+    font-weight: 900;
+    margin-bottom: 4px;
+}
+
+.membership-subtitle {
+    color: rgba(255, 255, 255, 0.62);
+    margin-bottom: 18px;
+}
+
+.membership-card ul {
+    padding-left: 18px;
+    margin-bottom: 20px;
+}
+
+.membership-card li {
+    margin-bottom: 8px;
+    color: rgba(255, 255, 255, 0.76);
+}
+
+.membership-status {
+    display: inline-flex;
+    padding: 7px 13px;
+    border-radius: 999px;
+    color: #57fff1;
+    font-weight: 900;
+    background: rgba(87, 255, 241, 0.10);
+    border: 1px solid rgba(87, 255, 241, 0.16);
+}
+
+.gold-benefits-section h2 {
+    font-size: 2rem;
+    font-weight: 900;
+    margin-bottom: 20px;
+}
+
+.benefits-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 22px;
+}
+
+.benefit-card {
+    padding: 26px;
+    border-radius: 24px;
+    background: rgba(9, 27, 61, 0.78);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.benefit-icon {
+    width: 52px;
+    height: 52px;
+    display: grid;
+    place-items: center;
+    margin-bottom: 14px;
+    border-radius: 16px;
+    font-size: 1.6rem;
+    background: rgba(0, 238, 255, 0.12);
+}
+
+.benefit-card h3 {
+    font-size: 1.1rem;
+    font-weight: 900;
+    margin-bottom: 8px;
+}
+
+.benefit-card p {
+    color: rgba(255, 255, 255, 0.68);
+    line-height: 1.5;
+    margin-bottom: 0;
+}
+
+.rewards-actions {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    margin-top: 38px;
+}
+
+.rewards-main-btn,
+.rewards-secondary-btn {
+    padding: 13px 26px;
+    border-radius: 999px;
+    text-decoration: none;
+    font-weight: 900;
+}
+
+.rewards-main-btn {
+    color: #ffffff;
+    background: linear-gradient(90deg, #00eaff, #6d63ff);
+    box-shadow: 0 0 28px rgba(0, 238, 255, 0.35);
+}
+
+.rewards-secondary-btn {
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    background: rgba(255, 255, 255, 0.06);
+}
+
+@media (max-width: 992px) {
+    .rewards-hero,
+    .membership-levels-grid,
+    .benefits-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .rewards-actions {
+        flex-direction: column;
+    }
+}

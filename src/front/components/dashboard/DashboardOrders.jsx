@@ -1,22 +1,91 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 export const DashboardOrders = () => {
 
-    const orders = [
-        {
-            id: 1,
-            customer: "John D.",
-            total: "$250",
-            status: "Pending"
-        },
+    const [orders, setOrders] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
-        {
-            id: 2,
-            customer: "Sarah W.",
-            total: "$180",
-            status: "Paid"
-        }
-    ];
+    useEffect(() => {
+
+        const loadOrders = async () => {
+
+            try {
+
+                const token = localStorage.getItem("token");
+
+                const response = await fetch(
+                    `${import.meta.env.VITE_BACKEND_URL}/api/my-orders`,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`
+                        }
+                    }
+                );
+
+                if (!response.ok) {
+                    throw new Error("Could not load orders");
+                }
+
+                const data = await response.json();
+
+                setOrders(data);
+
+            } catch (error) {
+
+                console.error(error);
+
+                setError(error.message);
+
+            } finally {
+
+                setLoading(false);
+            }
+        };
+
+        loadOrders();
+
+    }, []);
+
+    if (loading) {
+
+        return (
+
+            <section className="dashboard-section">
+
+                <div className="section-header">
+
+                    <h2>My Orders</h2>
+
+                </div>
+
+                <p className="dashboard-message">
+                    Loading orders...
+                </p>
+
+            </section>
+        );
+    }
+
+    if (error) {
+
+        return (
+
+            <section className="dashboard-section">
+
+                <div className="section-header">
+
+                    <h2>My Orders</h2>
+
+                </div>
+
+                <p className="dashboard-error">
+                    {error}
+                </p>
+
+            </section>
+        );
+    }
 
     return (
 
@@ -24,42 +93,55 @@ export const DashboardOrders = () => {
 
             <div className="section-header">
 
-                <h2>Recent Orders</h2>
-
-                <button className="section-btn">
-                    View all
-                </button>
+                <h2>My Orders</h2>
 
             </div>
 
-            <div className="orders-list">
+            {orders.length === 0 ? (
 
-                {orders.map(order => (
+                <p className="dashboard-message">
+                    You don't have any orders yet.
+                </p>
 
-                    <div
-                        key={order.id}
-                        className="order-row"
-                    >
+            ) : (
 
-                        <div>
+                <div className="orders-list">
 
-                            <h5>{order.customer}</h5>
+                    {orders.map(order => (
 
-                            <p>{order.total}</p>
+                        <div className="order-products">
+                            {order.items?.map(item => (
+                                <div
+                                    key={item.id}
+                                    className="order-product"
+                                >
+                                    <img
+                                        src={item.product.image_url}
+                                        alt={item.product.name}
+                                        className="order-product-image"
+                                    />
 
+                                    <div className="order-product-info">
+                                        <h6>{item.product.name}</h6>
+
+                                        <p>
+                                            Qty: {item.quantity}
+                                        </p>
+
+                                        <p>
+                                            ${item.unit_price}
+                                        </p>
+                                    </div>
+                                </div>
+                            ))}
                         </div>
 
-                        <div className={`product-status ${order.status.toLowerCase()}`}>
-                            {order.status}
-                        </div>
+                    ))}
 
-                    </div>
+                </div>
 
-                ))}
-
-            </div>
+            )}
 
         </section>
-
     );
 };

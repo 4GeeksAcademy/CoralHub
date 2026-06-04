@@ -5401,6 +5401,50 @@ h3 {
   color: #04342c;
 }
 
+.order-products {
+  margin-top: 1rem;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 1rem;
+}
+
+.order-product {
+  display: flex;
+
+  align-items: center;
+
+  gap: 1rem;
+
+  padding: 0.75rem;
+
+  background: rgba(255,255,255,0.03);
+
+  border-radius: 12px;
+}
+
+.order-product-image {
+  width: 70px;
+
+  height: 70px;
+
+  object-fit: cover;
+
+  border-radius: 10px;
+}
+
+.order-product-info h6 {
+  margin-bottom: 0.25rem;
+
+  color: white;
+}
+
+.order-product-info p {
+  margin-bottom: 0;
+
+  color: rgba(255,255,255,0.7);
+}
 /* ================================
    PREMIUM WELCOME PAGE
 ================================ */

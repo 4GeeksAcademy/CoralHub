@@ -3,6 +3,9 @@ from app import app
 from api.models import db, Product, Favorite
 
 
+    # ============================================
+    # CORALS
+    # ============================================
 products = [
 
     Product(
@@ -103,6 +106,7 @@ products = [
         status="active",
         category="Corals"
     ),
+    
     # ============================================
     # EQUIPMENT
     # ============================================
@@ -113,7 +117,7 @@ products = [
         description="Premium protein skimmer for reef aquariums.",
         price=399.99,
         stock=2,
-        image_url="https://images.unsplash.com/photo-1581092334651-ddf26d9a09d0",
+        image_url="https://cdn11.bigcommerce.com/s-fh5tkm/images/stencil/800x800/products/14946/69649/Quantum_EQ_Homepage_680x893px_PNG__48097.1763135810.jpg?c=2",
         status="active",
         category="Equipment"
     ),
@@ -124,7 +128,7 @@ products = [
         description="Reliable internal protein skimmer.",
         price=329.99,
         stock=3,
-        image_url="https://images.unsplash.com/photo-1518770660439-4636190af475",
+        image_url="https://cdn.shopify.com/s/files/1/0783/0873/7322/files/reef-octopus-classic-150int-6-internal-protein-skimmer-reef-octopus-1146288815.jpg?v=1743552122&width=1500",
         status="active",
         category="Equipment"
     ),
@@ -135,7 +139,7 @@ products = [
         description="High-performance DC return pump.",
         price=449.99,
         stock=2,
-        image_url="https://images.unsplash.com/photo-1580894908361-967195033215",
+        image_url="https://www.oceanworldaquariums.com/wp-content/uploads/2023/04/B3227840-AF26-420B-AC4E-AFD12D39A11B_1_102_o.jpeg",
         status="active",
         category="Equipment"
     ),
@@ -146,7 +150,7 @@ products = [
         description="Silent and efficient return pump.",
         price=279.99,
         stock=4,
-        image_url="https://images.unsplash.com/photo-1563298723-dcfebaa392e3",
+        image_url="https://topshelfaquatics.com/cdn/shop/files/sicce-syncra-adv-7-0-water-pump-sicce-1146288498.jpg?v=1743553814&width=832",
         status="active",
         category="Equipment"
     ),

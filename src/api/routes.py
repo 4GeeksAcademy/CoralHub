@@ -442,6 +442,8 @@ def clear_cart():
 def create_checkout_session():
     current_user_id = get_jwt_identity()
     body = request.get_json() or {}
+    print("USER:", current_user_id)
+    print("BODY:", body)
 
     if not stripe.api_key:
         return jsonify({
@@ -607,6 +609,8 @@ def stripe_webhook():
     Endpoint que recibe notificaciones de Stripe cuando suceden eventos.
     El evento que nos interesa es 'checkout.session.completed' (pago exitoso).
     """
+
+    print("🔥 WEBHOOK HIT")
     payload = request.data
     sig_header = request.headers.get('Stripe-Signature')
     webhook_secret = os.environ.get('STRIPE_WEBHOOK_SECRET')
@@ -619,6 +623,7 @@ def stripe_webhook():
         event = stripe.Webhook.construct_event(
             payload, sig_header, webhook_secret
         )
+        print(f"🔥 Event type: {event['type']}")
     except ValueError:
         return jsonify({"error": "Invalid payload"}), 400
     except stripe.error.SignatureVerificationError:
@@ -714,15 +719,25 @@ def stripe_webhook():
 @api.route('/my-orders', methods=['GET'])
 @jwt_required()
 def get_my_orders():
-    """
-    Devuelve todas las órdenes del usuario logueado, ordenadas por más reciente primero.
-    """
-    current_user_id = get_jwt_identity()
-    orders = Order.query.filter_by(buyer_id=current_user_id).order_by(
-        Order.created_at.desc()).all()
 
-    return jsonify([order.serialize() for order in orders]), 200
+    current_user_id = int(get_jwt_identity())
 
+    print("========== MY ORDERS ==========")
+    print("JWT USER:", current_user_id)
+
+    orders = Order.query.filter_by(
+        buyer_id=current_user_id
+    ).order_by(
+        Order.created_at.desc()
+    ).all()
+
+    print("ORDERS FOUND:", len(orders))
+    print("==============================")
+
+    return jsonify([
+        order.serialize()
+        for order in orders
+    ]), 200
 
 # ============================================
 # MIS PRODUCTOS (Historial del usuario)
@@ -1523,3 +1538,104 @@ def reset_password():
     db.session.commit()
 
     return jsonify({"message": "Contraseña cambiada con éxito. Redirigiendo al login..."}), 200
+
+
+
+
+@api.route('/create-order-from-session', methods=['POST'])
+@jwt_required()
+def create_order_from_session():
+    current_user_id = int(get_jwt_identity())
+    body = request.get_json() or {}
+
+    session_id = body.get("session_id")
+    cart = body.get("cart", [])
+    delivery_method = body.get("delivery_method", "pickup")
+    shipping_address = body.get("shipping_address")
+
+    if not session_id:
+        return jsonify({"error": "session_id is required"}), 400
+
+    if not cart:
+        return jsonify({"error": "Cart is empty"}), 400
+
+    existing_order = Order.query.filter_by(
+        stripe_session_id=session_id
+    ).first()
+
+    if existing_order:
+        return jsonify(existing_order.serialize()), 200
+
+    try:
+        session = stripe.checkout.Session.retrieve(session_id)
+
+        if session.payment_status != "paid":
+            return jsonify({"error": "Payment not completed"}), 400
+
+        total = session.amount_total / 100
+
+        new_order = Order(
+            buyer_id=current_user_id,
+            order_status="paid",
+            total=total,
+            stripe_session_id=session_id,
+            delivery_method=delivery_method
+        )
+
+        if delivery_method == "shipping" and shipping_address:
+            new_order.shipping_full_name = shipping_address.get("full_name")
+            new_order.shipping_street = shipping_address.get("street")
+            new_order.shipping_city = shipping_address.get("city")
+            new_order.shipping_state = shipping_address.get("state")
+            new_order.shipping_zip = shipping_address.get("zip_code")
+            new_order.shipping_country = shipping_address.get("country")
+            new_order.shipping_phone = shipping_address.get("phone")
+
+        db.session.add(new_order)
+        db.session.flush()
+
+        for item in cart:
+            product_id = item.get("id")
+            quantity = int(item.get("quantity", 1))
+
+            product = Product.query.get(product_id)
+
+            if not product:
+                continue
+
+            order_item = OrderItem(
+                order_id=new_order.id,
+                product_id=product.id,
+                quantity=quantity,
+                unit_price=product.price
+            )
+
+            db.session.add(order_item)
+
+            product.stock -= quantity
+
+            if product.stock <= 0:
+                product.status = "sold_out"
+
+        db.session.commit()
+
+        return jsonify(new_order.serialize()), 201
+
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({
+            "error": f"Could not create order: {str(e)}"
+        }), 500
+
+@api.route('/debug/orders', methods=['GET'])
+def debug_orders():
+
+    orders = Order.query.all()
+
+    return jsonify({
+        "count": len(orders),
+        "orders": [
+            order.serialize()
+            for order in orders
+        ]
+    }), 200

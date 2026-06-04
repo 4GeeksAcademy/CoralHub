@@ -1,36 +1,75 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
 
 export const CheckoutSuccess = () => {
-    const { dispatch } = useGlobalReducer();
+    const { store, dispatch } = useGlobalReducer();
     const [searchParams] = useSearchParams();
     const sessionId = searchParams.get("session_id");
 
     const backendUrl = import.meta.env.VITE_BACKEND_URL;
+    const hasCreatedOrder = useRef(false);
 
     useEffect(() => {
-        // Clear cart on backend and in global state
-        const clearCart = async () => {
+        const finishCheckout = async () => {
+            if (hasCreatedOrder.current) return;
+            hasCreatedOrder.current = true;
+
             const token = localStorage.getItem("token");
 
-            if (!token) return;
+            if (!token || !sessionId) return;
 
             try {
-                // Clear cart in DB
+                const cart = store.cart || JSON.parse(localStorage.getItem("cart")) || [];
+
+                const deliveryMethod =
+                    localStorage.getItem("delivery_method") || "pickup";
+
+                const shippingAddress =
+                    JSON.parse(localStorage.getItem("shipping_address")) || null;
+
+                const orderResponse = await fetch(
+                    `${backendUrl}/api/create-order-from-session`,
+                    {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            Authorization: `Bearer ${token}`
+                        },
+                        body: JSON.stringify({
+                            session_id: sessionId,
+                            cart,
+                            delivery_method: deliveryMethod,
+                            shipping_address: shippingAddress
+                        })
+                    }
+                );
+
+                const orderData = await orderResponse.json();
+
+                if (!orderResponse.ok) {
+                    console.error("Error creating order:", orderData);
+                    return;
+                }
+
                 await fetch(`${backendUrl}/api/cart`, {
                     method: "DELETE",
-                    headers: { "Authorization": `Bearer ${token}` }
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
                 });
 
-                // Clear cart in global state (updates the navbar badge)
                 dispatch({ type: "clear_cart" });
+
+                localStorage.removeItem("delivery_method");
+                localStorage.removeItem("shipping_address");
+
             } catch (err) {
-                console.error("Error clearing cart:", err);
+                console.error("Error finishing checkout:", err);
             }
         };
 
-        clearCart();
+        finishCheckout();
     }, []);
 
     return (
@@ -58,7 +97,8 @@ export const CheckoutSuccess = () => {
                             <Link to="/" className="btn btn-dark py-2 rounded-3">
                                 Back to Store
                             </Link>
-                            <Link to="/dashboard" className="btn btn-outline-secondary py-2 rounded-3">
+
+                            <Link to="/dashboard/orders" className="btn btn-outline-secondary py-2 rounded-3">
                                 View My Orders
                             </Link>
                         </div>

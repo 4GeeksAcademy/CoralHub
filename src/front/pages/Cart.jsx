@@ -104,7 +104,12 @@ export const Cart = () => {
             const cleanUrl = import.meta.env.VITE_BACKEND_URL.replace(/\/$/, "");
 
             console.log("Cart sent to Stripe:", cartItems);
+            localStorage.setItem("delivery_method", deliveryMethod);
 
+            localStorage.setItem(
+                "shipping_address",
+                JSON.stringify(deliveryMethod === "shipping" ? shippingAddress : null)
+            );
             const response = await fetch(`${cleanUrl}/api/create-checkout-session`, {
                 method: "POST",
                 headers: {

@@ -442,9 +442,7 @@ def clear_cart():
 def create_checkout_session():
     current_user_id = get_jwt_identity()
     body = request.get_json() or {}
-    print("USER:", current_user_id)
-    print("BODY:", body)
-
+   
     if not stripe.api_key:
         return jsonify({
             "error": f"Stripe secret key is missing. Looking for .env here: {BASE_DIR / '.env'}"
@@ -609,8 +607,6 @@ def stripe_webhook():
     Endpoint que recibe notificaciones de Stripe cuando suceden eventos.
     El evento que nos interesa es 'checkout.session.completed' (pago exitoso).
     """
-
-    print("🔥 WEBHOOK HIT")
     payload = request.data
     sig_header = request.headers.get('Stripe-Signature')
     webhook_secret = os.environ.get('STRIPE_WEBHOOK_SECRET')
@@ -623,7 +619,7 @@ def stripe_webhook():
         event = stripe.Webhook.construct_event(
             payload, sig_header, webhook_secret
         )
-        print(f"🔥 Event type: {event['type']}")
+       
     except ValueError:
         return jsonify({"error": "Invalid payload"}), 400
     except stripe.error.SignatureVerificationError:
@@ -720,19 +716,13 @@ def stripe_webhook():
 @jwt_required()
 def get_my_orders():
 
-    current_user_id = int(get_jwt_identity())
-
-    print("========== MY ORDERS ==========")
-    print("JWT USER:", current_user_id)
+    current_user_id = int(get_jwt_identity()
 
     orders = Order.query.filter_by(
         buyer_id=current_user_id
     ).order_by(
         Order.created_at.desc()
     ).all()
-
-    print("ORDERS FOUND:", len(orders))
-    print("==============================")
 
     return jsonify([
         order.serialize()
@@ -1627,15 +1617,3 @@ def create_order_from_session():
             "error": f"Could not create order: {str(e)}"
         }), 500
 
-@api.route('/debug/orders', methods=['GET'])
-def debug_orders():
-
-    orders = Order.query.all()
-
-    return jsonify({
-        "count": len(orders),
-        "orders": [
-            order.serialize()
-            for order in orders
-        ]
-    }), 200

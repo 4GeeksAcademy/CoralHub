@@ -3526,13 +3526,161 @@ h3 {
   background: rgba(59, 130, 246, 0.12);
 
   color: #60a5fa;
-}
-
-/* ========================================
+}/* ========================================
    ORDERS
 ======================================== */
 
 .orders-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.order-card {
+  background: rgba(255, 255, 255, 0.02);
+
+  border: 1px solid rgba(255, 255, 255, 0.06);
+
+  border-radius: 20px;
+
+  padding: 1.5rem;
+
+  transition: all 0.3s ease;
+}
+
+.order-card:hover {
+  border-color: rgba(78, 199, 193, 0.25);
+
+  box-shadow: 0 0 20px rgba(78, 199, 193, 0.08);
+}
+
+.order-card-header {
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  margin-bottom: 1.25rem;
+
+  padding-bottom: 1rem;
+
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.order-card-header h5 {
+  color: white;
+
+  margin: 0;
+
+  font-size: 1.1rem;
+
+  font-weight: 600;
+}
+
+.order-card-header p {
+  color: rgba(255, 255, 255, 0.6);
+
+  margin: 0.35rem 0 0;
+}
+
+/* STATUS */
+
+.order-status {
+  padding: 0.45rem 0.9rem;
+
+  border-radius: 999px;
+
+  font-size: 0.8rem;
+
+  font-weight: 600;
+
+  text-transform: capitalize;
+}
+
+.order-status.pending {
+  background: rgba(255, 193, 7, 0.15);
+
+  color: #ffc107;
+}
+
+.order-status.paid {
+  background: rgba(25, 135, 84, 0.15);
+
+  color: #4ec7c1;
+}
+
+.order-status.shipped {
+  background: rgba(13, 110, 253, 0.15);
+
+  color: #6ea8fe;
+}
+
+.order-status.delivered {
+  background: rgba(78, 199, 193, 0.15);
+
+  color: #4ec7c1;
+}
+
+.order-status.cancelled {
+  background: rgba(220, 53, 69, 0.15);
+
+  color: #ff6b81;
+}
+
+/* SUMMARY */
+
+.order-summary {
+  display: flex;
+
+  gap: 2rem;
+
+  flex-wrap: wrap;
+
+  margin-bottom: 1rem;
+}
+
+.order-summary p {
+  color: rgba(255, 255, 255, 0.75);
+
+  margin: 0;
+}
+
+.order-summary strong {
+  color: white;
+}
+
+/* SHIPPING */
+
+.order-shipping {
+  background: rgba(78, 199, 193, 0.05);
+
+  border: 1px solid rgba(78, 199, 193, 0.12);
+
+  border-radius: 16px;
+
+  padding: 1rem;
+
+  margin-bottom: 1rem;
+}
+
+.order-shipping h6 {
+  color: white;
+
+  margin-bottom: 0.75rem;
+
+  font-weight: 600;
+}
+
+.order-shipping p {
+  color: rgba(255, 255, 255, 0.7);
+
+  margin-bottom: 0.25rem;
+}
+
+/* PRODUCTS */
+
+.order-products {
   display: flex;
 
   flex-direction: column;
@@ -3540,28 +3688,45 @@ h3 {
   gap: 1rem;
 }
 
-.order-row {
+.order-product {
   display: flex;
-
-  justify-content: space-between;
 
   align-items: center;
 
-  padding: 1rem 0;
+  gap: 1rem;
 
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 0.75rem;
+
+  border-radius: 14px;
+
+  background: rgba(255, 255, 255, 0.03);
 }
 
-.order-row h3 {
+.order-product-image {
+  width: 70px;
+
+  height: 70px;
+
+  border-radius: 14px;
+
+  object-fit: cover;
+}
+
+.order-product-info h6 {
   color: white;
 
-  margin-bottom: 0.3rem;
+  margin-bottom: 0.35rem;
+
+  font-weight: 600;
 }
 
-.order-row p {
+.order-product-info p {
   color: rgba(255, 255, 255, 0.65);
-}
 
+  margin-bottom: 0.2rem;
+
+  font-size: 0.9rem;
+}
 /* ========================================
    ACTIVITY
 ======================================== */

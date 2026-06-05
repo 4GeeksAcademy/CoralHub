@@ -1,4 +1,5 @@
 
+
 from app import app
 from api.models import db, Product, Favorite
 
@@ -161,7 +162,7 @@ products = [
         description="Automated dosing system.",
         price=349.99,
         stock=5,
-        image_url="https://images.unsplash.com/photo-1516321318423-f06f85e504b3",
+        image_url="https://media2.cdn.bulkreefsupply.com/media/catalog/product/cache/c8225047e3f199b6e75c4a7f9e30955e/2/5/254973-mufflerproject-le.jpg",
         status="active",
         category="Equipment"
     ),
@@ -172,7 +173,7 @@ products = [
         description="Four-head dosing pump.",
         price=299.99,
         stock=3,
-        image_url="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b",
+        image_url="https://vividaquariums.com/cdn/shop/files/R35320_ReefDose4_2000x2000.png?v=1692724413",
         status="active",
         category="Equipment"
     ),
@@ -183,7 +184,7 @@ products = [
         description="Top-off system with optical sensor.",
         price=219.99,
         stock=6,
-        image_url="https://images.unsplash.com/photo-1498050108023-c5249f4df085",
+        image_url="https://cdn11.bigcommerce.com/s-fh5tkm/images/stencil/800x800/products/11355/57331/osmolator-3-and-Box-1000x1000__90352.1731596398.jpg?c=2",
         status="active",
         category="Equipment"
     ),
@@ -194,7 +195,7 @@ products = [
         description="Wireless controllable wave pump.",
         price=429.99,
         stock=4,
-        image_url="https://images.unsplash.com/photo-1517841905240-472988babdf9",
+        image_url="https://media2.cdn.bulkreefsupply.com/media/catalog/product/cache/c8225047e3f199b6e75c4a7f9e30955e/2/1/213223-ecotechmarine-mp10-vortech-quietdrive-fr.jpg",
         status="active",
         category="Equipment"
     ),
@@ -205,7 +206,7 @@ products = [
         description="Compact and powerful flow pump.",
         price=199.99,
         stock=5,
-        image_url="https://images.unsplash.com/photo-1485827404703-89b55fcc595e",
+        image_url="https://media2.cdn.bulkreefsupply.com/media/catalog/product/cache/5f1ac3ab0f63743579555d03eda32114/2/3/231837-aquaillumination-nero3-submersible-pump-fr.webp",
         status="active",
         category="Equipment"
     ),
@@ -220,7 +221,7 @@ products = [
         description="Modern rimless reef aquarium.",
         price=799.99,
         stock=1,
-        image_url="https://images.unsplash.com/photo-1520637836862-4d197d17c90a",
+        image_url="https://cdn11.bigcommerce.com/s-fh5tkm/images/stencil/800x800/products/12395/62476/EDEN80-white-angled__41892.1754506755.jpg?c=2",
         status="active",
         category="Aquariums"
     ),
@@ -231,7 +232,7 @@ products = [
         description="Elegant reef-ready aquarium.",
         price=1199.99,
         stock=1,
-        image_url="https://images.unsplash.com/photo-1571752726703-5e7d1f6a2cc1",
+        image_url="https://cdn11.bigcommerce.com/s-fh5tkm/images/stencil/800x800/products/12395/62476/EDEN80-white-angled__41892.1754506755.jpg?c=2",
         status="active",
         category="Aquariums"
     ),
@@ -242,7 +243,7 @@ products = [
         description="Premium reef system.",
         price=1999.99,
         stock=1,
-        image_url="https://images.unsplash.com/photo-1517849845537-4d257902454a",
+        image_url="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQPBm5kLvUnP9cAmSaTPkFTvswgcX6WeIqQIw&s",
         status="active",
         category="Aquariums"
     ),
@@ -253,7 +254,7 @@ products = [
         description="Complete reef-ready aquarium.",
         price=1499.99,
         stock=1,
-        image_url="https://images.unsplash.com/photo-1520637736862-4d197d17c90a",
+        image_url="https://waterboxaquariums.com/cdn/shop/files/AIO.35.2.WHITE.FW.jpg?v=1779291913",
         status="active",
         category="Aquariums"
     ),
@@ -264,7 +265,7 @@ products = [
         description="Popular reef aquarium system.",
         price=2199.99,
         stock=1,
-        image_url="https://images.unsplash.com/photo-1544551763-46a013bb70d5",
+        image_url="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS35hxW68HWpoBBcaMwb-5MzO9FSbTv_uUfxg&s",
         status="active",
         category="Aquariums"
     ),
@@ -275,7 +276,7 @@ products = [
         description="Compact all-in-one aquarium.",
         price=449.99,
         stock=2,
-        image_url="https://images.unsplash.com/photo-1500375592092-40eb2168fd21",
+        image_url="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcToVpxZtpYK15GrqiPlx0RllI28qB6K1plRFA&s",
         status="active",
         category="Aquariums"
     ),
@@ -286,7 +287,7 @@ products = [
         description="Mid-sized all-in-one aquarium.",
         price=699.99,
         stock=2,
-        image_url="https://images.unsplash.com/photo-1507525428034-b723cf961d3e",
+        image_url="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcToVpxZtpYK15GrqiPlx0RllI28qB6K1plRFA&s",
         status="active",
         category="Aquariums"
     ),
@@ -297,7 +298,7 @@ products = [
         description="Luxury reef aquarium system.",
         price=3299.99,
         stock=1,
-        image_url="https://images.unsplash.com/photo-1506744038136-46273834b3fb",
+        image_url="https://waterboxaquariums.com/cdn/shop/files/MARINEX.110.4.BLACK.ANGLED.jpg?v=1779291863&width=2000",
         status="active",
         category="Aquariums"
     ),
@@ -308,7 +309,7 @@ products = [
         description="Large custom reef aquarium.",
         price=3999.99,
         stock=1,
-        image_url="https://images.unsplash.com/photo-1470770841072-f978cf4d019e",
+        image_url="https://topshelfaquatics.com/cdn/shop/files/red-sea-aquarium-drop-ship-reefer-deluxe-425-g3-114-4-gal-incl-2-x-reefled-115-red-sea-1197445487.webp?v=1760391843&width=3840",
         status="active",
         category="Aquariums"
     ),
@@ -325,7 +326,7 @@ products = [
         description="Premium reef LED lighting system.",
         price=499.99,
         stock=3,
-        image_url="https://images.unsplash.com/photo-1516321318423-f06f85e504b3",
+        image_url="https://ecotechmarine.com/wp-content/uploads/2022/05/G6-Blue-Pro.webp",
         status="active",
         category="Lighting"
     ),
@@ -336,7 +337,7 @@ products = [
         description="High-output reef LED fixture.",
         price=899.99,
         stock=2,
-        image_url="https://images.unsplash.com/photo-1498050108023-c5249f4df085",
+        image_url="https://www.lushcorals.com/cdn/shop/files/xr30blue-1.jpg?v=1740501107",
         status="active",
         category="Lighting"
     ),
@@ -347,7 +348,7 @@ products = [
         description="Popular compact reef light.",
         price=249.99,
         stock=6,
-        image_url="https://images.unsplash.com/photo-1518770660439-4636190af475",
+        image_url="https://topshelfaquatics.com/cdn/shop/files/aqua-illumination-prime-led-tank-mount-aqua-illumination-1146290785.jpg?v=1743607919&width=832",
         status="active",
         category="Lighting"
     ),
@@ -358,7 +359,7 @@ products = [
         description="Advanced reef aquarium lighting.",
         price=429.99,
         stock=4,
-        image_url="https://images.unsplash.com/photo-1517048676732-d65bc937f952",
+        image_url="https://topshelfaquatics.com/cdn/shop/files/aqua-illumination-hydra-led-flex-arm-aqua-illumination-1146290739.jpg?v=1743610694&width=832",
         status="active",
         category="Lighting"
     ),
@@ -369,7 +370,7 @@ products = [
         description="Supplemental reef spectrum lighting.",
         price=189.99,
         stock=5,
-        image_url="https://images.unsplash.com/photo-1581092919535-7146ff1a5901",
+        image_url="https://cdn11.bigcommerce.com/s-fh5tkm/images/stencil/1280x1280/products/9452/39744/bladecoralgrow__45888.1672258213.jpg?c=2?imbypass=on",
         status="active",
         category="Lighting"
     ),
@@ -380,7 +381,7 @@ products = [
         description="Dense matrix LED reef lighting.",
         price=449.99,
         stock=4,
-        image_url="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b",
+        image_url="https://kessil.com/images/product/A360X/A360X_img01.png",
         status="active",
         category="Lighting"
     ),
@@ -391,7 +392,7 @@ products = [
         description="Premium reef lighting fixture.",
         price=869.99,
         stock=2,
-        image_url="https://images.unsplash.com/photo-1563298723-dcfebaa392e3",
+        image_url="https://www.baybridgeaquarium.com/cdn/shop/products/Kessil-AP9X-Controllable-LED-Aquarium-Light-98_large.jpg?v=1596926665",
         status="active",
         category="Lighting"
     ),
@@ -402,7 +403,7 @@ products = [
         description="Smart reef aquarium LED.",
         price=369.99,
         stock=4,
-        image_url="https://images.unsplash.com/photo-1580894908361-967195033215",
+        image_url="https://www.lushcorals.com/cdn/shop/files/ReefLEDG2115.png?v=1743178628&width=1445",
         status="active",
         category="Lighting"
     ),
@@ -413,7 +414,7 @@ products = [
         description="Professional reef lighting system.",
         price=999.99,
         stock=1,
-        image_url="https://images.unsplash.com/photo-1485827404703-89b55fcc595e",
+        image_url="https://shop.orphek.com/cdn/shop/files/Orphek-atlantik-icon-reef-aquarium-led-lighting.jpg?v=1724594409&width=990",
         status="active",
         category="Lighting"
     ),
@@ -430,7 +431,7 @@ products = [
         description="Pre-owned Radion in excellent condition.",
         price=299.99,
         stock=1,
-        image_url="https://images.unsplash.com/photo-1516321318423-f06f85e504b3",
+        image_url="https://i.ebayimg.com/images/g/FuQAAeSw9zpp59Ge/s-l1200.jpg",
         status="active",
         category="Used"
     ),
@@ -441,7 +442,7 @@ products = [
         description="Used reef light with mounting arm.",
         price=149.99,
         stock=1,
-        image_url="https://images.unsplash.com/photo-1498050108023-c5249f4df085",
+        image_url="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRMSnY0OaAfhy2Fbvb4_a1GqvEg7ptMZyosXQ&s",
         status="active",
         category="Used"
     ),
@@ -452,7 +453,7 @@ products = [
         description="Second-hand wave pump in good condition.",
         price=220.00,
         stock=1,
-        image_url="https://images.unsplash.com/photo-1518770660439-4636190af475",
+        image_url="https://i.ebayimg.com/images/g/uBEAAeSwBf9ptWmu/s-l300.jpg",
         status="active",
         category="Used"
     ),
@@ -463,7 +464,7 @@ products = [
         description="Small reef aquarium, lightly used.",
         price=250.00,
         stock=1,
-        image_url="https://images.unsplash.com/photo-1544551763-46a013bb70d5",
+        image_url="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRfOl7Y3jjNgBe7rH8IqmwTUqgaKyzgmjCazw&s",
         status="active",
         category="Used"
     ),
@@ -474,7 +475,7 @@ products = [
         description="Reliable skimmer, cleaned and tested.",
         price=180.00,
         stock=1,
-        image_url="https://images.unsplash.com/photo-1500375592092-40eb2168fd21",
+        image_url="https://i.ebayimg.com/images/g/HIgAAeSwKuRp9Nsb/s-l1200.webp",
         status="active",
         category="Used"
     ),
@@ -485,7 +486,7 @@ products = [
         description="Great condition reef LED.",
         price=280.00,
         stock=1,
-        image_url="https://images.unsplash.com/photo-1507525428034-b723cf961d3e",
+        image_url="https://i.ebayimg.com/images/g/vCYAAeSwhjZqAjMa/s-l1200.jpg",
         status="active",
         category="Used"
     ),
@@ -496,7 +497,7 @@ products = [
         description="Complete reef-ready setup.",
         price=1200.00,
         stock=1,
-        image_url="https://images.unsplash.com/photo-1470770841072-f978cf4d019e",
+        image_url="https://www.reef2reef.com/data/attachments/2709/2709572-78691e7c74723303abf1e07b38bde45d.jpg",
         status="active",
         category="Used"
     ),
@@ -507,7 +508,7 @@ products = [
         description="Compact wave maker with controller.",
         price=120.00,
         stock=1,
-        image_url="https://images.unsplash.com/photo-1520637836862-4d197d17c90a",
+        image_url="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSGzbJQPgKGB1hqA9Zbk8VELcgLEdzoG8ueSQ&s",
         status="active",
         category="Used"
     ),
@@ -518,7 +519,7 @@ products = [
         description="Dosing system in working condition.",
         price=180.00,
         stock=1,
-        image_url="https://images.unsplash.com/photo-1571752726703-5e7d1f6a2cc1",
+        image_url="https://www.terrareef.com/cdn/shop/files/PXL_20240506_162013118.jpg-used-Neptune-DOS.jpg?v=1715833659&width=2000",
         status="active",
         category="Used"
     ),

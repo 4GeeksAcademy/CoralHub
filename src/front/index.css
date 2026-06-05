@@ -5552,7 +5552,7 @@ h3 {
   display: block;
   margin-top: 8px;
   font-size: clamp(4.7rem, 10vw, 8.6rem);
-  background: linear-gradient(90deg, #00f5ff, #637cff, #d83cff);
+  background: #4EC7C1;
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -5794,7 +5794,7 @@ h3 {
     url("https://images.unsplash.com/photo-1524704654690-b56c05c78a00?auto=format&fit=crop&w=1200&q=80");
 }
 
-.profile-card::before {
+.profile-2-card::before {
   background-image:
     linear-gradient(90deg, rgba(23, 8, 49, 0.82), rgba(8, 20, 49, 0.25)),
     url("https://images.unsplash.com/photo-1545671913-b89ac1b4ac10?auto=format&fit=crop&w=1200&q=80");
@@ -6311,7 +6311,7 @@ h3 {
 .premium-actions {
   grid-template-columns: repeat(3, 1fr) !important;
   gap: 15px !important;
-  margin-top: 0 !important;
+  margin-top: 20px !important;
 }
 
 .premium-action-card {
@@ -6417,6 +6417,7 @@ header {
   background-color: rgba(18, 46, 82, 0.92) !important;
   border-radius: 40px;
 }
+
 
 
 /* ================================

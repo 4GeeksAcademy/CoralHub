@@ -94,11 +94,11 @@ export const CheckoutSuccess = () => {
                         )}
 
                         <div className="d-flex flex-column gap-2">
-                            <Link to="/" className="btn btn-dark py-2 rounded-3">
+                            <Link to="/catalog" className="btn btn-dark py-2 rounded-3">
                                 Back to Store
                             </Link>
 
-                            <Link to="/dashboard/orders" className="btn btn-outline-secondary py-2 rounded-3">
+                            <Link to="/dashboard" className="btn btn-outline-secondary py-2 rounded-3">
                                 View My Orders
                             </Link>
                         </div>

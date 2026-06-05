@@ -138,7 +138,7 @@ export const Welcome = () => {
             {/* Action Cards */}
             <section className="premium-actions">
 
-                <Link to="/" className="premium-action-card browse-card">
+                <Link to="/catalog" className="premium-action-card browse-card">
                     <div className="action-icon blue">🪸</div>
 
                     <div>
@@ -160,7 +160,7 @@ export const Welcome = () => {
                     <span className="action-arrow">→</span>
                 </Link>
 
-                <Link to="/profile" className="premium-action-card profile-card">
+                <Link to="/profile" className="premium-action-card profile-2-card">
                     <div className="action-icon violet">👤</div>
 
                     <div>

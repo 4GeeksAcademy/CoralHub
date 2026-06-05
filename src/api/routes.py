@@ -716,7 +716,7 @@ def stripe_webhook():
 @jwt_required()
 def get_my_orders():
 
-    current_user_id = int(get_jwt_identity()
+    current_user_id = int(get_jwt_identity())
 
     orders = Order.query.filter_by(
         buyer_id=current_user_id

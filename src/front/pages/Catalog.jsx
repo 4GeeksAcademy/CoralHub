@@ -326,7 +326,7 @@ export const Catalog = () => {
                                                     {product.seller_name?.charAt(0)}
                                                 </div>
 
-                                                <span className="seller-name">
+                                                <span className="catalog-seller-name">
                                                     {product.seller_name}
                                                 </span>
 

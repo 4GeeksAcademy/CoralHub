@@ -178,13 +178,13 @@ export const CategoryPage = () => {
 
 
                 <div className="row g-4">
-                    
-                {/* EMPTY STATES */}
-                {products.length === 0 && (
-                    <div className="alert alert-info text-center">
-                        No products available yet.
-                    </div>
-                )}
+
+                    {/* EMPTY STATES */}
+                    {products.length === 0 && (
+                        <div className="alert alert-info text-center">
+                            No products available yet.
+                        </div>
+                    )}
 
                     {products.map((product) => (
 
@@ -241,7 +241,7 @@ export const CategoryPage = () => {
                                             {product.seller_name?.charAt(0)}
                                         </div>
 
-                                        <span className="seller-name">
+                                        <span className="catalog-seller-name">
                                             {product.seller_name}
                                         </span>
 

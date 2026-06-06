@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import { DashboardSidebar } from "../components/dashboard/DashboardSidebar";
 import { DashboardHeader } from "../components/dashboard/DashboardHeader";
@@ -8,10 +8,23 @@ import { DashboardOrders } from "../components/dashboard/DashboardOrders";
 import { DashboardProfile } from "../components/dashboard/DashboardProfile";
 import { DashboardActivity } from "../components/dashboard/DashboardActivity";
 import { DashboardFavorites } from "../components/dashboard/DashboardFavorites";
+import { DashboardMessages } from "../components/dashboard/DashboardMessages";
 
 export const UserDashboard = () => {
 
-    const [activeSection, setActiveSection] = useState("overview");
+    const [activeSection, setActiveSection] =
+        useState(
+            localStorage.getItem("dashboardSection")
+            || "overview"
+        );
+
+    useEffect(() => {
+
+    localStorage.removeItem(
+        "dashboardSection"
+    );
+
+}, []);
 
     return (
 
@@ -97,6 +110,12 @@ export const UserDashboard = () => {
                         {activeSection === "favorites" && (
                             <DashboardFavorites />
                         )}
+
+                        {activeSection === "messages" && (
+                            <DashboardMessages />
+                        )}
+
+
                     </div>
 
                 </div>

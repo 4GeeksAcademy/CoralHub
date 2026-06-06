@@ -6,7 +6,7 @@ from flask_jwt_extended import jwt_required
 from flask_jwt_extended import get_jwt_identity
 from flask_jwt_extended import create_access_token
 from flask import Flask, request, jsonify, url_for, Blueprint
-from api.models import db, User, Product, Review, CartItem, Order, OrderItem, SupportTicket, Claim, Favorite
+from api.models import db, User, Product, Review, CartItem, Order, OrderItem, SupportTicket, Claim, Favorite, Message
 from api.utils import generate_sitemap, APIException
 from sqlalchemy import func
 
@@ -152,6 +152,7 @@ def create_product():
         db.session.rollback()
         return jsonify({"error": f"Error creating product: {str(e)}"}), 500
 
+
 @api.route('/products/<int:product_id>', methods=['PUT'])
 @jwt_required()
 def update_product(product_id):
@@ -177,6 +178,7 @@ def update_product(product_id):
     db.session.commit()
 
     return jsonify(product.serialize()), 200
+
 
 @api.route('/products/<int:product_id>', methods=['DELETE'])
 @jwt_required()
@@ -442,7 +444,7 @@ def clear_cart():
 def create_checkout_session():
     current_user_id = get_jwt_identity()
     body = request.get_json() or {}
-   
+
     if not stripe.api_key:
         return jsonify({
             "error": f"Stripe secret key is missing. Looking for .env here: {BASE_DIR / '.env'}"
@@ -619,7 +621,7 @@ def stripe_webhook():
         event = stripe.Webhook.construct_event(
             payload, sig_header, webhook_secret
         )
-       
+
     except ValueError:
         return jsonify({"error": "Invalid payload"}), 400
     except stripe.error.SignatureVerificationError:
@@ -732,6 +734,7 @@ def get_my_orders():
 # ============================================
 # MIS PRODUCTOS (Historial del usuario)
 # ============================================
+
 
 @api.route("/my-products", methods=["GET"])
 @jwt_required()
@@ -1409,6 +1412,7 @@ def top_favorites():
 
     return jsonify(response), 200
 
+
 @api.route("/favorites/all", methods=["GET"])
 def all_favorites():
     results = db.session.query(
@@ -1530,8 +1534,6 @@ def reset_password():
     return jsonify({"message": "Contraseña cambiada con éxito. Redirigiendo al login..."}), 200
 
 
-
-
 @api.route('/create-order-from-session', methods=['POST'])
 @jwt_required()
 def create_order_from_session():
@@ -1617,3 +1619,123 @@ def create_order_from_session():
             "error": f"Could not create order: {str(e)}"
         }), 500
 
+
+@api.route("/messages", methods=["POST"])
+@jwt_required()
+def send_message():
+    body = request.get_json()
+
+    sender_id = get_jwt_identity()
+    receiver_id = body.get("receiver_id")
+    content = body.get("content")
+
+    print("SENDER:", sender_id)
+    print("RECEIVER:", receiver_id)
+    print("CONTENT:", content)
+
+    if not receiver_id or not content:
+        return jsonify({"error": "receiver_id and content are required"}), 400
+
+    new_message = Message(
+        sender_id=sender_id,
+        receiver_id=receiver_id,
+        content=content
+    )
+
+    db.session.add(new_message)
+    db.session.commit()
+
+    return jsonify(new_message.serialize()), 201
+
+
+@api.route("/messages/conversations", methods=["GET"])
+@jwt_required()
+def get_conversations():
+
+    current_user_id = int(get_jwt_identity())
+
+    messages = Message.query.filter(
+        db.or_(
+            Message.sender_id == current_user_id,
+            Message.receiver_id == current_user_id
+        )
+    ).order_by(
+        Message.created_at.desc()
+    ).all()
+
+    conversations = {}
+
+    for message in messages:
+
+        other_user = (
+            message.receiver
+            if message.sender_id == current_user_id
+            else message.sender
+        )
+
+        if other_user.id not in conversations:
+
+            conversations[other_user.id] = {
+                "id": other_user.id,
+                "name": f"{other_user.first_name} {other_user.last_name}",
+                "last_message": message.content,
+                "created_at": message.created_at.isoformat()
+            }
+
+    return jsonify(
+        list(conversations.values())
+    ), 200
+
+
+@api.route("/messages/<int:user_id>", methods=["GET"])
+@jwt_required()
+def get_conversation(user_id):
+
+    current_user_id = int(get_jwt_identity())
+
+    unread_messages = Message.query.filter_by(
+        sender_id=user_id,
+        receiver_id=current_user_id,
+        is_read=False
+    ).all()
+
+    for message in unread_messages:
+        message.is_read = True
+
+    db.session.commit()
+
+    messages = Message.query.filter(
+        db.or_(
+            db.and_(
+                Message.sender_id == current_user_id,
+                Message.receiver_id == user_id
+            ),
+            db.and_(
+                Message.sender_id == user_id,
+                Message.receiver_id == current_user_id
+            )
+        )
+    ).order_by(
+        Message.created_at.asc()
+    ).all()
+
+    return jsonify([
+        message.serialize()
+        for message in messages
+    ]), 200
+
+
+@api.route("/messages/unread-count", methods=["GET"])
+@jwt_required()
+def get_unread_messages_count():
+
+    current_user_id = int(get_jwt_identity())
+
+    unread_count = Message.query.filter_by(
+        receiver_id=current_user_id,
+        is_read=False
+    ).count()
+
+    return jsonify({
+        "unread_count": unread_count
+    }), 200

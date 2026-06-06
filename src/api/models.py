@@ -46,6 +46,13 @@ class User(db.Model):
             "role": self.role,
             "created_at": self.created_at.isoformat() if self.created_at else None
         }
+    
+    def serialize_basic(self):
+        return {
+            "id": self.id,
+            "first_name": self.first_name,
+            "last_name": self.last_name
+        }
 
 
 # ============================================
@@ -325,4 +332,46 @@ class Claim(db.Model):
             "product_name": self.order_item.product.name if self.order_item and self.order_item.product else None,
             "buyer_name": f"{self.buyer.first_name} {self.buyer.last_name}" if self.buyer else None,
             "seller_name": f"{self.seller.first_name} {self.seller.last_name}" if self.seller else None
+        }
+
+# ============================================
+# MESSAGES (USER ↔ USER)
+# ============================================
+
+class Message(db.Model):
+    __tablename__ = "messages"
+
+    id = db.Column(db.Integer, primary_key=True)
+
+    sender_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
+    receiver_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
+
+    content = db.Column(db.Text, nullable=False)
+
+    is_read = db.Column(db.Boolean, default=False)
+
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+    sender = db.relationship(
+        "User",
+        foreign_keys=[sender_id],
+        backref="sent_messages"
+    )
+
+    receiver = db.relationship(
+        "User",
+        foreign_keys=[receiver_id],
+        backref="received_messages"
+    )
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "sender_id": self.sender_id,
+            "receiver_id": self.receiver_id,
+            "content": self.content,
+            "is_read": self.is_read,
+            "created_at": self.created_at.isoformat(),
+            "sender": self.sender.serialize_basic() if self.sender else None,
+            "receiver": self.receiver.serialize_basic() if self.receiver else None
         }

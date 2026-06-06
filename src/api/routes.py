@@ -6,7 +6,7 @@ from flask_jwt_extended import jwt_required
 from flask_jwt_extended import get_jwt_identity
 from flask_jwt_extended import create_access_token
 from flask import Flask, request, jsonify, url_for, Blueprint
-from api.models import db, User, Product, Review, CartItem, Order, OrderItem, SupportTicket, Claim, Favorite
+from api.models import db, User, Product, Review, CartItem, Order, OrderItem, SupportTicket, Claim, Favorite, Message
 from api.utils import generate_sitemap, APIException
 from sqlalchemy import func
 
@@ -1617,3 +1617,93 @@ def create_order_from_session():
             "error": f"Could not create order: {str(e)}"
         }), 500
 
+
+@api.route("/messages", methods=["POST"])
+@jwt_required()
+def send_message():
+    body = request.get_json()
+
+    sender_id = get_jwt_identity()
+    receiver_id = body.get("receiver_id")
+    content = body.get("content")
+
+    if not receiver_id or not content:
+        return jsonify({"error": "receiver_id and content are required"}), 400
+
+    new_message = Message(
+        sender_id=sender_id,
+        receiver_id=receiver_id,
+        content=content
+    )
+
+    db.session.add(new_message)
+    db.session.commit()
+
+    return jsonify(new_message.serialize()), 201
+
+@api.route("/messages/conversations", methods=["GET"])
+@jwt_required()
+def get_conversations():
+    user_id = get_jwt_identity()
+
+    messages = Message.query.filter(
+        db.or_(
+            Message.sender_id == user_id,
+            Message.receiver_id == user_id
+        )
+    ).order_by(Message.created_at.desc()).all()
+
+    return jsonify([message.serialize() for message in messages]), 200
+
+
+@api.route("/messages/<int:user_id>", methods=["GET"])
+@jwt_required()
+def get_conversation(user_id):
+
+    current_user_id = int(get_jwt_identity())
+
+    unread_messages = Message.query.filter_by(
+        sender_id=user_id,
+        receiver_id=current_user_id,
+        is_read=False
+    ).all()
+
+    for message in unread_messages:
+        message.is_read = True
+
+    db.session.commit()
+
+    messages = Message.query.filter(
+        db.or_(
+            db.and_(
+                Message.sender_id == current_user_id,
+                Message.receiver_id == user_id
+            ),
+            db.and_(
+                Message.sender_id == user_id,
+                Message.receiver_id == current_user_id
+            )
+        )
+    ).order_by(
+        Message.created_at.asc()
+    ).all()
+
+    return jsonify([
+        message.serialize()
+        for message in messages
+    ]), 200
+
+@api.route("/messages/unread-count", methods=["GET"])
+@jwt_required()
+def get_unread_messages_count():
+
+    current_user_id = int(get_jwt_identity())
+
+    unread_count = Message.query.filter_by(
+        receiver_id=current_user_id,
+        is_read=False
+    ).count()
+
+    return jsonify({
+        "unread_count": unread_count
+    }), 200

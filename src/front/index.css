@@ -6850,3 +6850,188 @@ header {
         flex-direction: column;
     }
 }
+
+/* ========================================
+   MESSAGES
+======================================== */
+
+.message-user-header {
+  display: flex;
+  align-items: center;
+
+  gap: 1rem;
+
+  margin-bottom: 1.5rem;
+
+  padding-bottom: 1rem;
+
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.message-user-header h3 {
+  margin: 0;
+
+  color: white;
+
+  font-size: 1.4rem;
+
+  font-weight: 700;
+}
+
+.messages-list {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 1rem;
+
+  min-height: 350px;
+
+  max-height: 450px;
+
+  overflow-y: auto;
+
+  padding-right: 0.5rem;
+
+  margin-bottom: 1.5rem;
+}
+
+.message-sent,
+.message-received {
+  max-width: 75%;
+
+  padding: 0.9rem 1rem;
+
+  border-radius: 18px;
+
+  font-size: 0.95rem;
+
+  line-height: 1.5;
+}
+
+.message-sent {
+  align-self: flex-end;
+
+  background: rgba(78, 199, 193, 0.18);
+
+  border: 1px solid rgba(78, 199, 193, 0.3);
+
+  color: white;
+}
+
+.message-received {
+  align-self: flex-start;
+
+  background: rgba(255, 255, 255, 0.06);
+
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
+  color: white;
+}
+
+.message-form {
+  display: flex;
+
+  gap: 1rem;
+
+  align-items: center;
+}
+
+.message-form input {
+  flex: 1;
+
+  height: 52px;
+
+  padding: 0 1rem;
+
+  border-radius: 14px;
+
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
+  background: rgba(255, 255, 255, 0.04);
+
+  color: white;
+
+  outline: none;
+
+  transition: all 0.3s ease;
+}
+
+.message-form input:focus {
+  border-color: rgba(78, 199, 193, 0.4);
+
+  box-shadow: 0 0 0 3px rgba(78, 199, 193, 0.08);
+}
+
+.message-form input::placeholder {
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.message-form button {
+  height: 52px;
+
+  padding: 0 1.5rem;
+
+  border: none;
+
+  border-radius: 14px;
+
+  background: var(--primary);
+
+  color: white;
+
+  font-weight: 600;
+
+  transition: all 0.3s ease;
+}
+
+.message-form button:hover {
+  transform: translateY(-2px);
+
+  box-shadow: 0 10px 25px rgba(255, 107, 74, 0.25);
+}
+
+.seller-info {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  margin: 1.5rem 0;
+
+  font-size: 0.95rem;
+}
+
+.seller-label {
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.seller-name {
+  color: white;
+
+  font-weight: 600;
+}
+
+
+.product-card-seller {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+
+  margin-top: 1rem;
+}
+
+.product-card-seller-name {
+  color: #64748b;
+
+  font-size: 0.9rem;
+
+  font-weight: 600;
+}
+
+.catalog-seller-name {
+  color: #475569;
+
+  font-size: 0.9rem;
+
+  font-weight: 600;
+}

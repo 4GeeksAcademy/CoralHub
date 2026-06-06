@@ -72,6 +72,16 @@ export const DashboardSidebar = ({
                 </button>
 
                 <button
+                    className={`dashboard-link ${activeSection === "messages"
+                            ? "active"
+                            : ""
+                        }`}
+                    onClick={() => setActiveSection("messages")}
+                >
+                    My Messages
+                </button>
+
+                <button
                     className={`dashboard-link ${activeSection === "activity" ? "active" : ""}`}
                     onClick={() => setActiveSection("activity")}
                 >

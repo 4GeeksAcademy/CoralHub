@@ -7098,3 +7098,41 @@ header {
 
   box-shadow: 0 0 20px rgba(78, 199, 193, 0.15);
 }
+
+/* ========================================
+   MESSAGE NOTIFICATIONS
+======================================== */
+
+.dashboard-link-content {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  width: 100%;
+}
+
+.notification-badge {
+  min-width: 22px;
+
+  height: 22px;
+
+  padding: 0 6px;
+
+  border-radius: 999px;
+
+  background: #ff6b4a;
+
+  color: white;
+
+  font-size: 0.75rem;
+
+  font-weight: 700;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+}

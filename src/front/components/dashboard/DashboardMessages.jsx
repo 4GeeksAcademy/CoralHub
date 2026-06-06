@@ -7,6 +7,7 @@ export const DashboardMessages = () => {
     const [messages, setMessages] = useState([]);
 
     const [newMessage, setNewMessage] = useState("");
+    const [conversations, setConversations] = useState([]);
 
     const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
@@ -41,21 +42,57 @@ export const DashboardMessages = () => {
 
     };
 
+    const loadConversations = async () => {
+
+        try {
+
+            const token = localStorage.getItem("token");
+
+            const response = await fetch(
+                `${backendUrl}/api/messages/conversations`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                }
+            );
+
+            const data = await response.json();
+
+            setConversations(data);
+
+            if (data.length > 0 && !selectedUser) {
+
+                setSelectedUser(data[0]);
+
+                loadMessages(data[0].id);
+            }
+
+        } catch (error) {
+
+            console.error(error);
+
+        }
+    };
+
     useEffect(() => {
+
+        loadConversations();
 
         const seller = JSON.parse(
             localStorage.getItem("selectedSeller")
         );
 
-        if (!seller) return;
+        if (seller) {
 
-        setSelectedUser(seller);
+            setSelectedUser(seller);
 
-        loadMessages(seller.id);
+            loadMessages(seller.id);
 
-        localStorage.removeItem(
-            "selectedSeller"
-        );
+            localStorage.removeItem(
+                "selectedSeller"
+            );
+        }
 
     }, []);
 
@@ -123,6 +160,29 @@ export const DashboardMessages = () => {
 
             </div>
 
+            <div className="conversations-list">
+
+                {conversations.map(conversation => (
+
+                    <button
+                        key={conversation.id}
+                        className="conversation-item"
+                        onClick={() => {
+
+                            setSelectedUser(conversation);
+
+                            loadMessages(conversation.id);
+
+                        }}
+                    >
+
+                        {conversation.name}
+
+                    </button>
+
+                ))}
+
+            </div>
             {!selectedUser ? (
 
                 <p>

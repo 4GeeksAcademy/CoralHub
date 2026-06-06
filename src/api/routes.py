@@ -152,6 +152,7 @@ def create_product():
         db.session.rollback()
         return jsonify({"error": f"Error creating product: {str(e)}"}), 500
 
+
 @api.route('/products/<int:product_id>', methods=['PUT'])
 @jwt_required()
 def update_product(product_id):
@@ -177,6 +178,7 @@ def update_product(product_id):
     db.session.commit()
 
     return jsonify(product.serialize()), 200
+
 
 @api.route('/products/<int:product_id>', methods=['DELETE'])
 @jwt_required()
@@ -442,7 +444,7 @@ def clear_cart():
 def create_checkout_session():
     current_user_id = get_jwt_identity()
     body = request.get_json() or {}
-   
+
     if not stripe.api_key:
         return jsonify({
             "error": f"Stripe secret key is missing. Looking for .env here: {BASE_DIR / '.env'}"
@@ -619,7 +621,7 @@ def stripe_webhook():
         event = stripe.Webhook.construct_event(
             payload, sig_header, webhook_secret
         )
-       
+
     except ValueError:
         return jsonify({"error": "Invalid payload"}), 400
     except stripe.error.SignatureVerificationError:
@@ -732,6 +734,7 @@ def get_my_orders():
 # ============================================
 # MIS PRODUCTOS (Historial del usuario)
 # ============================================
+
 
 @api.route("/my-products", methods=["GET"])
 @jwt_required()
@@ -1409,6 +1412,7 @@ def top_favorites():
 
     return jsonify(response), 200
 
+
 @api.route("/favorites/all", methods=["GET"])
 def all_favorites():
     results = db.session.query(
@@ -1530,8 +1534,6 @@ def reset_password():
     return jsonify({"message": "Contraseña cambiada con éxito. Redirigiendo al login..."}), 200
 
 
-
-
 @api.route('/create-order-from-session', methods=['POST'])
 @jwt_required()
 def create_order_from_session():
@@ -1627,6 +1629,10 @@ def send_message():
     receiver_id = body.get("receiver_id")
     content = body.get("content")
 
+    print("SENDER:", sender_id)
+    print("RECEIVER:", receiver_id)
+    print("CONTENT:", content)
+
     if not receiver_id or not content:
         return jsonify({"error": "receiver_id and content are required"}), 400
 
@@ -1641,19 +1647,44 @@ def send_message():
 
     return jsonify(new_message.serialize()), 201
 
+
 @api.route("/messages/conversations", methods=["GET"])
 @jwt_required()
 def get_conversations():
-    user_id = get_jwt_identity()
+
+    current_user_id = int(get_jwt_identity())
 
     messages = Message.query.filter(
         db.or_(
-            Message.sender_id == user_id,
-            Message.receiver_id == user_id
+            Message.sender_id == current_user_id,
+            Message.receiver_id == current_user_id
         )
-    ).order_by(Message.created_at.desc()).all()
+    ).order_by(
+        Message.created_at.desc()
+    ).all()
 
-    return jsonify([message.serialize() for message in messages]), 200
+    conversations = {}
+
+    for message in messages:
+
+        other_user = (
+            message.receiver
+            if message.sender_id == current_user_id
+            else message.sender
+        )
+
+        if other_user.id not in conversations:
+
+            conversations[other_user.id] = {
+                "id": other_user.id,
+                "name": f"{other_user.first_name} {other_user.last_name}",
+                "last_message": message.content,
+                "created_at": message.created_at.isoformat()
+            }
+
+    return jsonify(
+        list(conversations.values())
+    ), 200
 
 
 @api.route("/messages/<int:user_id>", methods=["GET"])
@@ -1692,6 +1723,7 @@ def get_conversation(user_id):
         message.serialize()
         for message in messages
     ]), 200
+
 
 @api.route("/messages/unread-count", methods=["GET"])
 @jwt_required()

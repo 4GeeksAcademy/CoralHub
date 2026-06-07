@@ -44,6 +44,8 @@ import { Welcome } from "./pages/Welcome.jsx";
 import { FavoritesPage } from "./pages/FavoritesPage.jsx";
 import { Rewards } from "./pages/Rewards.jsx";
 import { EditProduct } from "./pages/EditProduct.jsx";
+import { AdminOrders } from "./pages/AdminOrders";
+
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
@@ -95,6 +97,10 @@ export const router = createBrowserRouter(
 
       <Route path="/forgot-password" element={<ForgotPassword />} />
       <Route path="/reset-password" element={<ResetPassword />} />
+      <Route path="/admin/orders" element={<AdminOrders />} />
+      <Route path="/admin/dashboard" element={<AdminDashboard />} />
+      <Route path="/admin/users" element={<AdminUsers />} />
+      
 
     </Route>
   )

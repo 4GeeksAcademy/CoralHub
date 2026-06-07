@@ -1213,7 +1213,7 @@ def get_admin_stats():
 
     total_users = User.query.count()
     total_products = Product.query.count()
-    total_orders = 0
+    total_orders = Order.query.count()
 
     return jsonify({
         "users_count": total_users,
@@ -1738,4 +1738,74 @@ def get_unread_messages_count():
 
     return jsonify({
         "unread_count": unread_count
+    }), 200
+
+
+@api.route('/admin/orders', methods=['GET'])
+@jwt_required()
+def admin_get_orders():
+
+    current_user_id = int(get_jwt_identity())
+
+    admin_user = User.query.get(current_user_id)
+
+    if not admin_user or admin_user.role != 'admin':
+        return jsonify({
+            "error": "Access denied. Admins only."
+        }), 403
+
+    orders = Order.query.order_by(
+        Order.created_at.desc()
+    ).all()
+
+    return jsonify([
+        order.serialize()
+        for order in orders
+    ]), 200
+
+
+@api.route('/admin/orders/<int:order_id>/status', methods=['PUT'])
+@jwt_required()
+def admin_update_order_status(order_id):
+
+    current_user_id = int(get_jwt_identity())
+
+    admin_user = User.query.get(current_user_id)
+
+    if not admin_user or admin_user.role != 'admin':
+        return jsonify({
+            "error": "Access denied. Admins only."
+        }), 403
+
+    order = Order.query.get(order_id)
+
+    if not order:
+        return jsonify({
+            "error": "Order not found"
+        }), 404
+
+    body = request.get_json() or {}
+
+    new_status = body.get("order_status")
+
+    valid_statuses = [
+        "pending",
+        "paid",
+        "shipped",
+        "delivered",
+        "cancelled"
+    ]
+
+    if new_status not in valid_statuses:
+        return jsonify({
+            "error": "Invalid status"
+        }), 400
+
+    order.order_status = new_status
+
+    db.session.commit()
+
+    return jsonify({
+        "message": "Order updated successfully",
+        "order": order.serialize()
     }), 200

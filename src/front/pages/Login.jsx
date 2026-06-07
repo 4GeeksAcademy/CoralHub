@@ -1,13 +1,9 @@
 import React, { useState } from "react";
-// 1. Añadimos Link a las importaciones
 import { useLocation, useNavigate, Link } from "react-router-dom";
 import {
     successAlert,
     errorAlert
 } from "../utils/alerts";
-
-// Al principio de Login.jsx (si no está importado aún):
-
 
 export const Login = () => {
 
@@ -17,7 +13,6 @@ export const Login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
-
     const location = useLocation();
 
     const from = location.state?.from || "/";
@@ -25,6 +20,30 @@ export const Login = () => {
     // LOGIN
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        // ADMIN DEMO LOGIN
+        // Esto permite probar la vista de administrador sin usar consola
+        if (
+            email.toLowerCase() === "admin@gmail.com" &&
+            password === "admin123"
+        ) {
+            const adminUser = {
+                first_name: "Juan",
+                email: "admin@gmail.com",
+                role: "admin"
+            };
+
+            localStorage.setItem("token", "admin-test-token");
+            localStorage.setItem("user", JSON.stringify(adminUser));
+
+            await successAlert(
+                "Welcome Admin",
+                "You are logged in as administrator."
+            );
+
+            navigate("/welcome");
+            return;
+        }
 
         try {
             const response = await fetch(
@@ -66,7 +85,7 @@ export const Login = () => {
 
                 errorAlert(
                     "Login Failed",
-                    data.msg
+                    data.msg || "Invalid email or password"
                 );
             }
 
@@ -190,6 +209,11 @@ export const Login = () => {
                     >
                         Sign Up
                     </Link>
+                </p>
+
+                {/* ADMIN DEMO INFO */}
+                <p className="text-center text-secondary mt-3 mb-0" style={{ fontSize: "13px" }}>
+                    Admin demo: admin@gmail.com / admin123
                 </p>
 
             </div>

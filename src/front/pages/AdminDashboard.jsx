@@ -133,6 +133,7 @@ export const AdminDashboard = () => {
                             color: "#ffffff"
                         }}
                     >
+
                         {/* SECCIÓN PERFIL DEL USUARIO (AVATAR) */}
                         <div className="text-center mb-4 pt-2">
                             <div
@@ -204,6 +205,20 @@ export const AdminDashboard = () => {
                                     style={{ backgroundColor: "transparent", color: "#b0c1d1", borderRadius: "12px" }}
                                 >
                                     <i className="fa-solid fa-users"></i> Manage Users
+                                </button>
+                            </li>
+                            <li className="nav-item">
+                                <button
+                                    onClick={() => navigate("/admin/orders")}
+                                    className="nav-link w-100 text-start d-flex align-items-center gap-3 py-2.5 px-3 border-0"
+                                    style={{
+                                        backgroundColor: "transparent",
+                                        color: "#b0c1d1",
+                                        borderRadius: "12px"
+                                    }}
+                                >
+                                    <i className="fa-solid fa-box"></i>
+                                    Orders
                                 </button>
                             </li>
                         </ul>

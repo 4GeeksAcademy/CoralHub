@@ -1,5 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import {
+    successAlert,
+    errorAlert,
+    confirmAlert
+} from "../utils/alerts";
 
 export const AdminDashboard = () => {
     const navigate = useNavigate();
@@ -66,15 +71,25 @@ export const AdminDashboard = () => {
 
             if (!res.ok) throw new Error("Failed to update user role");
             setUsers(users.map(u => u.id === userId ? { ...u, role: newRole } : u));
-            alert("User role updated successfully!");
+            successAlert(
+                "Role Updated",
+                "User role updated successfully."
+            );
         } catch (err) {
-            alert(err.message);
+            errorAlert(
+                "Update Failed",
+                err.message
+            );
         }
     };
 
     const handleDeleteUser = async (userId, userEmail) => {
-        const confirmDelete = window.confirm(`Are you sure you want to permanently delete user: ${userEmail}?`);
-        if (!confirmDelete) return;
+        const result = await confirmAlert(
+            "Delete User",
+            `Are you sure you want to permanently delete ${userEmail}?`
+        );
+
+        if (!result.isConfirmed) return;
 
         try {
             const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/admin/users/${userId}`, {
@@ -87,9 +102,15 @@ export const AdminDashboard = () => {
 
             setUsers(users.filter(u => u.id !== userId));
             setStats(prev => ({ ...prev, users_count: prev.users_count - 1 }));
-            alert("User deleted successfully!");
+            successAlert(
+                "User Deleted",
+                "User deleted successfully."
+            );
         } catch (err) {
-            alert(err.message);
+            errorAlert(
+                "Delete Failed",
+                err.message
+            );
         }
     };
 

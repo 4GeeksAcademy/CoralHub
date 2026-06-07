@@ -396,10 +396,59 @@ export const ProductDetail = () => {
                             </div>
                             <h2 className="product-price">${product.price}</h2>
                             <div className="stock-row">
-                                <span>Stock: {product.stock} available</span>
-                                <span className="status-badge">● Active</span>
+
+                                {product.stock > 0 ? (
+                                    <>
+                                        <span
+                                            style={{
+                                                color: "#198754",
+                                                fontWeight: "600"
+                                            }}
+                                        >
+                                            Stock: {product.stock} available
+                                        </span>
+
+                                        <span
+                                            className="status-badge"
+                                            style={{
+                                                color: "#198754"
+                                            }}
+                                        >
+                                            ● In Stock
+                                        </span>
+                                    </>
+                                ) : (
+                                    <>
+                                        <span
+                                            style={{
+                                                color: "#dc3545",
+                                                fontWeight: "700"
+                                            }}
+                                        >
+                                            Stock: 0 available
+                                        </span>
+
+                                        <span
+                                            className="status-badge"
+                                            style={{
+                                                color: "#dc3545"
+                                            }}
+                                        >
+                                            ● Out of Stock
+                                        </span>
+                                    </>
+                                )}
+
                             </div>
                             <p className="product-description">{product.description}</p>
+                            {product.stock === 0 && (
+                                <div
+                                    className="alert alert-danger mt-3"
+                                    role="alert"
+                                >
+                                    This product is currently out of stock and cannot be added to the cart.
+                                </div>
+                            )}
 
                             <div className="seller-info">
                                 <span className="seller-label">

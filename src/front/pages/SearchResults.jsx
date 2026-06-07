@@ -1,6 +1,11 @@
 import { useEffect, useState } from "react";
 import { useSearchParams, Link } from "react-router-dom";
 import { FavoriteButton } from "../components/FavoriteButton";
+import {
+    successAlert,
+    errorAlert,
+    warningAlert
+} from "../utils/alerts";
 
 export const SearchResults = () => {
 

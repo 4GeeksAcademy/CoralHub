@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-
+import {
+    successAlert,
+    errorAlert
+} from "../utils/alerts";
 
 export const Signup = () => {
 
@@ -54,19 +57,30 @@ export const Signup = () => {
 
             if (response.ok) {
 
-                alert("User created successfully");
+                await successAlert(
+                    "Account Created",
+                    "Your account has been created successfully."
+                );
+
+                navigate("/login");
                 navigate("/login");
 
             } else {
 
-                alert(data.message);
+                errorAlert(
+                    "Registration Failed",
+                    data.message
+                );
 
             }
 
         } catch (error) {
 
             console.log(error);
-            alert("Server error");
+            errorAlert(
+                "Server Error",
+                "Something went wrong. Please try again later."
+            );
 
         }
     };

@@ -1,5 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import {
+    successAlert,
+    errorAlert,
+    warningAlert
+} from "../utils/alerts";
 
 export const AdminTickets = () => {
     const navigate = useNavigate();
@@ -49,7 +54,10 @@ export const AdminTickets = () => {
         const responseText = responses[ticketId];
 
         if (!responseText || !responseText.trim()) {
-            alert("Please write a response");
+            warningAlert(
+                "Response Required",
+                "Please write a response."
+            );
             return;
         }
 
@@ -68,14 +76,23 @@ export const AdminTickets = () => {
             if (res.ok) {
                 setResponses({ ...responses, [ticketId]: "" });
                 fetchTickets();
-                alert("Response sent!");
+                successAlert(
+                    "Response Sent",
+                    "Your response has been sent successfully."
+                );
             } else {
                 const data = await res.json();
-                alert(data.error || "Error sending response");
+                errorAlert(
+                    "Error",
+                    data.error || "Error sending response."
+                );
             }
         } catch (err) {
             console.error(err);
-            alert("Connection error");
+            alerrorAlert(
+                "Connection Error",
+                "Could not connect to the server."
+            );
         } finally {
             setRespondingId(null);
         }

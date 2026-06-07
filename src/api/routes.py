@@ -1,6 +1,7 @@
 """
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
+from sqlalchemy import or_
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_jwt_extended import jwt_required
 from flask_jwt_extended import get_jwt_identity
@@ -96,10 +97,18 @@ def get_products():
 
 @api.route('/products/search', methods=['GET'])
 def search_products():
-    query = request.args.get("q", "")
+
+    query = request.args.get("q", "").strip()
+
     products = Product.query.filter(
-        Product.name.ilike(f"%{query}%")
+        or_(
+            Product.name.ilike(f"%{query}%"),
+            Product.description.ilike(f"%{query}%"),
+            Product.category.ilike(f"%{query}%")
+        ),
+        Product.status == "active"
     ).all()
+    
     return jsonify([product.serialize() for product in products]), 200
 
 

@@ -19,13 +19,17 @@ export const SearchResults = () => {
 
     const [favoriteIds, setFavoriteIds] = useState([]);
 
+    const [selectedCategories, setSelectedCategories] = useState([]);
+
+    const [maxPrice, setMaxPrice] = useState(5000);
+
+    const [sortBy, setSortBy] = useState("relevance");
+
     useEffect(() => {
 
         fetch(`${import.meta.env.VITE_BACKEND_URL}/api/products/search?q=${query}`)
-
-            .then((response) => response.json())
-
-            .then((data) => {
+                .then((response) => response.json())
+                .then((data) => {
 
                 setProducts(data);
 
@@ -111,6 +115,48 @@ export const SearchResults = () => {
         }
     };
 
+    const handleCategoryChange = (category) => {
+        setSelectedCategories((prev) =>
+            prev.includes(category)
+                ? prev.filter((item) => item !== category)
+                : [...prev, category]
+        );
+    };
+    const categories = [...new Set(products.map((product) => product.category))];
+
+    let filteredProducts = [...products];
+
+    if (selectedCategories.length > 0) {
+        filteredProducts = filteredProducts.filter((product) =>
+            selectedCategories.includes(product.category)
+        );
+    }
+
+    filteredProducts = filteredProducts.filter((product) =>
+        Number(product.price) <= maxPrice
+    );
+
+    switch (sortBy) {
+        case "price-low":
+            filteredProducts.sort((a, b) => Number(a.price) - Number(b.price));
+            break;
+
+        case "price-high":
+            filteredProducts.sort((a, b) => Number(b.price) - Number(a.price));
+            break;
+
+        case "newest":
+            filteredProducts.sort(
+                (a, b) => new Date(b.created_at) - new Date(a.created_at)
+            );
+            break;
+
+        default:
+            break;
+    }
+
+    console.log(categories);
+
     return (
 
         <div className="container py-5 text-white">
@@ -130,19 +176,21 @@ export const SearchResults = () => {
 
                     <p className="search-page-subtitle">
 
-                        {products.length} result found
+                        {filteredProducts.length} result found
 
                     </p>
 
                 </div>
 
-                <select className="search-sort-select">
-
-                    <option>Sort by: Relevance</option>
-                    <option>Newest</option>
-                    <option>Price: Low to High</option>
-                    <option>Price: High to Low</option>
-
+                <select
+                    className="search-sort-select"
+                    value={sortBy}
+                    onChange={(e) => setSortBy(e.target.value)}
+                >
+                    <option value="relevance">Sort by: Relevance</option>
+                    <option value="newest">Newest</option>
+                    <option value="price-low">Price: Low to High</option>
+                    <option value="price-high">Price: High to Low</option>
                 </select>
 
             </div>
@@ -165,10 +213,15 @@ export const SearchResults = () => {
 
                             </h2>
 
-                            <button className="clear-filters-btn">
-
+                            <button
+                                className="clear-filters-btn"
+                                onClick={() => {
+                                    setSelectedCategories([]);
+                                    setMaxPrice(5000);
+                                    setSortBy("relevance");
+                                }}
+                            >
                                 Clear all
-
                             </button>
 
                         </div>
@@ -186,33 +239,20 @@ export const SearchResults = () => {
 
                             <div className="filter-options">
 
-                                <label className="filter-option">
+                                {categories.map((category) => (
+                                    <label
+                                        className="filter-option"
+                                        key={category}
+                                    >
+                                        <input
+                                            type="checkbox"
+                                            checked={selectedCategories.includes(category)}
+                                            onChange={() => handleCategoryChange(category)}
+                                        />
 
-                                    <input type="checkbox" />
-                                    <span>Corals</span>
-
-                                </label>
-
-                                <label className="filter-option">
-
-                                    <input type="checkbox" />
-                                    <span>Equipments</span>
-
-                                </label>
-
-                                <label className="filter-option">
-
-                                    <input type="checkbox" />
-                                    <span>Used</span>
-
-                                </label>
-
-                                <label className="filter-option">
-
-                                    <input type="checkbox" />
-                                    <span>Lights</span>
-
-                                </label>
+                                        <span>{category}</span>
+                                    </label>
+                                ))}
 
                             </div>
 
@@ -231,13 +271,17 @@ export const SearchResults = () => {
 
                             <input
                                 type="range"
+                                min="0"
+                                max="5000"
+                                value={maxPrice}
+                                onChange={(e) => setMaxPrice(Number(e.target.value))}
                                 className="form-range custom-price-range"
                             />
 
                             <div className="d-flex justify-content-between price-labels">
 
                                 <span>$0</span>
-                                <span>$500+</span>
+                                <span>${maxPrice}</span>
 
                             </div>
 
@@ -257,9 +301,9 @@ export const SearchResults = () => {
 
                         {
 
-                            products.length > 0 ? (
+                            filteredProducts.length > 0 ? (
 
-                                products.map((product) => (
+                                filteredProducts.map((product) => (
 
                                     <div
                                         className="col-md-6 col-xl-4"

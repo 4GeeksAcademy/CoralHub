@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { FavoriteButton } from "../components/FavoriteButton";
+import { warningAlert } from "../utils/alerts";
 
 export const Catalog = () => {
     const [products, setProducts] = useState([]);
@@ -123,8 +124,10 @@ export const Catalog = () => {
 
         if (!token) {
 
-            alert("You need to sign in first");
-
+            warningAlert(
+                "Sign In Required",
+                "You need to sign in first."
+            );
             return;
         }
 

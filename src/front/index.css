@@ -1830,6 +1830,21 @@ h3 {
   position: relative;
 }
 
+.community-benefits {
+  display: flex;
+
+  justify-content: center;
+
+  gap: 2rem;
+
+  margin-top: 2rem; /* antes 1rem */
+
+  color: rgba(255, 255, 255, 0.65);
+
+  font-size: 0.9rem;
+
+  flex-wrap: wrap;
+}
 /* CARD */
 
 .community-card {
@@ -1965,6 +1980,101 @@ h3 {
   height: 120px;
 
   pointer-events: none;
+}
+.community-card {
+  text-align: center;
+}
+
+.community-card .row {
+  justify-content: center;
+}
+
+.community-card .col-lg-8 {
+  display: flex;
+  justify-content: center;
+}
+.community-content {
+  max-width: 900px;
+
+  margin: 0 auto;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  text-align: center;
+}
+
+.community-icon {
+  margin-bottom: 2rem;
+}
+
+.community-form {
+  display: flex;
+
+  justify-content: center;
+
+  align-items: center;
+
+  gap: 1rem;
+
+  width: 100%;
+
+  margin-top: 2rem;
+
+  flex-wrap: wrap;
+}
+
+.community-note {
+  display: block;
+
+  margin-top: 1rem;
+
+  text-align: center;
+
+  color: rgba(255, 255, 255, 0.55);
+
+  font-size: 0.9rem;
+}
+
+.community-input {
+  width: 380px;
+
+  height: 60px;
+
+  padding: 0 1.5rem;
+
+  border-radius: 18px;
+
+  border: 1px solid rgba(78, 199, 193, 0.25);
+
+  background: rgba(255, 255, 255, 0.05);
+
+  color: white;
+
+  backdrop-filter: blur(10px);
+
+  transition: all 0.3s ease;
+}
+
+.community-input:focus {
+  border-color: #4ec7c1;
+
+  box-shadow: 0 0 20px rgba(78, 199, 193, 0.25);
+
+  outline: none;
+}
+
+.community-btn {
+  min-width: 220px;
+}
+
+.community-text {
+  max-width: 650px;
+
+  margin: 0 auto;
 }
 
 /* RESPONSIVE */

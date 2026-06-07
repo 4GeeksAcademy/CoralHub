@@ -36,54 +36,70 @@ export const Community = () => {
     return (
         <section className="community-section py-5 position-relative overflow-hidden">
             <div className="container py-5">
+
                 <div className="community-card">
-                    <div className="row align-items-center g-5">
 
-                        <div className="col-lg-8">
-                            <div className="d-flex flex-column flex-md-row align-items-center align-items-md-start gap-4">
-                                <div className="community-icon">
-                                    <span>👥</span>
-                                </div>
+                    <div className="community-content">
 
-                                <div className="text-center text-md-start">
-                                    <h2 className="community-title mb-3">
-                                        Join the <span>Reef</span> Community
-                                    </h2>
-
-                                    <p className="community-text mb-3">
-                                        Connect with hobbyists, share knowledge,
-                                        and grow the reef together.
-                                    </p>
-
-                                    <form onSubmit={handleJoinCommunity} className="community-form">
-                                        <input
-                                            type="email"
-                                            placeholder="Enter your email"
-                                            value={email}
-                                            onChange={(e) => setEmail(e.target.value)}
-                                            required
-                                            className="community-input"
-                                        />
-
-                                        <button type="submit" className="community-btn">
-                                            Join CoralHub →
-                                        </button>
-                                    </form>
-
-                                    {message && (
-                                        <p className="community-message mt-3">
-                                            {message}
-                                        </p>
-                                    )}
-                                </div>
-                            </div>
+                        <div className="community-icon">
+                            <span>👥</span>
                         </div>
 
+                        <h2 className="community-title">
+                            Join the <span>Reef</span> Community
+                        </h2>
+
+                        <p className="community-text">
+                            Connect with hobbyists, share knowledge,
+                            and grow the reef together.
+                        </p>
+
+                        <form
+                            onSubmit={handleJoinCommunity}
+                            className="community-form"
+                        >
+
+                            <input
+                                type="email"
+                                placeholder="Enter your email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                required
+                                className="community-input"
+                            />
+
+                            <button
+                                type="submit"
+                                className="community-btn"
+                            >
+                                Join CoralHub →
+                            </button>
+
+                        </form>
+
+                        <div className="community-benefits">
+                            <span>✓ No spam</span>
+                            <span>✓ Reef tips</span>
+                            <span>✓ Community updates</span>
+                        </div>
+
+                        {message && (
+                            <p className="community-message">
+                                {message}
+                            </p>
+                        )}
+
                     </div>
+
                 </div>
+
             </div>
 
-            <svg className="community-wave" viewBox="0 0 1440 120" preserveAspectRatio="none">
+            <svg
+                className="community-wave"
+                viewBox="0 0 1440 120"
+                preserveAspectRatio="none"
+            >
                 <path
                     d="M0 62C170 95 330 35 500 42C680 50 760 105 940 76C1090 52 1235 28 1440 66"
                     stroke="#4EC7C1"
@@ -93,6 +109,7 @@ export const Community = () => {
                     opacity="0.8"
                 />
             </svg>
+
         </section>
     );
 };

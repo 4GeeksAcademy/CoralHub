@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Pencil, Trash2 } from "lucide-react";
+import {
+    confirmAlert,
+    errorAlert
+} from "../../utils/alerts";
 
 export const DashboardProducts = ({ setActiveSection }) => {
 
@@ -97,11 +101,12 @@ export const DashboardProducts = ({ setActiveSection }) => {
 
     const handleDelete = async (productId) => {
 
-        const confirmed = window.confirm(
+        const result = await confirmAlert(
+            "Delete Product",
             "Are you sure you want to delete this product?"
         );
 
-        if (!confirmed) return;
+        if (!result.isConfirmed) return;
 
         try {
 
@@ -121,14 +126,22 @@ export const DashboardProducts = ({ setActiveSection }) => {
                 throw new Error("Could not delete product");
             }
 
-            setProducts(products.filter(product => product.id !== productId));
+            setProducts(
+                products.filter(
+                    product => product.id !== productId
+                )
+            );
 
         } catch (error) {
 
             console.error(error);
+
+            errorAlert(
+                "Delete Failed",
+                "Could not delete product."
+            );
         }
     };
-
 
     return (
 

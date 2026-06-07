@@ -21,6 +21,7 @@ sqlalchemy = "*"
 cloudinary = "*"
 stripe = "*"
 python-dotenv = "*"
+requests = "*"
 
 [requires]
 python_version = "3.13"

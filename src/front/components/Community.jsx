@@ -1,82 +1,98 @@
-import React from "react";
+import React, { useState } from "react";
 
 export const Community = () => {
+    const [email, setEmail] = useState("");
+    const [message, setMessage] = useState("");
 
-	return (
+    const handleJoinCommunity = async (e) => {
+        e.preventDefault();
 
-		<section className="community-section py-5 position-relative overflow-hidden">
+        try {
+            const response = await fetch(
+                `${import.meta.env.VITE_BACKEND_URL}/api/community/subscribe`,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ email })
+                }
+            );
 
-			<div className="container py-5">
+            const data = await response.json();
 
-				<div className="community-card">
+            if (!response.ok) {
+                throw new Error(data.error || "Subscription failed");
+            }
 
-					<div className="row align-items-center g-5">
+            setMessage("Welcome to the Reef Community!");
+            setEmail("");
 
-						{/* LEFT SIDE */}
+        } catch (error) {
+            setMessage(error.message);
+        }
+    };
 
-						<div className="col-lg-8">
+    return (
+        <section className="community-section py-5 position-relative overflow-hidden">
+            <div className="container py-5">
+                <div className="community-card">
+                    <div className="row align-items-center g-5">
 
-							<div className="d-flex flex-column flex-md-row align-items-center align-items-md-start gap-4">
+                        <div className="col-lg-8">
+                            <div className="d-flex flex-column flex-md-row align-items-center align-items-md-start gap-4">
+                                <div className="community-icon">
+                                    <span>👥</span>
+                                </div>
 
-								<div className="community-icon">
+                                <div className="text-center text-md-start">
+                                    <h2 className="community-title mb-3">
+                                        Join the <span>Reef</span> Community
+                                    </h2>
 
-									<span>👥</span>
+                                    <p className="community-text mb-3">
+                                        Connect with hobbyists, share knowledge,
+                                        and grow the reef together.
+                                    </p>
 
-								</div>
+                                    <form onSubmit={handleJoinCommunity} className="community-form">
+                                        <input
+                                            type="email"
+                                            placeholder="Enter your email"
+                                            value={email}
+                                            onChange={(e) => setEmail(e.target.value)}
+                                            required
+                                            className="community-input"
+                                        />
 
-								<div className="text-center text-md-start">
+                                        <button type="submit" className="community-btn">
+                                            Join CoralHub →
+                                        </button>
+                                    </form>
 
-									<h2 className="community-title mb-3">
-										Join the <span>Reef</span> Community
-									</h2>
+                                    {message && (
+                                        <p className="community-message mt-3">
+                                            {message}
+                                        </p>
+                                    )}
+                                </div>
+                            </div>
+                        </div>
 
-									<p className="community-text mb-0">
-										Connect with hobbyists, share knowledge,
-										and grow the reef together.
-									</p>
+                    </div>
+                </div>
+            </div>
 
-								</div>
-
-							</div>
-
-						</div>
-
-						{/* RIGHT SIDE */}
-
-						<div className="col-lg-4 text-center text-lg-end">
-
-							<button className="community-btn">
-								Join CoralHub →
-							</button>
-
-						</div>
-
-					</div>
-
-				</div>
-
-			</div>
-
-			{/* WAVE */}
-
-			<svg
-				className="community-wave"
-				viewBox="0 0 1440 120"
-				preserveAspectRatio="none"
-			>
-
-				<path
-					d="M0 62C170 95 330 35 500 42C680 50 760 105 940 76C1090 52 1235 28 1440 66"
-					stroke="#4EC7C1"
-					strokeWidth="1.5"
-					strokeLinecap="round"
-					fill="none"
-					opacity="0.8"
-				/>
-
-			</svg>
-
-		</section>
-
-	);
+            <svg className="community-wave" viewBox="0 0 1440 120" preserveAspectRatio="none">
+                <path
+                    d="M0 62C170 95 330 35 500 42C680 50 760 105 940 76C1090 52 1235 28 1440 66"
+                    stroke="#4EC7C1"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    fill="none"
+                    opacity="0.8"
+                />
+            </svg>
+        </section>
+    );
 };

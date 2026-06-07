@@ -1928,6 +1928,29 @@ h3 {
   box-shadow: 0 0 30px rgba(255, 122, 89, 0.35);
 }
 
+.community-form {
+  display: flex;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+}
+
+.community-input {
+  padding: 0.9rem 1rem;
+  border-radius: 999px;
+  border: 1px solid rgba(78, 199, 193, 0.35);
+  background: rgba(255, 255, 255, 0.08);
+  color: white;
+  outline: none;
+}
+
+.community-input::placeholder {
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.community-message {
+  color: #4EC7C1;
+  font-weight: 500;
+}
 /* WAVE */
 
 .community-wave {

@@ -6,6 +6,7 @@ from flask_jwt_extended import jwt_required
 from flask_jwt_extended import get_jwt_identity
 from flask_jwt_extended import create_access_token
 from flask import Flask, request, jsonify, url_for, Blueprint
+import requests
 from api.models import db, User, Product, Review, CartItem, Order, OrderItem, SupportTicket, Claim, Favorite, Message
 from api.utils import generate_sitemap, APIException
 from sqlalchemy import func
@@ -1809,3 +1810,48 @@ def admin_update_order_status(order_id):
         "message": "Order updated successfully",
         "order": order.serialize()
     }), 200
+
+# =================
+# EMAIL MARKETING
+# =================
+
+@api.route("/community/subscribe", methods=["POST"])
+def subscribe_community():
+    body = request.get_json()
+    email = body.get("email")
+
+    if not email:
+        return jsonify({"error": "Email is required"}), 400
+
+    access_token = os.getenv("CONSTANT_CONTACT_ACCESS_TOKEN")
+    list_id = os.getenv("CONSTANT_CONTACT_LIST_ID")
+
+    url = "https://api.cc.email/v3/contacts"
+
+    payload = {
+        "email_address": {
+            "address": email,
+            "permission_to_send": "implicit"
+        },
+        "list_memberships": [
+            list_id
+        ],
+        "create_source": "Account"
+    }
+
+    headers = {
+        "Authorization": f"Bearer {access_token}",
+        "Content-Type": "application/json"
+    }
+
+    response = requests.post(url, json=payload, headers=headers)
+
+    if response.status_code not in [200, 201]:
+        return jsonify({
+            "error": "Could not subscribe contact",
+            "details": response.json()
+        }), response.status_code
+
+    return jsonify({
+        "message": "Contact subscribed successfully"
+    }), 201

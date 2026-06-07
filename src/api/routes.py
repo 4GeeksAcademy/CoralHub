@@ -1208,19 +1208,23 @@ def get_admin_stats():
     current_user_id = int(get_jwt_identity())
 
     user = User.query.get(current_user_id)
+
     if not user or user.role != 'admin':
-        return jsonify({"error": "Access denied. Admins only."}), 403
+        return jsonify({
+            "error": "Access denied. Admins only."
+        }), 403
 
     total_users = User.query.count()
     total_products = Product.query.count()
     total_orders = Order.query.count()
+    total_tickets = SupportTicket.query.count()
 
     return jsonify({
         "users_count": total_users,
         "products_count": total_products,
-        "orders_count": total_orders
+        "orders_count": total_orders,
+        "tickets_count": total_tickets
     }), 200
-
 
 @api.route('/admin/users', methods=['GET'])
 @jwt_required()

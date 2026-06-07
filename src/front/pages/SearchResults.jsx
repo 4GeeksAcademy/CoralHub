@@ -1,6 +1,11 @@
 import { useEffect, useState } from "react";
 import { useSearchParams, Link } from "react-router-dom";
 import { FavoriteButton } from "../components/FavoriteButton";
+import {
+    successAlert,
+    errorAlert,
+    warningAlert
+} from "../utils/alerts";
 
 export const SearchResults = () => {
 
@@ -64,7 +69,10 @@ export const SearchResults = () => {
         const token = localStorage.getItem("token");
 
         if (!token) {
-            alert("You need to sign in first");
+            warningAlert(
+                "Sign In Required",
+                "You need to sign in first."
+            );
             return;
         }
 

@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import {
+    successAlert
+} from "../utils/alerts";
 
 export const MyClaims = () => {
     const navigate = useNavigate();
@@ -117,8 +120,10 @@ export const MyClaims = () => {
             setSubject("");
             setMessage("");
             fetchData();
-            alert("Your claim was sent to the seller! 📨");
-        } catch (err) {
+            await successAlert(
+                "Claim Sent",
+                "Your claim was sent to the seller successfully."
+            );
             console.error(err);
             setError("Connection error");
         } finally {

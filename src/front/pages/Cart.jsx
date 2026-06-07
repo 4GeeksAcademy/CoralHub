@@ -1,6 +1,11 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
+import {
+    warningAlert,
+    errorAlert,
+    confirmAlert
+} from "../utils/alerts";
 
 const SHIPPING_COST = 10;
 
@@ -42,14 +47,19 @@ export const Cart = () => {
         });
     };
 
-    const handleDecreaseQuantity = (item) => {
+    const handleDecreaseQuantity = async (item) => {
         if (item.quantity > 1) {
             dispatch({
                 type: "update_quantity",
                 payload: { id: item.id, quantity: item.quantity - 1 }
             });
         } else {
-            if (confirm(`Do you want to remove ${item.name} from your cart?`)) {
+            const result = await confirmAlert(
+                "Remove Item",
+                `Do you want to remove ${item.name} from your cart?`
+            );
+
+            if (result.isConfirmed) {
                 handleRemoveItem(item.id);
             }
         }
@@ -76,7 +86,10 @@ export const Cart = () => {
 
         for (const field of required) {
             if (!shippingAddress[field]?.trim()) {
-                alert(`Please complete: ${field.replace("_", " ")}`);
+                warningAlert(
+                    "Missing Information",
+                    `Please complete: ${field.replace("_", " ")}`
+                );
                 return false;
             }
         }
@@ -88,13 +101,19 @@ export const Cart = () => {
         const token = localStorage.getItem("token");
 
         if (!token) {
-            alert("You must log in to complete your purchase.");
+            warningAlert(
+                "Login Required",
+                "You must log in to complete your purchase."
+            );
             navigate("/login");
             return;
         }
 
         if (!cartItems || cartItems.length === 0) {
-            alert("Your cart is empty.");
+            warningAlert(
+                "Cart Empty",
+                "Your cart is empty."
+            );
             return;
         }
 
@@ -135,7 +154,10 @@ export const Cart = () => {
             }
 
             if (!response.ok) {
-                alert(data.msg || data.error || `Server error: ${response.status}`);
+                errorAlert(
+                    "Checkout Error",
+                    data.msg || data.error || `Server error: ${response.status}`
+                );
                 return;
             }
 
@@ -149,11 +171,17 @@ export const Cart = () => {
                 return;
             }
 
-            alert("Checkout session was created, but Stripe URL was not returned.");
+            errorAlert(
+                "Checkout Error",
+                "Checkout session was created, but Stripe URL was not returned."
+            );
 
         } catch (error) {
             console.error("Checkout error:", error);
-            alert("Connection error with the server.");
+            errorAlert(
+                "Connection Error",
+                "Connection error with the server."
+            );
         }
     };
 

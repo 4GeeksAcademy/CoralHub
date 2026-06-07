@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { successAlert } from "../utils/alerts";
 
 export const MyTickets = () => {
     const navigate = useNavigate();
@@ -87,8 +88,10 @@ export const MyTickets = () => {
             setSubject("");
             setMessage("");
             fetchTickets();
-            alert("Your message was sent to our team! 📬");
-        } catch (err) {
+            await successAlert(
+                "Message Sent",
+                "Your message was sent to our support team successfully."
+            );
             console.error(err);
             setError("Connection error");
         } finally {

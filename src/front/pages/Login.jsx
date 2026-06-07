@@ -1,6 +1,11 @@
 import React, { useState } from "react";
 // 1. Añadimos Link a las importaciones
 import { useLocation, useNavigate, Link } from "react-router-dom";
+import {
+    successAlert,
+    errorAlert
+} from "../utils/alerts";
+
 // Al principio de Login.jsx (si no está importado aún):
 
 
@@ -42,27 +47,37 @@ export const Login = () => {
 
             // SI LOGIN FUNCIONA
             if (response.ok) {
-                // guardar token
+
                 localStorage.setItem("token", data.token);
 
-                // guardar usuario opcionalmente
                 localStorage.setItem(
                     "user",
                     JSON.stringify(data.user)
                 );
 
-                alert("Login successful");
+                await successAlert(
+                    "Welcome Back",
+                    "Login successful."
+                );
 
-                // redirect
                 navigate("/welcome");
 
             } else {
-                alert(data.msg);
+
+                errorAlert(
+                    "Login Failed",
+                    data.msg
+                );
             }
 
         } catch (error) {
+
             console.log(error);
-            alert("Server error");
+
+            errorAlert(
+                "Server Error",
+                "Something went wrong. Please try again later."
+            );
         }
     };
 

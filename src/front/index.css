@@ -5475,6 +5475,13 @@ h3 {
 .favorite-btn:hover {
   transform: scale(1.08);
 }
+@media (hover: hover) {
+
+  .favorite-btn:hover {
+    transform: scale(1.08);
+  }
+
+}
 
 .favorite-btn.active i {
   color: #43d9d9;
@@ -5508,6 +5515,35 @@ h3 {
   top: 14px;
   right: 14px;
   z-index: 10;
+}
+@media (max-width: 576px) {
+
+  .favorite-btn-card {
+    top: 10px;
+    right: 10px;
+  }
+
+}
+
+@media (max-width: 576px) {
+
+  .favorite-btn,
+  .favorite-btn-detail {
+    width: 46px;
+    height: 46px;
+  }
+
+  .favorite-btn i,
+  .favorite-btn-detail i {
+    font-size: 1.25rem;
+  }
+
+  .product-favorite-btn {
+    width: 50px;
+    height: 50px;
+    font-size: 1.2rem;
+  }
+
 }
 
 /* ===========================================

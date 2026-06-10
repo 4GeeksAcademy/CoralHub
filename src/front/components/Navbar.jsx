@@ -1,6 +1,7 @@
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useState } from "react";
 import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
+import coralHubLogo from "../assets/img/CoralHub_logo.png";
 
 export const Navbar = () => {
     const navigate = useNavigate();
@@ -35,7 +36,7 @@ export const Navbar = () => {
                         {/* LOGO */}
                         <Link to="/" className="coralhub-logo" aria-label="CoralHub homepage">
                             <img
-                                src="/src/front/assets/img/CoralHub_logo.png"
+                                src={coralHubLogo}
                                 alt="CoralHub"
                                 className="coralhub-logo-img"
                             />
@@ -103,14 +104,14 @@ export const Navbar = () => {
                                     {/* ADMIN */}
                                     {JSON.parse(localStorage.getItem("user"))?.role === "admin" && (
                                         <Link to="/admin/dashboard" className="nav-link-custom admin-link">
-                                           Admin Dashboard
+                                            Admin Dashboard
                                         </Link>
                                     )}
 
                                     {/* SUPPORT TICKETS (ADMIN) */}
                                     {JSON.parse(localStorage.getItem("user"))?.role === "admin" && (
                                         <Link to="/admin/tickets" className="nav-link-custom admin-link">
-                                           Tickets
+                                            Tickets
                                         </Link>
                                     )}
 
@@ -118,11 +119,11 @@ export const Navbar = () => {
                                     {JSON.parse(localStorage.getItem("user"))?.role !== "admin" && (
                                         <>
                                             <Link to="/dashboard" className="nav-link-custom">
-                                               My Dashboard
+                                                My Dashboard
                                             </Link>
 
                                             <Link to="/my-tickets" className="nav-link-custom">
-                                               My Tickets
+                                                My Tickets
                                             </Link>
 
                                             <Link to="/my-claims" className="nav-link-custom">

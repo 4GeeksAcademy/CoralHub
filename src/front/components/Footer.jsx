@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import coralHubLogo from "../assets/img/CoralHub_logo.png";
 
 export const Footer = () => {
 	const currentYear = new Date().getFullYear();
@@ -12,7 +13,7 @@ export const Footer = () => {
 					<div className="col-lg-4 col-md-12">
 						<Link to="/" className="footer-brand-link">
 							<img
-								src="/src/front/assets/img/CoralHub_logo.png"
+								src={coralHubLogo}
 								alt="CoralHub"
 								className="footer-logo"
 							/>

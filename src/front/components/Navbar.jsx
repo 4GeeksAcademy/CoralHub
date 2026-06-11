@@ -164,9 +164,123 @@ export const Navbar = () => {
             {/* MOBILE MENU */}
             <div className="collapse mobile-navbar-menu" id="mobileNavbar">
                 <div className="mobile-navbar-content">
-                    {/* Se mantiene tu misma lógica existente para móviles */}
-                    <Link to="/" className="mobile-nav-link">Explore</Link>
-                    {token && <button onClick={handleLogout} className="mobile-signup-btn">Logout</button>}
+
+                    {!isAdminPage && (
+                        <form onSubmit={handleSearch} className="mobile-search-form">
+                            <input
+                                type="search"
+                                placeholder="Search products..."
+                                className="mobile-search-input"
+                                value={searchTerm}
+                                onChange={(e) => setSearchTerm(e.target.value)}
+                            />
+                        </form>
+                    )}
+
+                    {!isAdminPage && (
+                        <>
+                            <div className="mobile-section-title">
+                                Categories
+                            </div>
+
+                            <Link to="/category/Corals" className="mobile-nav-link">
+                                Corals
+                            </Link>
+
+                            <Link to="/category/Equipment" className="mobile-nav-link">
+                                Equipment
+                            </Link>
+
+                            <Link to="/category/Aquariums" className="mobile-nav-link">
+                                Aquariums
+                            </Link>
+
+                            <Link to="/category/Lighting" className="mobile-nav-link">
+                                Lighting
+                            </Link>
+
+                            <Link to="/category/Used" className="mobile-nav-link">
+                                Used
+                            </Link>
+                        </>
+                    )}
+
+                    {token ? (
+                        <>
+                            {JSON.parse(localStorage.getItem("user"))?.role === "admin" ? (
+                                <>
+                                    <Link
+                                        to="/admin/dashboard"
+                                        className="mobile-nav-link"
+                                    >
+                                        Admin Dashboard
+                                    </Link>
+
+                                    <Link
+                                        to="/admin/tickets"
+                                        className="mobile-nav-link"
+                                    >
+                                        Tickets
+                                    </Link>
+                                </>
+                            ) : (
+                                <>
+                                    <Link
+                                        to="/dashboard"
+                                        className="mobile-nav-link"
+                                    >
+                                        My Dashboard
+                                    </Link>
+
+                                    <Link
+                                        to="/my-tickets"
+                                        className="mobile-nav-link"
+                                    >
+                                        My Tickets
+                                    </Link>
+
+                                    <Link
+                                        to="/my-claims"
+                                        className="mobile-nav-link"
+                                    >
+                                        My Claims
+                                    </Link>
+
+                                    <Link
+                                        to="/cart"
+                                        className="mobile-nav-link"
+                                    >
+                                        Cart
+                                        {store.cart?.length > 0 &&
+                                            ` (${store.cart.length})`}
+                                    </Link>
+                                </>
+                            )}
+
+                            <button
+                                onClick={handleLogout}
+                                className="mobile-signup-btn"
+                            >
+                                Logout
+                            </button>
+                        </>
+                    ) : (
+                        <>
+                            <Link
+                                to="/login"
+                                className="mobile-nav-link"
+                            >
+                                Sign In
+                            </Link>
+
+                            <Link
+                                to="/signup"
+                                className="mobile-signup-btn"
+                            >
+                                Sign Up
+                            </Link>
+                        </>
+                    )}
                 </div>
             </div>
         </nav>

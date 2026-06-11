@@ -2003,6 +2003,79 @@ h3 {
   box-shadow: 0 0 30px rgba(255, 122, 89, 0.35);
 }
 
+.community-content {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.community-copy {
+  flex: 1;
+}
+
+.community-action {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.community-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+}
+
+@media (max-width: 768px) {
+
+  .community-card {
+    padding: 2rem 1.25rem;
+    border-radius: 24px;
+  }
+
+  .community-content {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .community-icon {
+    width: 72px;
+    height: 72px;
+    font-size: 2rem;
+  }
+
+  .community-title {
+    font-size: 1.9rem;
+  }
+
+  .community-text {
+    font-size: 1rem;
+    margin-inline: auto;
+  }
+
+  .community-action {
+    justify-content: center;
+  }
+
+  .community-btn {
+    width: 100%;
+    max-width: 280px;
+    height: 54px;
+  }
+
+}
+
+@media (max-width: 480px) {
+
+  .community-card {
+    padding: 1.5rem 1rem;
+  }
+
+  .community-title {
+    font-size: 1.65rem;
+  }
+
+}
+
 /* WAVE */
 
 .community-wave {

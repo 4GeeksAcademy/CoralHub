@@ -70,7 +70,7 @@ export const Navbar = () => {
                                 <ul className="dropdown-menu" aria-labelledby="categoriesDropdown">
                                     <Link
                                         to="/category/Corals"
-                                        className="mobile-nav-link"
+                                        className="dropdown-item"
                                         onClick={closeMobileMenu}
                                     >
                                         Corals

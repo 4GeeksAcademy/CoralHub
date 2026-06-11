@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 export const Community = () => {
 
@@ -6,17 +7,15 @@ export const Community = () => {
 
 		<section className="community-section py-5 position-relative overflow-hidden">
 
-			<div className="container py-5">
+			<div className="container py-4 py-md-5">
 
 				<div className="community-card">
 
-					<div className="row align-items-center g-5">
-
-						{/* LEFT SIDE */}
+					<div className="row align-items-center g-4 g-lg-5">
 
 						<div className="col-lg-8">
 
-							<div className="d-flex flex-column flex-md-row align-items-center align-items-md-start gap-4">
+							<div className="community-content">
 
 								<div className="community-icon">
 
@@ -24,7 +23,7 @@ export const Community = () => {
 
 								</div>
 
-								<div className="text-center text-md-start">
+								<div className="community-copy">
 
 									<h2 className="community-title mb-3">
 										Join the <span>Reef</span> Community
@@ -41,13 +40,15 @@ export const Community = () => {
 
 						</div>
 
-						{/* RIGHT SIDE */}
+						<div className="col-lg-4">
 
-						<div className="col-lg-4 text-center text-lg-end">
+							<div className="community-action">
 
-							<button className="community-btn">
-								Join CoralHub →
-							</button>
+								<Link to="/signup" className="community-btn">
+									Join CoralHub →
+								</Link>
+
+							</div>
 
 						</div>
 
@@ -56,8 +57,6 @@ export const Community = () => {
 				</div>
 
 			</div>
-
-			{/* WAVE */}
 
 			<svg
 				className="community-wave"

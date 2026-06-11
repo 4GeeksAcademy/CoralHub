@@ -13,6 +13,14 @@ export const Navbar = () => {
     // Verificamos si el usuario está exactamente en la página de administración
     const isAdminPage = location.pathname === "/admin/dashboard";
 
+    const closeMobileMenu = () => {
+        const mobileMenu = document.getElementById("mobileNavbar");
+
+        if (mobileMenu) {
+            mobileMenu.classList.remove("show");
+        }
+    };
+
     const handleLogout = () => {
         localStorage.removeItem("token");
         localStorage.removeItem("user");
@@ -22,8 +30,12 @@ export const Navbar = () => {
 
     const handleSearch = (e) => {
         e.preventDefault();
+
         if (!searchTerm.trim()) return;
+
         navigate(`/search?q=${searchTerm}`);
+
+        closeMobileMenu();
     };
 
     return (
@@ -39,6 +51,7 @@ export const Navbar = () => {
                                 src={coralHubLogo}
                                 alt="CoralHub"
                                 className="coralhub-logo-img"
+                                onClick={closeMobileMenu}
                             />
                         </Link>
 
@@ -55,7 +68,14 @@ export const Navbar = () => {
                                     Categories
                                 </button>
                                 <ul className="dropdown-menu" aria-labelledby="categoriesDropdown">
-                                    <li><Link to="/category/Corals" className="dropdown-item">Corals</Link></li>
+                                    <Link
+                                        to="/category/Corals"
+                                        className="mobile-nav-link"
+                                        onClick={closeMobileMenu}
+                                    >
+                                        Corals
+                                    </Link>
+                                    
                                     <li><Link to="/category/Equipment" className="dropdown-item">Equipment</Link></li>
                                     <li><Link to="/category/Aquariums" className="dropdown-item">Aquariums</Link></li>
                                     <li><Link to="/category/Lighting" className="dropdown-item">Lighting</Link></li>
@@ -183,23 +203,23 @@ export const Navbar = () => {
                                 Categories
                             </div>
 
-                            <Link to="/category/Corals" className="mobile-nav-link">
+                            <Link to="/category/Corals" className="mobile-nav-link" onClick={closeMobileMenu} >
                                 Corals
                             </Link>
 
-                            <Link to="/category/Equipment" className="mobile-nav-link">
+                            <Link to="/category/Equipment" className="mobile-nav-link" onClick={closeMobileMenu}>
                                 Equipment
                             </Link>
 
-                            <Link to="/category/Aquariums" className="mobile-nav-link">
+                            <Link to="/category/Aquariums" className="mobile-nav-link" onClick={closeMobileMenu}>
                                 Aquariums
                             </Link>
 
-                            <Link to="/category/Lighting" className="mobile-nav-link">
+                            <Link to="/category/Lighting" className="mobile-nav-link" onClick={closeMobileMenu}>
                                 Lighting
                             </Link>
 
-                            <Link to="/category/Used" className="mobile-nav-link">
+                            <Link to="/category/Used" className="mobile-nav-link" onClick={closeMobileMenu}>
                                 Used
                             </Link>
                         </>

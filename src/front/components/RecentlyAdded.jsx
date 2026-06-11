@@ -159,11 +159,15 @@ export const RecentlyAdded = () => {
 
 							<div className="listing-left">
 
-								<img
-									src={product.image_url}
-									alt={product.name}
-									className="listing-image"
-								/>
+								<div className="listing-image-wrapper">
+
+									<img
+										src={product.image_url}
+										alt={product.name}
+										className="listing-image"
+									/>
+
+								</div>
 
 								<div className="listing-content">
 
@@ -195,8 +199,17 @@ export const RecentlyAdded = () => {
 
 							<div className="listing-right">
 
-								<div className="listing-price">
-									${product.price}
+								<div className="d-flex align-items-center gap-3">
+
+									<div className="listing-price">
+										${product.price}
+									</div>
+
+									<FavoriteButton
+										isFavorite={favoriteIds.includes(product.id)}
+										onClick={() => handleFavorite(product.id)}
+									/>
+
 								</div>
 
 								<div className="d-flex gap-2">
@@ -211,7 +224,6 @@ export const RecentlyAdded = () => {
 								</div>
 
 							</div>
-
 						</div>
 
 					))}

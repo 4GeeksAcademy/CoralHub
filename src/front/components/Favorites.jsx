@@ -23,7 +23,7 @@ export const Favorites = () => {
 			case "Corals":
 				return "coral-tag";
 
-			case "Eqipment":
+			case "Equipment":
 				return "Equipment-tag";
 
 			case "Lights":
@@ -43,7 +43,7 @@ export const Favorites = () => {
 
 			{/* HEADER */}
 
-			<div className="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-5">
+			<div className="favorites-header">
 
 				<div>
 
@@ -83,7 +83,7 @@ export const Favorites = () => {
 
 								<img
 									src={product.image_url}
-									alt={product.name}
+									alt={`${product.name} product image`}
 									className="favorite-image"
 								/>
 
@@ -101,8 +101,8 @@ export const Favorites = () => {
 									{product.name}
 								</h3>
 
-								<p className="favorite-author">
-									by {product.seller_name}
+								<p className="favorite-author mb-0">
+									By {product.seller_name}
 								</p>
 
 								<div className="favorite-stats">

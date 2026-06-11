@@ -7482,3 +7482,43 @@ header {
     align-self: flex-start;
   }
 }
+@media (max-width: 768px) {
+  .category-card {
+    min-height: 170px;
+    padding: 1.5rem 1rem;
+  }
+}
+@media (max-width: 768px) {
+  .category-icon svg {
+    width: 40px;
+    height: 40px;
+  }
+
+  .custom-category-icon {
+    width: 40px;
+    height: 40px;
+  }
+}
+@media (max-width: 768px) {
+  .category-card h3 {
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .categories-section {
+    padding-top: 3rem !important;
+    padding-bottom: 3rem !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .categories-title {
+    font-size: 2rem;
+    line-height: 1.2;
+  }
+
+  .categories-subtitle {
+    font-size: 1rem;
+  }
+}

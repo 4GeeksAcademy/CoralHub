@@ -49,11 +49,11 @@ export const Footer = () => {
 					<div className="col-lg-2 col-md-4 col-6">
 						<h5 className="footer-title">Marketplace</h5>
 						<ul className="footer-links">
-							<li><Link to="/category/coralas" onClick={scrollToTop}>Corals</Link></li>
-							<li><Link to="/category/equipment" onClick={scrollToTop}>Equipment</Link></li>
-							<li><Link to="/category/aquariums" onClick={scrollToTop}>Aquariums</Link></li>
-							<li><Link to="/category/lighting" onClick={scrollToTop}>Lighting</Link></li>
-							<li><Link to="/category/used" onClick={scrollToTop}>Used</Link></li>
+							<li><Link to="/category/Coralas" onClick={scrollToTop}>Corals</Link></li>
+							<li><Link to="/category/Equipment" onClick={scrollToTop}>Equipment</Link></li>
+							<li><Link to="/category/Aquariums" onClick={scrollToTop}>Aquariums</Link></li>
+							<li><Link to="/category/Lighting" onClick={scrollToTop}>Lighting</Link></li>
+							<li><Link to="/category/Used" onClick={scrollToTop}>Used</Link></li>
 						</ul>
 					</div>
 

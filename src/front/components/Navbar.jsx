@@ -70,12 +70,12 @@ export const Navbar = () => {
                                 <ul className="dropdown-menu" aria-labelledby="categoriesDropdown">
                                     <Link
                                         to="/category/Corals"
-                                        className="mobile-nav-link"
+                                        className="dropdown-item"
                                         onClick={closeMobileMenu}
                                     >
                                         Corals
                                     </Link>
-                                    
+
                                     <li><Link to="/category/Equipment" className="dropdown-item">Equipment</Link></li>
                                     <li><Link to="/category/Aquariums" className="dropdown-item">Aquariums</Link></li>
                                     <li><Link to="/category/Lighting" className="dropdown-item">Lighting</Link></li>
@@ -229,6 +229,9 @@ export const Navbar = () => {
                         <>
                             {JSON.parse(localStorage.getItem("user"))?.role === "admin" ? (
                                 <>
+                                    <div className="mobile-section-title">
+                                        My Account
+                                    </div>
                                     <Link
                                         to="/admin/dashboard"
                                         className="mobile-nav-link"
@@ -245,9 +248,14 @@ export const Navbar = () => {
                                 </>
                             ) : (
                                 <>
+                                    <div className="mobile-section-title">
+                                        My Account
+                                    </div>
+
                                     <Link
                                         to="/dashboard"
                                         className="mobile-nav-link"
+                                        onClick={closeMobileMenu}
                                     >
                                         My Dashboard
                                     </Link>
@@ -255,6 +263,7 @@ export const Navbar = () => {
                                     <Link
                                         to="/my-tickets"
                                         className="mobile-nav-link"
+                                        onClick={closeMobileMenu}
                                     >
                                         My Tickets
                                     </Link>
@@ -262,6 +271,7 @@ export const Navbar = () => {
                                     <Link
                                         to="/my-claims"
                                         className="mobile-nav-link"
+                                        onClick={closeMobileMenu}
                                     >
                                         My Claims
                                     </Link>
@@ -269,6 +279,7 @@ export const Navbar = () => {
                                     <Link
                                         to="/cart"
                                         className="mobile-nav-link"
+                                        onClick={closeMobileMenu}
                                     >
                                         Cart
                                         {store.cart?.length > 0 &&

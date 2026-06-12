@@ -393,7 +393,7 @@ h3 {
 .mobile-nav-link {
   text-decoration: none;
 
-  color: white;
+  color: rgb(255, 255, 255);
 
   font-size: 1.1rem;
 
@@ -1218,11 +1218,12 @@ h3 {
   font-size: 1rem;
 
   transition: all 0.3s ease;
+
+  text-decoration: none;
 }
 
 .favorites-view-btn:hover {
   color: white;
-
   transform: translateX(4px);
 }
 
@@ -1279,8 +1280,6 @@ h3 {
 .favorite-tag {
   display: inline-flex;
 
-  padding: 0.45rem 1rem;
-
   border-radius: 999px;
 
   font-size: 0.9rem;
@@ -1288,7 +1287,16 @@ h3 {
   font-weight: 600;
 
   margin-bottom: 1rem;
+
+  align-items: center;
+
+  width: fit-content;
+
+  padding: 0.5rem 1.2rem;
+
+  
 }
+
 
 .coral-tag {
   color: #fe6949;
@@ -7426,4 +7434,91 @@ header {
   }
 
 }
+.favorites-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 3rem;
+}
 
+@media (max-width: 768px) {
+  .favorites-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .favorites-view-btn {
+    align-self: flex-start;
+    width: auto;
+    text-align: left;
+  }
+}
+.favorite-card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.favorite-content {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.view-product-btn {
+  margin-top: auto;
+}
+.favorite-image {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+}
+
+@media (max-width: 768px) {
+  .favorites-view-btn {
+    width: auto;
+    text-align: left;
+    align-self: flex-start;
+  }
+}
+@media (max-width: 768px) {
+  .category-card {
+    min-height: 170px;
+    padding: 1.5rem 1rem;
+  }
+}
+@media (max-width: 768px) {
+  .category-icon svg {
+    width: 40px;
+    height: 40px;
+  }
+
+  .custom-category-icon {
+    width: 40px;
+    height: 40px;
+  }
+}
+@media (max-width: 768px) {
+  .category-card h3 {
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .categories-section {
+    padding-top: 3rem !important;
+    padding-bottom: 3rem !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .categories-title {
+    font-size: 2rem;
+    line-height: 1.2;
+  }
+
+  .categories-subtitle {
+    font-size: 1rem;
+  }
+}

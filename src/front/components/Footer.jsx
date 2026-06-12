@@ -4,6 +4,13 @@ import coralHubLogo from "../assets/img/CoralHub_logo.png";
 
 export const Footer = () => {
 	const currentYear = new Date().getFullYear();
+	const scrollToTop = () => {
+		window.scrollTo({
+			top: 0,
+			behavior: "smooth"
+		});
+	};
+
 
 	return (
 		<footer className="coral-footer">
@@ -42,11 +49,11 @@ export const Footer = () => {
 					<div className="col-lg-2 col-md-4 col-6">
 						<h5 className="footer-title">Marketplace</h5>
 						<ul className="footer-links">
-							<li><Link to="/search?category=corals">Corals</Link></li>
-							<li><Link to="/search?category=fish">Fish</Link></li>
-							<li><Link to="/search?category=invertebrates">Invertebrates</Link></li>
-							<li><Link to="/search?category=equipment">Equipment</Link></li>
-							<li><Link to="/search?category=food">Food</Link></li>
+							<li><Link to="/category/Coralas" onClick={scrollToTop}>Corals</Link></li>
+							<li><Link to="/category/Equipment" onClick={scrollToTop}>Equipment</Link></li>
+							<li><Link to="/category/Aquariums" onClick={scrollToTop}>Aquariums</Link></li>
+							<li><Link to="/category/Lighting" onClick={scrollToTop}>Lighting</Link></li>
+							<li><Link to="/category/Used" onClick={scrollToTop}>Used</Link></li>
 						</ul>
 					</div>
 

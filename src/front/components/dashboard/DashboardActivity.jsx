@@ -104,13 +104,9 @@ export const DashboardActivity = () => {
 
                 <h2>Recent Activity</h2>
 
-                <button className="section-btn">
-                    View all activity
-                </button>
-
             </div>
 
-            <div className="activity-list">
+            <div className="activity-timeline">
 
                 {loading ? (
 
@@ -128,36 +124,37 @@ export const DashboardActivity = () => {
 
                     activities.map(activity => (
 
-                        <div
+                        <article
                             key={activity.id}
-                            className="activity-row"
+                            className="activity-item"
                         >
 
-                            <div className="activity-icon">
+                            <div className="activity-marker">
 
-                                {activity.icon}
+                                <span className="activity-icon">
+                                    {activity.icon}
+                                </span>
 
                             </div>
 
                             <div className="activity-content">
 
-                                <p>
+                                <p className="activity-text">
                                     {activity.text}
                                 </p>
 
+                                <span className="activity-time">
+                                    {activity.time}
+                                </span>
+
                             </div>
 
-                            <span className="activity-time">
-
-                                {activity.time}
-
-                            </span>
-
-                        </div>
+                        </article>
 
                     ))
 
-                )}
+                )
+            }
 
             </div>
 

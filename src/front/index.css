@@ -3963,74 +3963,90 @@ h3 {
    ACTIVITY
 ======================================== */
 
-.activity-list {
-  display: flex;
+/* ========================================
+   ACTIVITY TIMELINE
+======================================== */
 
+.activity-timeline {
+  position: relative;
+  display: flex;
   flex-direction: column;
-
-  gap: 1rem;
 }
 
-.activity-row {
+.activity-item {
+  position: relative;
   display: flex;
-
-  justify-content: space-between;
-
-  align-items: center;
-
   gap: 1rem;
-
-  padding: 1rem 0;
-
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  padding-bottom: 1.75rem;
 }
 
-.activity-content {
-  display: flex;
+.activity-item:last-child {
+  padding-bottom: 0;
+}
 
-  align-items: center;
+.activity-marker {
+  position: relative;
+  flex-shrink: 0;
+}
 
-  gap: 1rem;
+.activity-marker::after {
+  content: "";
 
-  flex: 1;
+  position: absolute;
+
+  top: 48px;
+  left: 50%;
+
+  transform: translateX(-50%);
+
+  width: 2px;
+  height: calc(100% + 1rem);
+
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.activity-item:last-child .activity-marker::after {
+  display: none;
 }
 
 .activity-icon {
   width: 42px;
-
   height: 42px;
 
   border-radius: 12px;
 
   display: flex;
-
   align-items: center;
-
   justify-content: center;
 
   background: rgba(78, 199, 193, 0.12);
 
   font-size: 1.1rem;
 
-  flex-shrink: 0;
+  border: 1px solid rgba(78, 199, 193, 0.18);
 }
 
-.activity-content p {
+.activity-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.activity-text {
   color: white;
 
-  margin: 0;
+  margin: 0 0 0.35rem;
 
   font-size: 0.95rem;
 
-  line-height: 1.4;
+  line-height: 1.5;
 }
 
 .activity-time {
+  display: block;
+
   color: rgba(255, 255, 255, 0.55);
 
   font-size: 0.82rem;
-
-  white-space: nowrap;
 }
 
 /* EMPTY STATE */
@@ -4127,26 +4143,18 @@ h3 {
 }
 
 @media (max-width: 768px) {
-  .dashboard-layout {
-    padding-inline: 1rem;
-  }
 
   .dashboard-header {
     flex-direction: column;
-
     align-items: flex-start;
-
     gap: 1rem;
+
+    margin-bottom: 2rem;
   }
 
-  .dashboard-stats-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .profile-card {
-    flex-direction: column;
-
-    align-items: flex-start;
+  .publish-btn {
+    width: 100%;
+    justify-content: center;
   }
 }
 
@@ -4421,6 +4429,61 @@ h3 {
   color: white;
 
   transform: translateY(-2px);
+}
+/* ========================================
+   ACTIVITY - RESPONSIVE
+======================================== */
+
+@media (max-width: 768px) {
+
+  .dashboard-section .section-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .section-btn {
+    align-self: flex-start;
+  }
+
+  .activity-row {
+    align-items: flex-start;
+    gap: 0.875rem;
+  }
+
+  .activity-time {
+    display: block;
+    margin-top: 0.35rem;
+    white-space: normal;
+  }
+}
+
+@media (max-width: 576px) {
+
+  .dashboard-section {
+    padding: 1.5rem;
+  }
+
+  .activity-row {
+    display: grid;
+    grid-template-columns: 42px 1fr;
+    gap: 0.75rem;
+  }
+
+  .activity-content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.35rem;
+  }
+
+  .activity-content p {
+    font-size: 0.9rem;
+  }
+
+  .activity-time {
+    font-size: 0.75rem;
+  }
 }
 
 /* ========================================
@@ -7520,5 +7583,22 @@ header {
 
   .categories-subtitle {
     font-size: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+
+  .publish-btn {
+    width: 100%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 0.9rem 1.25rem;
+
+    border-radius: 14px;
+
+    font-size: 0.95rem;
   }
 }

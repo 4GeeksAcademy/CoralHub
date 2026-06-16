@@ -193,7 +193,9 @@ export const DashboardProducts = ({ setActiveSection }) => {
 
                                         <div>
 
-                                            <h5>{product.name}</h5>
+                                            <h3 className="product-name">
+                                                {product.name}
+                                            </h3>
 
                                             <p>${product.price}</p>
 

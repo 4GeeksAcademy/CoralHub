@@ -4138,6 +4138,8 @@ h3 {
 
     gap: 1rem;
   }
+  
+  
 
   .dashboard-stats-grid {
     grid-template-columns: 1fr;
@@ -7512,13 +7514,38 @@ header {
   }
 }
 
-@media (max-width: 768px) {
-  .categories-title {
-    font-size: 2rem;
-    line-height: 1.2;
+@media (max-width: 992px) {
+
+
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
+
+    padding: 1rem 1.25rem !important;
+
+    margin-top: 0.5rem;
+
+    box-shadow: 0 6px 18px rgba(254, 105, 73, 0.18);
   }
 
-  .categories-subtitle {
-    font-size: 1rem;
+  .dashboard-header {
+    margin-bottom: 2rem;
+  }
+
+  @media (max-width: 992px) {
+  .publish-btn {
+    width: 100% !important;
+    max-width: none !important;
+
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0.95rem 1.25rem !important;
+    margin-top: 0.5rem;
+    margin-bottom: 1rem;
+
+    border-radius: 18px;
+    text-align: center;
   }
 }

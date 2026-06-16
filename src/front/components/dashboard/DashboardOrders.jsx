@@ -75,11 +75,11 @@ export const DashboardOrders = () => {
             ) : (
                 <div className="orders-list">
                     {orders.map(order => (
-                        <div key={order.id} className="order-card">
+                        <article key={order.id} className="order-card">
 
                             <div className="order-card-header">
                                 <div>
-                                    <h5>Order #{order.id}</h5>
+                                    <h3>Order #{order.id}</h3>
 
                                     <p>
                                         {order.created_at
@@ -108,7 +108,7 @@ export const DashboardOrders = () => {
 
                             {order.delivery_method === "shipping" && order.shipping_address && (
                                 <div className="order-shipping">
-                                    <h6>Shipping Address</h6>
+                                    <h4>Shipping Address</h4>
 
                                     <p>{order.shipping_address.full_name}</p>
                                     <p>{order.shipping_address.street}</p>
@@ -126,16 +126,14 @@ export const DashboardOrders = () => {
                                     <div key={item.id} className="order-product">
                                         <img
                                             src={item.product?.image_url}
-                                            alt={item.product?.name}
+                                            alt={item.product?.name || "Product image"}
                                             className="order-product-image"
                                         />
 
                                         <div className="order-product-info">
-                                            <h6>{item.product?.name}</h6>
+                                            <h4>{item.product?.name}</h4>
 
-                                            <p>
-                                                Qty: {item.quantity}
-                                            </p>
+                                            <p>Qty: {item.quantity}</p>
 
                                             <p>
                                                 Unit price: ${Number(item.unit_price).toFixed(2)}
@@ -149,7 +147,7 @@ export const DashboardOrders = () => {
                                 ))}
                             </div>
 
-                        </div>
+                        </article>
                     ))}
                 </div>
             )}

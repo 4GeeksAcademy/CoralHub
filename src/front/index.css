@@ -7379,60 +7379,6 @@ header {
 
 
 /* ========================================
-   CONVERSATIONS
-======================================== */
-
-.conversations-list {
-  display: flex;
-
-  flex-wrap: wrap;
-
-  gap: 0.75rem;
-
-  margin-bottom: 2rem;
-}
-
-.conversation-item {
-  padding: 0.75rem 1rem;
-
-  border-radius: 12px;
-
-  border: 1px solid rgba(255, 255, 255, 0.08);
-
-  background: rgba(255, 255, 255, 0.04);
-
-  color: rgba(255, 255, 255, 0.8);
-
-  font-size: 0.9rem;
-
-  font-weight: 600;
-
-  cursor: pointer;
-
-  transition: all 0.3s ease;
-}
-
-.conversation-item:hover {
-  background: rgba(78, 199, 193, 0.08);
-
-  border-color: rgba(78, 199, 193, 0.25);
-
-  color: white;
-
-  transform: translateY(-2px);
-}
-
-.conversation-item.active {
-  background: rgba(78, 199, 193, 0.15);
-
-  border: 1px solid rgba(78, 199, 193, 0.35);
-
-  color: white;
-
-  box-shadow: 0 0 20px rgba(78, 199, 193, 0.15);
-}
-
-/* ========================================
    MESSAGE NOTIFICATIONS
 ======================================== */
 
@@ -7829,5 +7775,294 @@ header {
 
   .order-status {
     font-size: 0.75rem;
+  }
+}
+
+
+/* ========================================
+   CONVERSATIONS
+======================================== */
+.dashboard-messages-section .section-header p {
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 0;
+}
+
+.dashboard-messages-layout {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 1.5rem;
+}
+
+.conversations-panel,
+.chat-panel {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(78, 199, 193, 0.18);
+    border-radius: 24px;
+    padding: 1.5rem;
+}
+
+.conversations-panel h3,
+.message-user-header h3,
+.empty-chat-state h3 {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    color: #ffffff;
+}
+
+.conversations-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.conversation-item {
+    width: 100%;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.04);
+    color: #ffffff;
+    border-radius: 16px;
+    padding: 0.85rem 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    text-align: left;
+    transition: 0.2s ease;
+}
+
+.conversation-item:hover,
+.conversation-item.active {
+    border-color: #4ec7c1;
+    background: rgba(78, 199, 193, 0.12);
+}
+
+.conversation-avatar,
+.seller-avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: #4ec7c1;
+    color: #012c4b;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+.message-user-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.message-user-header h3 {
+    margin-bottom: 0.2rem;
+}
+
+.message-user-header p {
+    margin-bottom: 0;
+    color: rgba(255, 255, 255, 0.65);
+    font-size: 0.9rem;
+}
+
+.messages-list {
+    min-height: 320px;
+    max-height: 420px;
+    overflow-y: auto;
+    padding: 1.5rem 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+}
+
+.message-sent,
+.message-received {
+    max-width: 75%;
+    padding: 0.8rem 1rem;
+    border-radius: 18px;
+    line-height: 1.5;
+    word-break: break-word;
+}
+
+.message-sent {
+    align-self: flex-end;
+    background: #4ec7c1;
+    color: #012c4b;
+    border-bottom-right-radius: 6px;
+}
+
+.message-received {
+    align-self: flex-start;
+    background: rgba(255, 255, 255, 0.08);
+    color: #ffffff;
+    border-bottom-left-radius: 6px;
+}
+
+.message-form {
+    display: flex;
+    gap: 0.75rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.message-form input {
+    flex: 1;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 999px;
+    padding: 0.85rem 1rem;
+    background: rgba(255, 255, 255, 0.06);
+    color: #ffffff;
+}
+
+.message-form input::placeholder {
+    color: rgba(255, 255, 255, 0.55);
+}
+
+.message-form button {
+    border: none;
+    border-radius: 999px;
+    padding: 0.85rem 1.4rem;
+    background: #fe6949;
+    color: #ffffff;
+    font-weight: 700;
+}
+
+.empty-message,
+.empty-chat-state p {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.empty-chat-state {
+    min-height: 320px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+@media (max-width: 768px) {
+    .dashboard-messages-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .conversations-panel,
+    .chat-panel {
+        padding: 1rem;
+        border-radius: 20px;
+    }
+
+    .conversations-list {
+        flex-direction: row;
+        overflow-x: auto;
+        padding-bottom: 0.25rem;
+    }
+
+    .conversation-item {
+        min-width: 180px;
+    }
+
+    .messages-list {
+        min-height: 300px;
+        max-height: 380px;
+    }
+
+    .message-sent,
+    .message-received {
+        max-width: 88%;
+    }
+
+.message-form {
+    flex-direction: row;
+    align-items: center;
+}
+
+.message-form input {
+    flex: 1;
+    min-width: 0;
+}
+
+.message-form button {
+    width: auto;
+    flex-shrink: 0;
+    padding: 0.85rem 1.25rem;
+}
+}
+
+@media (max-width: 768px) {
+
+    .section-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .section-header .section-btn {
+        width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+
+    .profile-card {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 1.5rem;
+    }
+
+    .profile-info {
+        width: 100%;
+    }
+
+    .profile-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+        padding: 1rem 0;
+    }
+
+    .profile-input {
+        width: 100%;
+    }
+
+    .profile-avatar {
+        width: 90px;
+        height: 90px;
+        font-size: 2rem;
+    }
+}
+@media (max-width: 768px) {
+
+    .delete-account-btn {
+        width: 100%;
+    }
+}
+
+.favorite-actions {
+  display: flex;
+  gap: 0.75rem;
+}
+
+@media (max-width: 576px) {
+
+  .favorite-actions {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    width: 100%;
+  }
+
+  .favorite-view-btn,
+  .favorite-remove-btn {
+    flex: 1;
+    width: auto;
+    min-width: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 1rem;
+    text-align: center;
   }
 }

@@ -1,13 +1,18 @@
 import React, { useState, useEffect} from "react";
+import useGlobalReducer from "../../hooks/useGlobalReducer.jsx";
 
 export const DashboardSidebar = ({
     activeSection,
     setActiveSection
 }) => {
 
+    const { store } = useGlobalReducer();
     const [unreadCount, setUnreadCount] = useState(0);
 
     useEffect(() => {
+        
+
+        
 
         const loadUnreadCount = async () => {
 
@@ -48,7 +53,7 @@ export const DashboardSidebar = ({
         return () => clearInterval(interval);
 
     }, []);
-    const user = JSON.parse(localStorage.getItem("user") || "{}");
+    const user = store.currentUser || {};
 
     const firstName = user.first_name || "";
     const lastName = user.last_name || "";

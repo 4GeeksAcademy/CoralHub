@@ -91,7 +91,7 @@ export const DashboardFavorites = () => {
 
                 <div className="empty-state">
 
-                    <h4>No favorites yet</h4>
+                    <h3>No favorites yet</h3>
 
                     <p>
                         Save products you like and they'll appear here.
@@ -111,7 +111,7 @@ export const DashboardFavorites = () => {
 
                             <div
                                 key={favorite.id}
-                                className="col-md-6 col-xl-4"
+                                className="col-12 col-sm-6 col-xl-4"
                             >
 
                                 <div className="dashboard-product-card">
@@ -124,9 +124,9 @@ export const DashboardFavorites = () => {
 
                                     <div className="dashboard-product-body">
 
-                                        <h5>
+                                        <h3>
                                             {product.name}
-                                        </h5>
+                                        </h3>
 
                                         <p>
                                             ${product.price.toFixed(2)}

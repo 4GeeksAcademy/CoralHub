@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { useLocation, useNavigate, Link } from "react-router-dom";
+import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
+
 import {
     successAlert,
     errorAlert
@@ -7,6 +9,7 @@ import {
 
 export const Login = () => {
 
+    const { dispatch } = useGlobalReducer();
     const navigate = useNavigate();
 
     // STATES
@@ -49,10 +52,10 @@ export const Login = () => {
 
                 localStorage.setItem("token", data.token);
 
-                localStorage.setItem(
-                    "user",
-                    JSON.stringify(data.user)
-                );
+                dispatch({
+                    type: "set_current_user",
+                    payload: data.user
+                });
 
                 await successAlert(
                     "Welcome Back",

@@ -1,8 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import useGlobalReducer from "../../hooks/useGlobalReducer.jsx";
 
 export const DashboardHeader = () => {
-    const user = JSON.parse(localStorage.getItem("user")) || {};
+
+    const { store } = useGlobalReducer();
+
+    const user = store.currentUser || {};
 
     return (
 

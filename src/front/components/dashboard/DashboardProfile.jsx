@@ -4,8 +4,11 @@ import {
     errorAlert,
     confirmAlert
 } from "../../utils/alerts";
+import useGlobalReducer from "../../hooks/useGlobalReducer.jsx";
 
 export const DashboardProfile = () => {
+
+    const { dispatch } = useGlobalReducer();
 
     const [user, setUser] = useState(null);
 
@@ -163,14 +166,12 @@ export const DashboardProfile = () => {
 
                 setUser(data.user);
 
-                localStorage.setItem(
-                    "user",
-                    JSON.stringify(data.user)
-                );
+                dispatch({
+                    type: "set_current_user",
+                    payload: data.user
+                });
 
                 setIsEditing(false);
-
-                window.location.reload();
             })
 
             .catch(error => console.error(error));
@@ -354,9 +355,9 @@ export const DashboardProfile = () => {
 
             <div className="danger-zone">
 
-                <h2 className="dashboard-title-section">
+                <h3 className="dashboard-title-section">
                     Danger Zone
-                </h2>
+                </h3>
 
                 <p className="danger-zone-text">
                     Permanently delete your account and all associated data.
